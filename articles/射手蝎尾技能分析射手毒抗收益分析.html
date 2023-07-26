@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>射手蝎尾技能分析射手毒抗收益分析 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="射手蝎尾技能分析射手毒抗收益分析 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="射手蝎尾技能分析射手毒抗收益分析">射手蝎尾技能分析射手毒抗收益分析</h1>
+
+<p>作者：[小黑猪]</p>
+<p>今天给大家带来倩女幽魂手游射手攻略—蝎尾技能分析及毒抗收益分析!</p>
+<p>本文主要涉及内容：</p>
+<ol>
+<li>蝎尾的伤害公式(物理部分+毒部分)</li>
+<li>射手双火的两种加成方式(是否带天赋剑拔弩张的区别)</li>
+<li>射手忽视毒的收益</li>
+<li>射手项链、人格传家宝的收益分析</li>
+</ol>
+<p>结论：</p>
+<ol>
+<li><p>增加1点面板攻击，可以增加蝎尾1点物理伤害和0.6点毒伤害</p>
+</li>
+<li><p>除非特别高攻，否则建议佩戴剑拔弩张，有疑问请来群里找我</p>
+</li>
+<li><p>项链不推荐带蝎尾，建议带全技能或者致命</p>
+</li>
+</ol>
+<h2 id="蝎尾技能攻击公式">蝎尾技能攻击公式</h2>
+<ol>
+<li><p>该公式计算的为技能攻击，并非最终伤害值，最终伤害应继续将技能攻击代入伤害公式中。</p>
+</li>
+<li><p>毒攻击部分对应受到毒抗作用，每1点毒抗，对应减伤0.5%;射手自身每多出1点忽视毒抗，能够降低对方一点毒抗效果;忽视毒抗高于对方毒抗部分无效果。</p>
+</li>
+<li><p>简化后的伤害公式如下：</p>
+</li>
+</ol>
+<p>理论毒伤害上限：</p>
+<pre><code>(最大攻击8527*0.6+蝎尾毒伤害154+自身毒攻击318-防御3000)*(1-毒抗对应的10%伤害减免)
+</code></pre>
+<p>最终解得伤害上限为2329.28</p>
+<p>理论毒伤害下限：</p>
+<pre><code>(最小攻击4165*0.6+蝎尾毒伤害154+自身毒攻击318-防御3000)*(1-毒抗对应的10%伤害减免)
+</code></pre>
+<p>解得值为-26.1(注意前面的负号)，可知伤害一定处于最小值，求得此时的修正伤害为((最小攻击4165*0.6+蝎尾毒伤害154+自身毒攻击318)*0.02，解得值为59.42，所以最终解得伤害下限为59.42，而实际测试出的毒伤害，最低伤害为60，最高伤害为2327，反过来也说明该公式在误差允许范围内成立。</p>
+<p>根绝上述公式，可以得出以下结论：</p>
+<ol>
+<li><p>蝎尾毒伤害，受攻击影响，且每1点攻击能对应增加0.6点毒伤害，还是蛮高的;考虑到毒伤害每秒持续掉血，且每次释放蝎尾时必然立即触发一次毒伤害的性质可知，射手毒伤害的出现频率会高于物理部分。因此蝎尾的毒伤害是蝎尾伤害中不可忽视的一部分，射手堆忽视毒有很大的必要。</p>
+</li>
+<li><p>蝎尾项链的收益并不高，以40+级的蝎尾为例，提升1级蝎尾对应提升的为67物理攻击和18毒攻击，而我们如果提升自身60点面板攻击，那么对应提升蝎尾60点物理攻击和36点毒攻击，明显提高1级蝎尾的效果还不足提升60面板攻击的效果，非要说有效果，也就体现在能够增加毒的持续时间。从收益的角度考虑，就十分的低下.</p>
+</li>
+</ol>
+<h2 id="射手双火的两种加成方式">射手双火的两种加成方式</h2>
+<p>两种加成方式，是由射手40级天赋剑拔弩张造成的，如图所示</p>
+<p>在这，我就必须得结合伤害公式，先来讲一讲这两种加成方式有什么区别。还是刚才的伤害公式，如下</p>
+<p>对于不带剑拔弩张，即加成方式采用伤害增加，公式就如下：</p>
+<p>而对于带剑拔弩张，即加成方式采用攻击增加，公式就如下：</p>
+<p>关于攻击增加的公式，我有几点得提一下，</p>
+<ol>
+<li><p>攻击增加的对象是技能攻击，这点切记，这与千钧的效果是有本质区别的</p>
+</li>
+<li><p>攻击增加的效果是会影响修正伤害的，不知道大家注意到修正伤害公式中的变化了么</p>
+</li>
+<li><p>攻击增加与伤害增加本质的区别，在于伤害增加放大的是攻防作用的效果，说白了，就是不仅放大你的攻击，同时也放大了对方的防御;而攻击增加就只会放大自己的攻击。</p>
+</li>
+</ol>
+<p>在此我做一些说明，如果你的攻击，高于我上述模拟的攻击力，那你就将上面的图自行进行脑补进行左移，而低于所模拟的攻击力，则自行脑补进行右移。该攻击的情况，我建议是带上剑拔弩张，情况如果比我上述模拟情况还遭的，也建议最好是带上剑拔弩张。如果有对这方面有一定兴趣，可以加入助手群，给我提供相关数据，以及对手一般的防御抗性情况，我可以帮你进行分析。</p>
+<h2 id="忽视毒的收益">忽视毒的收益</h2>
+<p>由蝎尾公式，已经可以看出毒伤害在蝎尾伤害中的重要性，因此，用来保证毒伤害的忽视毒，就具有一定价值。以上图中，伤害增加方式的毒攻击为例，我们比较0毒抗，与50毒抗的伤害差异。如图所示：</p>
+<p>可以看出，差异还是比较明显，最大毒伤害差距了600左右，在PVP中已经属于一个比较可观的差距。</p>
+<h2 id="射手项链人格传家宝的收益分析">射手项链、人格传家宝的收益分析</h2>
+<p>能够判定的是射手全技能项链的收益必然大于带流火或者羿射九日的收益，所以此处主要比较流火与蝎尾的收益问题。</p>
+<p>在第一部分就已经提到过，提升1级蝎尾的作用，略低于提升60面板攻击的作用;而提升1级流火，能够提升0.6%的伤害，如果带剑拔弩张天赋，即提升0.3%的技能攻击，明显有技能攻击为20000时，提升1级流火的效果与提升1级蝎尾的效果类似，可知，蝎尾对面板攻击低于约1W8的部分(除去技能伤害2000左右)，提升蝎尾加成更高，而对于攻击大于1W8的部分明显流火效果更好。请各个等级段，根据自身攻击对号入座。</p>
+<p>因此综合分析，对于正常高攻的射手，就项链来说，建议优先考虑射手全技能的项链或者致命的项链，而对于人格传家宝，可以按照流火&gt;羿射九日=飞毒入骨=蝎尾&gt;千钧的优先级进行选择，对于没有涉及的技能，并不是不考虑，而是自行按照需要进行选择，此处只考虑影响蝎尾输出的技能。</p>
+<p>以上就是倩女幽魂手游射手蝎尾技能分析射手毒抗收益分析，倩女幽魂射手刷图技能希望能给射手玩家带来帮助!</p>
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

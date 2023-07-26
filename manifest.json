@@ -164,6 +164,66 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/gd1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/gd1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/gd2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/gd2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/gd3.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/gd3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/gd4.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/gd4.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/pd1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/pd1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pdygd/pd2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pdygd/pd2.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "articles/intro.md",
       "output": {
@@ -198,10 +258,30 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/射手蝎尾技能分析射手毒抗收益分析.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/射手蝎尾技能分析射手毒抗收益分析.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/画魂蝴蝶伤害测试.md",
       "output": {
         ".html": {
           "relative_path": "articles/画魂蝴蝶伤害测试.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/破盾与格挡.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/破盾与格挡.html"
         }
       },
       "version": ""
