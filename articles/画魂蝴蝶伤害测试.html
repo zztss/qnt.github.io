@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>画魂蝴蝶伤害测试 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="画魂蝴蝶伤害测试 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="画魂蝴蝶伤害测试">画魂蝴蝶伤害测试</h1>
+
+<p>作者：[小黑猪]</p>
+<p>本文主要涉及内容如下：</p>
+<ul>
+<li><p>水墨晕章(bug修复后)的加成方式</p>
+</li>
+<li><p>庄周梦蝶(基础)攻击计算公式</p>
+</li>
+<li><p>庄周梦蝶(丹朱)攻击计算公式</p>
+</li>
+<li><p>庄周梦蝶(基础)与庄周梦蝶(丹朱)的比较</p>
+</li>
+</ul>
+<h2 id="水墨晕章bug修复后的加成方式">水墨晕章(bug修复后)的加成方式</h2>
+<p>水墨晕章的 <code>水攻击提升一定百分比</code>，目前经测试以后，是只针对技能描述中的水攻击(或者词条增加的水攻击)进行加成。</p>
+<p><img src="images/hhhdshcs/zzmd.webp" alt="Zzmd"></p>
+<p>上图是50级基础色蝴蝶的技能描述，假设我们水墨晕章的加成量是13%，那么通过水墨晕章提升的水攻击就是：</p>
+<pre><code>15962*13%=2075.06(基础部分)
+
+10375*13%=1348.75(窒息部分)
+</code></pre>
+<p>换句话说，水墨晕章不提升面板攻击，也不提升由于蓝量而提升的窒息攻击。</p>
+<p>因此，对于水墨晕章这技能来说，如果自身蝴蝶等级不够高，效果是不明显的。</p>
+<h2 id="庄周梦蝶基础攻击计算公式">庄周梦蝶(基础)攻击计算公式</h2>
+<pre><code>庄周梦蝶(基础)攻击力=面板攻击*1.05+技能描述*(1+水墨晕章加成)
+</code></pre>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>注意：该公式得出的结果，只是庄周梦蝶(基础)的攻击力，如果要得到最终伤害，还需要计算对方防御、减伤、水抗，以及PVP伤害系数等</p>
+</div>
+<h2 id="庄周梦蝶丹朱攻击计算公式">庄周梦蝶(丹朱)攻击计算公式</h2>
+<pre><code>庄周梦蝶(丹朱)攻击力=面板攻击*0.75+技能描述*(1+水墨晕章加成)
+</code></pre>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>注意：其实蝴蝶攻击应包含窒息部分，但由于该部分尚未测出(楼主我也不想去测了，太麻烦了)，目前根据已测出的数据，窒息的攻击模型如下：</p>
+</div>
+<pre><code>窒息攻击=面板攻击*某待定系数+技能描述*(1+水墨晕章加成)+当前蓝量*0.65
+</code></pre>
+<p>实际测试的时候，由于不断变化的蓝量，而造成了不断变化的窒息攻击，而难以进行测试</p>
+<h2 id="庄周梦蝶基础与庄周梦蝶丹朱的比较">庄周梦蝶(基础)与庄周梦蝶(丹朱)的比较</h2>
+<p>两者的关系，其实已经有不少人分析过了，在这里，我也不想过多进行分析，只请各位看点数据，希望能对大家有一定的启发</p>
+<p><img src="images/hhhdshcs/hd1.webp" alt="Hd1">
+<img src="images/hhhdshcs/hd2.webp" alt="Hd2">
+<img src="images/hhhdshcs/hd3.webp" alt="Hd3">
+<img src="images/hhhdshcs/hd4.webp" alt="Hd4"></p>
+<p>上表格中的数据，并没有考虑碎形、水抗、致命等影响，因为这些因素的影响，并不会导致红白伤害比例的变化。</p>
+<p>在看这个表格的时候，我们其实只需要将红蝴蝶能中几个，以及红白蝴蝶窒息伤害的差值考虑进去即可。</p>
+<p>从上面几组数据中可以看出，当攻防差距越大时，其实红蝴蝶的伤害优势越明显。大多数情况下，能保证红蝴蝶3中2，就已经略有优势，而且吧，红蝴蝶还是个群伤，不管是在副本还是在团战中，都会有明显的优势，唯一不足的就是弹道攻击并非所有画魂玩家都能适应。</p>
+<p>接下来是测试部分，请非战斗人员迅速撤离了吧</p>
+<p><img src="images/hhhdshcs/qfgn.webp" alt="Qfgn"></p>
+<p>我先简单描述一下测试原理。</p>
+<p><strong>第一步建立公式模型。</strong></p>
+<p>根据以往测试结果，建立两个公式模型：</p>
+<pre><code>
+1. 蝴蝶攻击=(面板攻击*系数a+技能描述*系数b)*(1+水墨晕章)
+
+2. 蝴蝶攻击=(面板攻击*系数a+技能描述*系数b*(1+水墨晕章))
+
+</code></pre>
+<p><strong>第二步测定系数b。</strong></p>
+<p>通过甲士河谷震和司怪困，将面板攻击降低为1-1，那么面板攻击*系数a，可近似为1，则有</p>
+<pre><code>(1+技能描述*系数b*(1+水墨晕章)-家园傀儡防御)*(1-水抗减伤百分比)=伤害值
+</code></pre>
+<p>则可计算出系数b的值</p>
+<p><strong>第三步确定系数a与公式模型</strong></p>
+<p>通过甲士司怪，将面板攻击降低至一个比较狭窄的范围(测试中的攻击范围为：2992-4299)，记录家园傀儡伤害出现的最小值与最大值，并假定系数a，来与理论模型值进行比较，如果实际伤害超出理论范围，则说明系数a不合理，应调整系数a；如果无论如何都无法得到合理的系数a，则判断公式模型存在问题，调整公式模型，并重新假定系数a，直到满足以下条件</p>
+<ol>
+<li><p>实际伤害在理论伤害范围之内</p>
+</li>
+<li><p>实际伤害十分接近于理论伤害</p>
+</li>
+<li><p>验证多组数据，都满足以上2个条件</p>
+</li>
+</ol>
+<p>以下则为测试结果</p>
+<p><img src="images/hhhdshcs/c1.webp" alt="C1"></p>
+<p>此处测出系数b为1</p>
+<p><img src="images/hhhdshcs/c2.webp" alt="C2"></p>
+<p>此处确定公式模型，测出白蝴蝶系数a为1.05，红蝴蝶系数a为<code>0.75</code></p>
+<p><img src="images/hhhdshcs/c3.webp" alt="C3"></p>
+<p>这是对窒息伤害进行的测试，说明窒息伤害的系数b为1，并验证了每1点当前蓝量增加0.65攻击，且证明了水墨晕章并不加成当前蓝量造成的窒息攻击增加</p>
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,249 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/LinPeiHua/Desktop/qnm/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/clpf/clpfms.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/clpf/clpfms.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/c1.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/c1.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/c2.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/c2.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/c3.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/c3.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/hd1.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/hd1.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/hd2.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/hd2.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/hd3.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/hd3.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/hd4.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/hd4.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/qfgn.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/qfgn.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/zzmd.webp",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/zzmd.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/acs.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/acs.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/czzzt.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/czzzt.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/jbsm.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/jbsm.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/wlq.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/wlq.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/xblzz.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/xblzz.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/jblsczyzz/ylb.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/jblsczyzz/ylb.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/偃师苍龙破封对穿云手加成详解.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/偃师苍龙破封对穿云手加成详解.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/画魂蝴蝶伤害测试.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/画魂蝴蝶伤害测试.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/结伴灵兽成长与资质.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/结伴灵兽成长与资质.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
