@@ -165,6 +165,76 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/m11.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/m11.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/m7.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/m7.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/mh1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/mh1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/mh2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/mh2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/mh4.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/mh4.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/mh6.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/mh6.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/ljcz5hs/nh2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/ljcz5hs/nh2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/pdygd/gd1.png",
       "output": {
         "resource": {
@@ -292,6 +362,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/结伴灵兽成长与资质.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/零基础学会打造五忽视.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/零基础学会打造五忽视.html"
         }
       },
       "version": ""
