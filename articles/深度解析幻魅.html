@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>深度解析幻魅 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="深度解析幻魅 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/深度解析幻魅.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="深度解析幻魅">深度解析幻魅</h1>
+
+<p>虽然幻魅这个职业早在魅者诞生之初就已存在，但由于缺乏高难度的副本，多年来并未涌现出幻神级别的高手。直到2022年，高难度副本——<code>封印蜃妖</code>横空出世，由于魅者的输出不足，他们经常成为队友的诟病对象。每次队友的抱怨，都像一把利刃深深地刺入他们的心中。最终，不甘于现状的魅者们纷纷登上了幻魅分支的舞台！
+<img src="images/sdjxhm/hm.jpg" alt="Hm"></p>
+<p>本篇内容</p>
+<ul>
+<li>幻攻击的构成</li>
+<li>暗香的伤害计算公式</li>
+<li>暗香伤害的波动性</li>
+<li>忽视幻抗</li>
+<li>幻魅的代价</li>
+<li>本世纪最拉风的三大幻神</li>
+</ul>
+<h2 id="幻攻击的构成">幻攻击的构成</h2>
+<ol>
+<li>清平乐</li>
+</ol>
+<p><img src="images/sdjxhm/qpl.png" alt="Qpl"></p>
+<p>幻攻击加成最高的技能，尽可能往高点</p>
+<ol start="2">
+<li>暗香</li>
+</ol>
+<p><img src="images/sdjxhm/ax.png" alt="Ax"></p>
+<p>如上图，在怪物血量比较高的时候，可直接视为幻攻击增加20183，尽可能点高</p>
+<ol start="3">
+<li>试香罗</li>
+</ol>
+<p><img src="images/sdjxhm/sxl.png" alt="Sxl"></p>
+<p>这里只要关注对怪物伤害提高部分</p>
+<ol start="4">
+<li>弦曲献仙音</li>
+</ol>
+<p><img src="images/sdjxhm/hqxxy.png" alt="Hqxxy"></p>
+<p>80级天赋技能，需要平均法术攻击达到1.8万才能吃满9000幻攻击加成</p>
+<ol start="4">
+<li>武器</li>
+</ol>
+<p><img src="images/sdjxhm/wq.png" alt="Wq"></p>
+<p>尽可能带多条幻攻击，运气好洗出<code>清平乐</code>,<code>暗香</code>等技能也是很极品，另外武器还可以散打<code>幻色石</code>增加少量幻攻击</p>
+<ol start="5">
+<li>仙家</li>
+</ol>
+<p><img src="images/sdjxhm/k.png" alt="K">
+<img src="images/sdjxhm/l.png" alt="L"></p>
+<p>注意：只有<code>离</code>和<code>坎</code>的基础属性可以洗出幻攻击</p>
+<p><img src="images/sdjxhm/kane.png" alt="Kane"><br>
+<img src="images/sdjxhm/ke.png" alt="Ke"><br>
+<img src="images/sdjxhm/y.png" alt="Y"></p>
+<p>注意：只有 <code>坎</code>，<code>巽</code>，<code>垦</code> 的额外属性才可以洗出幻攻击</p>
+<h2 id="暗香的伤害计算公式">暗香的伤害计算公式</h2>
+<p>基础幻攻击伤害</p>
+<pre><code>基础幻攻击伤害=(清平乐幻攻击+暗香幻攻击+弦曲献仙音幻攻击+幻色石幻攻击)*(1+幻攻击百分比)
+</code></pre>
+<p>最终幻攻击伤害</p>
+<pre><code>最终幻攻击伤害=基础幻攻击伤害*(1+试香罗百分比+X）+ 平均法术攻击
+</code></pre>
+<p>注:武器和仙家的7道伤害加成，或者BOSS伤害加成，都算到上面公式的<code>X</code>里面</p>
+<h2 id="暗香伤害的波动性">暗香伤害的波动性</h2>
+<p>对于常规怪，暗香的伤害是稳定的，而当我们平均法术攻击小于怪物目标时，则会表现出波动性。具体的波动区间在【公式计算出来的理论伤害,公式计算出来的理论伤害*（最小法术攻击/最大法术攻击）】，
+例如理论伤害是20万，最小法术攻击10000，最大法术攻击20000，那么波动区间最小值就是</p>
+<pre><code>波动最小值=200000*（10000/20000）=100000
+</code></pre>
+<p>最终打怪时，伤害会在100000-20000之间波动，并且这种波动是<code>均匀</code>的，不会偏向最大或最小，<strong>因此玩极致幻魅，平均法术攻击能达到2.5万最好</strong>。</p>
+<h2 id="忽视幻抗">忽视幻抗</h2>
+<p>暗香的幻攻击属于元素攻击，那么忽视幻抗也是必须堆的，还好策划对幻攻击有照顾，因此只要能堆到150忽视幻，就能通吃所有副本了。</p>
+<h2 id="幻魅的代价">幻魅的代价</h2>
+<p>经常有人说，做了幻魅后，控制抗性，强控，气血都掉麻了，我们分析下是不是这么一回事。
+根据上面的幻攻击构成，我们得出影响的部位有武器，仙家，人格笔。</p>
+<p>一、 武器的影响</p>
+<p>通常情况下，武器是用额外的一把，而且是散打石头，所以武器没啥影响</p>
+<p>二、 仙家的影响</p>
+<p>我们看看这些属性通常洗了什么词条。</p>
+<p>1.<code>离</code>和<code>坎</code>的基础属性</p>
+<p>这2个部位通常是洗<code>忽视光</code>，但是大部分魅者普遍忽视都不高，而且很多玩家都有100+的光抗，影响有限</p>
+<p>2.<code>坎</code>，<code>巽</code>，<code>垦</code> 的额外属性</p>
+<p>这3个部位的额外属性通常是洗<code>强控</code>和<code>忽视光</code>,不过词条值很少，强控单条3-5之间，忽视光4-6之间，以当前藏宝阁一个四阶细节魅来说。
+总共加了<strong>18点强混，6点忽视光</strong>，但是请注意这个已经是自称斗魂魅的四阶魅才能洗出来的属性。按照我原来的三阶属性，<strong>8点强控，5点忽视光</strong>就已经很不得了，而且四阶魅也不会去造幻魅，所以我们主要讨论三阶及以下。
+对于强混魅来说，38.5强混才加1秒混乱，这样个位数的强控，影响实在太有限。</p>
+<p>三、人格笔的影响</p>
+<p>幻攻击构成需要三大神技，<code>清平乐</code>,<code>暗香</code>,<code>试香罗</code>,<code>清平乐</code>是PVP和PVE共用的核心技能，本来都会去洗。所以只要不做极致的幻魅，原本的PVP人格笔就可以用。因为对于大部分幻魅而言，只是为了做个体面的输出。追求极致的幻魅，可以选择再买一只笔做PVE，像凤舞目前7星的成品笔，7000万就可以拿下。</p>
+<p><strong>综上所述，影响并不大，完全看个人意愿选择</strong></p>
+<h2 id="本世纪最拉风的三大幻神">本世纪最拉风的三大幻神</h2>
+<ol>
+<li>凤舞九天-大幻师</li>
+</ol>
+<pre><code>这世界上有一种魅者，他不会有朋友，也不会有爱，他拥有的只是无尽的幻伤害，而我正是这种幻魅。
+</code></pre>
+<p><img src="images/sdjxhm/wq.png" alt="Wq"></p>
+<ol start="2">
+<li>三生无悔-大蘑菇</li>
+</ol>
+<pre><code>谁在称无敌，哪个敢言不败，过度的自信和骄傲往往会导致失败!
+</code></pre>
+<p><img src="images/sdjxhm/dmg.png" alt="Dmg"><br>
+3.临江仙-妖孽不偷袭</p>
+<pre><code>已经记不清封印多少妖了
+</code></pre>
+<p><img src="images/sdjxhm/ynbtx.png" alt="Ynbtx"></p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/深度解析幻魅.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Users/LinPeiHua/Desktop/qnm/docfx_project",
+  "source_base_path": "C:/Users/LinPeiHua/Desktop/MyDoc/qnm/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -294,6 +294,136 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ax.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ax.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/dmg.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/dmg.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/hm.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/hm.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/hqxxy.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/hqxxy.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/k.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/k.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/kane.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/kane.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ke.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ke.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/l.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/l.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/qpl.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/qpl.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/sxl.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/sxl.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/wq.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/wq.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/y.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/y.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ynbtx.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ynbtx.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "articles/intro.md",
       "output": {
@@ -332,6 +462,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/射手蝎尾技能分析射手毒抗收益分析.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/深度解析幻魅.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/深度解析幻魅.html"
         }
       },
       "version": ""
