@@ -295,10 +295,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ax.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ax.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/ax.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/ax.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/dmg.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/dmg.jpg"
         }
       },
       "version": ""
@@ -325,10 +345,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/hqxxy.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/hqxxy.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/hqxxy.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/hqxxy.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/k.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/k.jpg"
         }
       },
       "version": ""
@@ -345,10 +385,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/kane.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/kane.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/kane.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/kane.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ke.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ke.jpg"
         }
       },
       "version": ""
@@ -365,10 +425,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/l.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/l.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/l.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/l.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/qpl.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/qpl.jpg"
         }
       },
       "version": ""
@@ -385,10 +465,50 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/rgb.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/rgb.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/rgb.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/rgb.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/sxl.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/sxl.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/sxl.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/sxl.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/wq.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/wq.jpg"
         }
       },
       "version": ""
@@ -405,10 +525,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/y.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/y.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/y.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/y.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ynbtx.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ynbtx.jpg"
         }
       },
       "version": ""
