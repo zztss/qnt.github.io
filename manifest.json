@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Users/LinPeiHua/Desktop/MyDoc/qnm/docfx_project",
+  "source_base_path": "C:/Users/mic27/Desktop/MyDoc/qnm/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -289,6 +289,46 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/pdygd/pd2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/20000.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/20000.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/23000.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/23000.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/24000.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/24000.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/25000.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/25000.png"
         }
       },
       "version": ""
