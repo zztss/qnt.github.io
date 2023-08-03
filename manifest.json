@@ -545,6 +545,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/wdjn.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/wdjn.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/wq.jpg",
       "output": {
         "resource": {
