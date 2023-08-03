@@ -485,6 +485,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/lhxmgwq.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/lhxmgwq.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/qpl.jpg",
       "output": {
         "resource": {
@@ -609,6 +619,16 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/sdjxhm/ynbtx.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/ztxmg.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/ztxmg.png"
         }
       },
       "version": ""
