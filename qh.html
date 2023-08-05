@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>洗练模拟器</title>
+        <style>
+    </style>
+        <body>
+            <div id="app">
+                <div class="swiper-slide" style="width:
+                    380px;height:600px;background: rgba(11,21,42,.9);">
+                    <div popup-scroll-wrapper="" data-index="0"
+                        class="containter">
+                        <div>
+                            <div class="preview has-border">
+                                <div class="info">
+                                    <p class="name"
+                                        :style="{color:globalColor}">
+                                        (鬼)怀素之醉墨飞仙毫
+                                    </p>
+                                    <p style="color:rgb(255, 255,
+                                        255)">画具
+                                        单手&nbsp;&nbsp;137级</p>
+                                </div>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">装备评分</span>&nbsp;&nbsp;42236
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">基础属性</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                &nbsp;&nbsp;物理攻击&nbsp;824-2506
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                &nbsp;&nbsp;法术攻击&nbsp;1259-3213
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                &nbsp;&nbsp;攻击速度&nbsp;1.319
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">耐久度</span>&nbsp;&nbsp;&nbsp;&nbsp;320/320
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">词条属性</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span :style="{color:globalColor}">【宗法】最大法术攻击&nbsp;+7%</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span :style="{color:globalColor}">【化境】法术致命一击&nbsp;+11，法术致命伤害&nbsp;+3%</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span :style="{color:globalColor}">【画魂之魂】画魂所有技能等级&nbsp;+2</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span :style="{color:globalColor}">【逸速】法术攻击速度&nbsp;+9%</span>
+                            </div>
+
+                            <div style="color: rgb(255, 255, 255)" v-for="ct in
+                                citiao">
+                                <span :style="{color:globalColor}">{{ ct }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button @click="xiLian">洗练</button>
+            </div>
+
+        </body>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <script>
+      const { createApp, ref } = Vue
+
+            createApp({
+            setup() {
+                const message = ref('Hello vue!')
+
+                function generateRandomColor(){
+                    // 生成一个随机的 0 到 255 之间的整数
+                    const randomValue = () => Math.floor(Math.random() * 256);
+
+                    // 生成 RGB 格式的颜色
+                    const color = `rgb(${randomValue()}, ${randomValue()}, ${randomValue()})`;
+                    return color;
+                }
+
+                function generateRandomColors() {
+                const numColors = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+                const colors = [];
+                
+                for (let i = 0; i < numColors; i++) {
+                    const color = generateRandomColor();
+                    colors.push(color);
+                }
+
+                return colors;
+                }
+                
+                function jisuanMax(b,c){
+                    if(c==5){
+                        return b*(1.2)
+                    }else{
+                        return b*(1.2+(c-5)*0.13)
+                    }
+                }
+                
+                const globalColor=ref('rgb(192, 0, 192)')
+
+                const citiao=ref([])
+                
+
+                function xiLian(){
+                    citiao.value=generateRandomColors();
+                    if(citiao.value.length==1){
+                        globalColor.value='rgb(255, 136, 255)'
+                       
+                    }else{
+                        globalColor.value='rgb(192, 0, 192)'
+                    }
+                }
+
+                return {
+                message,
+                citiao,
+                xiLian,
+                globalColor
+                }
+            }
+            }).mount('#app')
+    </script>
+</html>
