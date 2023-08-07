@@ -226,12 +226,12 @@
 
                 var sl = 0;
                 //保底机制 
-                if (xlcs.value % 1200 == 0) {
+                if ((xlcs.value + 1) % 1200 == 0) {
                     sl = 4
-                } else if (xlcs.value % 100 == 0) {
+                } else if ((xlcs.value + 1) % 100 == 0) {
                     sl = 3;
                 }
-                else if (xlcs.value % 15 == 0) {
+                else if ((xlcs.value + 1) % 15 == 0) {
                     sl = 2;
                 } else {
                     sl = getCiTiaoQty();
