@@ -14,8 +14,8 @@
     </style>
         <body>
             <div class="container" id="app">
-                <h1 class="text-center">幻神洗练模拟器</h1>
-                <div class="alert alert-info" role="alert">
+                <h1 class="text-center">幻神模拟器</h1>
+                <div class="alert alert-warning" role="alert">
                    注：此工具仅供学习测试之用，具体以游戏内容为准
                   </div>
                 <div class="row">
@@ -77,14 +77,14 @@
                 <div class="row text-center">
                     <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
                         <button type="button" class="btn btn-primary"
-                            @click="xiLian">洗练</button>
+                            @click="xiLian">洗词条</button>
                     </div>
                 </div>
                 <p>
-                    洗练次数:<span class="badge text-bg-light">{{xlcs}}</span>
+                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
                 </p>
                 <p>
-                    花费灵玉: <span class="badge text-bg-light">{{hfly}}</span>
+                    花费灵玉: <span class="badge text-bg-danger">{{hfly}}</span>
                 </p>
             </div>
 
