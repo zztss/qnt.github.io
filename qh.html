@@ -7,95 +7,84 @@
         <meta name="viewport" content="width=device-width, initial-scale=1,
             user-scalable=no">
         <title>幻神模拟器</title>
+        <link
+            href="bootstrap.min.css" rel="stylesheet">
         <style>
-        #app {
-            margin: auto;
-        }
-
-        .custom-button {
-            display: inline-block;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .custom-button:hover {
-            background-color: #2980b9;
-        }
-
-        .custom-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
-        }
+     
     </style>
         <body>
-            <div id="app">
-                <h1>幻神模拟器</h1>
-                <p>仅供娱乐参考</p>
-                <div class="swiper-slide" style="padding-left: 4px; width:
-                    380px;height:420px;background: rgba(11,21,42,.9);">
-                    <div popup-scroll-wrapper="" data-index="0"
-                        class="containter">
-                        <div>
-                            <div class="preview has-border">
-                                <div class="info">
-                                    <p class="name"
-                                        :style="{color:globalColor}">
-                                        {{zbTitie}}
-                                    </p>
+            <div class="container" id="app">
+                <h1 class="text-center">幻神洗练模拟器</h1>
+                <div class="alert alert-info" role="alert">
+                   注：此工具仅供学习测试之用，具体以游戏内容为准
+                  </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="swiper-slide" style="padding-left: 4px;
+                            width:
+                            100%;height:420px;background: rgba(11,21,42,.9);">
+                            <div popup-scroll-wrapper="" data-index="0"
+                                class="containter">
+                                <div>
+                                    <div class="preview has-border">
+                                        <div class="info">
+                                            <p class="name"
+                                                :style="{color:globalColor}">
+                                                {{zbTitie}}
+                                            </p>
 
-                                    <p style="color:rgb(255, 255,255)">琴扇
-                                        单手&nbsp;&nbsp;{{dj}}级</p>
+                                            <p style="color:rgb(255, 255,255)">琴扇
+                                                单手&nbsp;&nbsp;{{dj}}级</p>
+                                        </div>
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255)">
+                                        <span style="color: #acf9ff">基础属性</span>
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255)">
+                                        &nbsp;&nbsp;法术攻击&nbsp;{{zxfsgj}}-{{zffsgj}}
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255)">
+                                        &nbsp;&nbsp;攻击速度&nbsp;1.319
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255)">
+                                        <span style="color: #acf9ff">耐久度</span>&nbsp;&nbsp;&nbsp;&nbsp;320/320
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255)">
+                                        <span style="color: #acf9ff">词条属性</span>
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255);"><span
+                                            :style="{color:globalColor}">{{c1}}</span>
+                                    </div>
+                                    <div style="color: rgb(255, 255, 255);"><span
+                                            :style="{color:globalColor}">{{c2}}</span></div>
+                                    <div style="color: rgb(255, 255, 255);"><span
+                                            :style="{color:globalColor}">{{c3}}</span></div>
+                                    <div style="color: rgb(255, 255, 255);"><span
+                                            :style="{color:globalColor}">{{c4}}</span>
+                                    </div>
+
+                                    <div style="color: rgb(255, 255, 255)"
+                                        v-for="ct in
+                                        citiao">
+                                        <span :style="{color:globalColor}">{{ ct
+                                            }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: rgb(255, 255, 255)">
-                                <span style="color: #acf9ff">基础属性</span>
-                            </div>
-                            <div style="color: rgb(255, 255, 255)">
-                                &nbsp;&nbsp;法术攻击&nbsp;{{zxfsgj}}-{{zffsgj}}
-                            </div>
-                            <div style="color: rgb(255, 255, 255)">
-                                &nbsp;&nbsp;攻击速度&nbsp;1.319
-                            </div>
-                            <div style="color: rgb(255, 255, 255)">
-                                <span style="color: #acf9ff">耐久度</span>&nbsp;&nbsp;&nbsp;&nbsp;320/320
-                            </div>
-                            <div style="color: rgb(255, 255, 255)">
-                                <span style="color: #acf9ff">词条属性</span>
-                            </div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c1}}</span>
-                            </div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c2}}</span></div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c3}}</span></div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c4}}</span>
-                            </div>
-
-                            <div style="color: rgb(255, 255, 255)" v-for="ct in
-                                citiao">
-                                <span :style="{color:globalColor}">{{ ct }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style="text-align: center;margin: 3px;">
-                    <button @click="xiLian" class="custom-button">洗练</button>
+                <div class="row text-center">
+                    <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
+                        <button type="button" class="btn btn-primary"
+                            @click="xiLian">洗练</button>
+                    </div>
                 </div>
                 <p>
-                    洗练次数:{{xlcs}}
+                    洗练次数:<span class="badge text-bg-light">{{xlcs}}</span>
                 </p>
                 <p>
-                    花费灵玉:{{hfly}}
+                    花费灵玉: <span class="badge text-bg-light">{{hfly}}</span>
                 </p>
             </div>
 
