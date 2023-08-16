@@ -1,0 +1,419 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>深度解析幻魅 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="深度解析幻魅 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/深度解析幻魅.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="深度解析幻魅">深度解析幻魅</h1>
+
+<p>作者：[大幻师]</p>
+<p>虽然幻魅这个分支早在魅者诞生之初就已存在，但由于缺乏高难度的副本，多年来并未涌现出幻神级别的高手。直到2022年，高难度副本——<code>封印蜃妖</code>横空出世，由于魅者的输出不足，他们经常成为队友的诟病对象。每次队友的抱怨，都像一把利刃深深地刺入他们的心中。最终，不甘于现状的魅者们纷纷登上了幻魅分支的舞台！
+<img src="images/sdjxhm/hm.jpg" alt="Hm"></p>
+<p>本篇内容</p>
+<ul>
+<li>幻攻击的构成</li>
+<li>暗香的伤害计算公式</li>
+<li>暗香伤害的波动性</li>
+<li>忽视幻抗</li>
+<li>暗香PVP的计算方式</li>
+<li>幻魅的代价</li>
+<li>幻魅的优势</li>
+<li>幻魅在各副本的体验指数</li>
+<li>成为四幻神有多难?</li>
+<li>本世纪最拉风的三大幻神</li>
+<li>其它特种幻神</li>
+</ul>
+<h2 id="幻攻击的构成">幻攻击的构成</h2>
+<ol>
+<li>清平乐</li>
+</ol>
+<p><img src="images/sdjxhm/qpl.jpg" alt="Qpl"></p>
+<p>幻攻击加成最高的技能，尽可能往高点</p>
+<ol start="2">
+<li>暗香</li>
+</ol>
+<p><img src="images/sdjxhm/ax.jpg" alt="Ax"></p>
+<p>如上图，在怪物血量比较高的时候，可直接视为幻攻击增加20183，尽可能点高</p>
+<ol start="3">
+<li>试香罗</li>
+</ol>
+<p><img src="images/sdjxhm/sxl.jpg" alt="Sxl"></p>
+<p>这里只要关注对怪物伤害提高部分</p>
+<ol start="4">
+<li>弦曲献仙音</li>
+</ol>
+<p><img src="images/sdjxhm/hqxxy.jpg" alt="Hqxxy"></p>
+<p>80级天赋技能，需要平均法术攻击达到1.8万才能吃满9000幻攻击加成</p>
+<ol start="5">
+<li>武器</li>
+</ol>
+<p><img src="images/sdjxhm/wq.jpg" alt="Wq"></p>
+<p>尽可能带多条幻攻击，运气好洗出<code>清平乐</code>,<code>暗香</code>等技能也是很极品，另外武器还可以散打<code>幻色石</code>增加少量幻攻击</p>
+<ol start="6">
+<li>仙家</li>
+</ol>
+<p><img src="images/sdjxhm/k.jpg" alt="K">
+<img src="images/sdjxhm/l.jpg" alt="L"></p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>注意：只有<code>离</code>和<code>坎</code>的基础属性可以洗出幻攻击</p>
+</div>
+<p><img src="images/sdjxhm/kane.jpg" alt="Kane"><br>
+<img src="images/sdjxhm/ke.jpg" alt="Ke"><br>
+<img src="images/sdjxhm/y.jpg" alt="Y"></p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>注意：只有 <code>坎</code>，<code>巽</code>，<code>垦</code> 的额外属性才可以洗出幻攻击</p>
+</div>
+<h2 id="暗香的伤害计算公式">暗香的伤害计算公式</h2>
+<p>基础幻攻击</p>
+<pre><code>基础幻攻击=(清平乐幻攻击+暗香幻攻击+弦曲献仙音幻攻击+幻色石幻攻击)*(1+幻攻击百分比)
+</code></pre>
+<p>最终幻攻击伤害</p>
+<pre><code>最终幻攻击伤害=基础幻攻击*(1+试香罗百分比+X）+ 平均法术攻击
+</code></pre>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>注意:武器和仙家的7道伤害加成，或者BOSS伤害加成，都算到上面公式的<code>X</code>里面</p>
+</div>
+<p>以我号做例子(非实际，因为截图的时候用鬼武器，技能比平时多了多4级）</p>
+<p><img src="images/sdjxhm/wdjn.jpg" alt="Wdjn"></p>
+<p>则计算过程</p>
+<pre><code>基础幻攻击 =（35577 + 20183 + 9000）* (1 + 2.22) = 208527.2
+
+最终幻攻击伤害 = 208527.2  * (1 + 0.527) + 20000 = 348254
+</code></pre>
+<h2 id="暗香伤害的波动性">暗香伤害的波动性</h2>
+<p>对于常规怪，暗香的伤害是稳定的，而当我们平均法术攻击小于怪物<code>法术防御</code>时，则会表现出波动性。具体的波动区间在【公式计算出来的理论伤害,公式计算出来的理论伤害*（最小法术攻击/最大法术攻击）】，
+例如理论伤害是20万，最小法术攻击10000，最大法术攻击20000，那么波动区间最小值就是</p>
+<pre><code>波动最小值=200000*（10000/20000）=100000
+</code></pre>
+<p>最终打怪时，伤害会在100000-20000之间波动，并且这种波动是<code>均匀</code>的，不会偏向最大或最小，<strong>因此玩极致幻魅，平均法术攻击能达到2.5万最好</strong>。</p>
+<p>那么准确 平均法术攻击小于怪物<code>法术防御</code>多少时,才会波动呢,以<code>25000</code>法术防御的<code>巫先生</code>为例</p>
+<ul>
+<li><code>25000</code>平均法术攻击下<strong>稳定</strong><br>
+<img src="images/sdjxhm/25000.png" alt="25000"></li>
+<li><code>24000</code>平均法术攻击下<strong>稳定</strong><br>
+<img src="images/sdjxhm/24000.png" alt="24000"></li>
+<li><code>23000</code>平均法术攻击下<strong>稳定</strong><br>
+<img src="images/sdjxhm/23000.png" alt="23000"></li>
+<li><code>20000</code>平均法术攻击下<strong>波动</strong><br>
+<img src="images/sdjxhm/20000.png" alt="20000"></li>
+</ul>
+<p><strong>由此猜测,平均法术攻击&lt;目标法术防御的80%时,伤害会开始波动</strong></p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>注意：任何情况下,都可能出现小波动,不存在绝对的稳定,这里的波动一般指的是如上图2万平均法术攻击打2.5万法术防御这样子非常明显波动的情况</p>
+</div>
+<h2 id="忽视幻抗">忽视幻抗</h2>
+<p>暗香的幻攻击属于元素攻击，那么忽视幻抗也是必须堆的，还好策划对幻攻击有照顾，因此只要能堆到150忽视幻，就能通吃所有副本了。
+但大家的定位不同，我列举一些参考吧</p>
+<ul>
+<li><p>常规副本幻魅</p>
+<p><strong>无需堆忽视幻</strong></p>
+</li>
+<li><p><code>十二蜃妖</code>搭配</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>忽视来源</th>
+<th>加成</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>帮会修炼</td>
+<td>62</td>
+<td>满级33级</td>
+</tr>
+<tr>
+<td>功勋</td>
+<td>15</td>
+<td>点满+15</td>
+</tr>
+<tr>
+<td>背饰</td>
+<td>20</td>
+<td>做2幻背饰</td>
+</tr>
+<tr>
+<td>纹饰</td>
+<td>18</td>
+<td>6个3级纹饰</td>
+</tr>
+<tr>
+<td>仙家</td>
+<td>0</td>
+<td>无仙家</td>
+</tr>
+<tr>
+<td>合计</td>
+<td>115</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>十四蜃妖</code>搭配</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>忽视来源</th>
+<th>加成</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>帮会修炼</td>
+<td>62</td>
+<td>满级33级</td>
+</tr>
+<tr>
+<td>功勋</td>
+<td>15</td>
+<td>点满+15</td>
+</tr>
+<tr>
+<td>背饰</td>
+<td>30</td>
+<td>做3幻背饰</td>
+</tr>
+<tr>
+<td>纹饰</td>
+<td>30</td>
+<td>6个5级纹饰</td>
+</tr>
+<tr>
+<td>仙家</td>
+<td>18</td>
+<td>2阶仙家+18忽视(记得换2套洗)</td>
+</tr>
+<tr>
+<td>合计</td>
+<td>155</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="暗香pvp的计算方式">暗香PVP的计算方式</h2>
+<p>PVP场景下，幻攻击和幻攻击百分比<code>不生效</code>，具体计算公式如下</p>
+<pre><code>目标当前气血 * 暗香技能血量百分比 * 0.15
+</code></pre>
+<h2 id="幻魅的代价">幻魅的代价</h2>
+<p>经常有人说，做了幻魅后，控制抗性，强控，气血都掉麻了，我们分析下是不是这么一回事。
+根据上面的幻攻击构成，我们得出影响的部位有武器，仙家，人格笔。</p>
+<p>一、 武器的影响</p>
+<p>通常情况下，武器是用额外的一把，而且是散打石头，所以武器没啥影响</p>
+<p>二、 仙家的影响</p>
+<p>我们看看这些属性通常洗了什么词条。</p>
+<p>1.<code>离</code>和<code>坎</code>的基础属性</p>
+<p>这2个部位通常是洗<code>忽视光</code>，但是大部分魅者普遍忽视都不高，而且很多玩家都有100+的光抗，影响有限</p>
+<p>2.<code>坎</code>，<code>巽</code>，<code>垦</code> 的额外属性</p>
+<p>这3个部位的额外属性通常是洗<code>强控</code>和<code>忽视光</code>,不过词条值很少，强控单条3-5之间，忽视光4-6之间，以当前藏宝阁一个四阶细节魅来说。
+总共加了<strong>18点强混，6点忽视光</strong>，但是请注意这个已经是自称斗魂魅的四阶魅才能洗出来的属性。按照我原来的三阶属性，<strong>8点强控，5点忽视光</strong>就已经很不得了，而且四阶魅也不会去造幻魅，所以我们主要讨论三阶及以下。
+对于强混魅来说，38.5强混才加1秒混乱，这样个位数的强控，影响实在太有限。</p>
+<p>三、人格笔的影响</p>
+<p>幻攻击构成需要三大神技，<code>清平乐</code>,<code>暗香</code>,<code>试香罗</code>,清平乐是PVP和PVE共用的核心技能，本来都会去洗。所以只要不做极致的幻魅，原本的PVP人格笔就可以用。因为对于大部分幻魅而言，只是为了做个体面的输出。追求极致的幻魅，可以选择再买一只笔做PVE，像凤舞目前7星的成品笔，7000万就可以拿下。<br>
+<img src="images/sdjxhm/rgb.jpg" alt="Rgb"></p>
+<p><strong>综上所述，影响并不大，完全看个人意愿选择</strong></p>
+<h2 id="幻魅的优势">幻魅的优势</h2>
+<ol>
+<li><p>操作简单,1分钟按1下试香罗,剩下无限暗香,非常轻松.不像偃师需要叠连击,射手上双火,影灵上双音等等</p>
+</li>
+<li><p>省蓝,一发50级的暗香320蓝,如果打上蓝宝石,最小的蓝药就够补,非常舒服.</p>
+</li>
+<li><p>降低奶妈压力,保护队友,部分妖可以控制变狐,试香罗可以为队友加少量血</p>
+</li>
+<li><p>打造相对便宜,输出职业一把核武胚子可能就要2000,再加上洗练,保底5000打底,而且仅仅有核武还不够,得配套致命,核戒等等.花个几万.幻魅弄个红色的3幻武器,忽视弄到100+,就可以打出不错的伤害,</p>
+</li>
+</ol>
+<h2 id="幻魅在各副本的体验指数">幻魅在各副本的体验指数</h2>
+<table>
+<thead>
+<tr>
+<th>副本</th>
+<th>体验指数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>封印蜃妖</td>
+<td>★★★★★</td>
+<td>单体BOSS，防御高，幻抗低，理想目标</td>
+</tr>
+<tr>
+<td>联赛</td>
+<td>★★★★★</td>
+<td>幻魅是拆塔狂魔</td>
+</tr>
+<tr>
+<td>盘古</td>
+<td>★★★★★</td>
+<td>单体BOSS</td>
+</tr>
+<tr>
+<td>帮花</td>
+<td>★★★★☆</td>
+<td>全程畜生道怪物，散打石榴石</td>
+</tr>
+<tr>
+<td>寇岛</td>
+<td>★★★★☆</td>
+<td>虽然很多小怪，但是一直打BOSS，伤害前5没问题</td>
+</tr>
+<tr>
+<td>剧情</td>
+<td>★★★★☆</td>
+<td>单体BOSS</td>
+</tr>
+<tr>
+<td>十世镜</td>
+<td>★★★★☆</td>
+<td>单体BOSS</td>
+</tr>
+<tr>
+<td>师门守卫</td>
+<td>★★★★☆</td>
+<td>前期小怪畜生道，单体BOSS</td>
+</tr>
+<tr>
+<td>出海</td>
+<td>★★★★☆</td>
+<td>小怪全部是畜生道，散打石榴石，通吃</td>
+</tr>
+<tr>
+<td>一条龙</td>
+<td>★★☆☆☆</td>
+<td>一条龙传统核武开群攻比较好</td>
+</tr>
+</tbody>
+</table>
+<h2 id="成为四幻神有多难">成为四幻神有多难?</h2>
+<p>游戏已经8年了,幻神却不超过5个人,足以见得难度有多高,如果你对此保持怀疑,那么试试点击以下<code>幻神模拟器</code>吧</p>
+<p><a href="https://zztss.github.io/qnm.github.io/qh.html">幻神模拟器</a></p>
+<h2 id="本世纪最拉风的三大幻神">本世纪最拉风的三大幻神</h2>
+<ol>
+<li>凤舞九天-大幻师</li>
+</ol>
+<pre><code>这世界上有一种魅者，他不会有朋友，也不会有爱，他拥有的只是无尽的幻伤害，而我正是这种幻魅。
+</code></pre>
+<p><img src="images/sdjxhm/wq.jpg" alt="Wq"></p>
+<ol start="2">
+<li>三生无悔-大蘑菇</li>
+</ol>
+<pre><code>谁在称无敌，哪个敢言不败，过度的自信和骄傲往往会导致失败!
+</code></pre>
+<p><img src="images/sdjxhm/dmg.jpg" alt="Dmg"></p>
+<ol start="3">
+<li>临江仙-妖孽不偷袭</li>
+</ol>
+<pre><code>已经记不清封印多少妖了.
+</code></pre>
+<p><img src="images/sdjxhm/ynbtx.jpg" alt="Ynbtx"></p>
+<h2 id="其它特种幻神">其它特种幻神</h2>
+<ul>
+<li>罗汉果-白衣</li>
+</ul>
+<p><img src="images/sdjxhm/ztxmg.png" alt="Ztxmg"></p>
+<pre><code>罗汉若怜神意深，可否赐我四幻器？
+</code></pre>
+<p><img src="images/sdjxhm/lhxmgwq.jpg" alt="Lhxmgwq"></p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/深度解析幻魅.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
