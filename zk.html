@@ -280,7 +280,6 @@
                 if (qjnArr.includes(single.classify) && qjnRs) {
                     return false;
                 }
-                console.log(arr);
                 //包含全技能,就不能出现其他技能
                 if (single.category === "加技能等级" && qjnRs) {
                     return false;
@@ -420,7 +419,6 @@
                     single = getOneRdCiTiao(ctArr);
                     //根据现有词条随机一个值
                     var ls = choubingValid(index, single);
-                    console.log(ls);
                     if (ls) {
                         vs = true;
                     }
