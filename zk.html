@@ -9,6 +9,7 @@
     <title>战狂模拟器</title>
     <link href="bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container" id="app">
         <h1 class="text-center">战狂模拟器</h1>
@@ -47,19 +48,37 @@
                             <div style="color: rgb(255, 255, 255)">
                                 <span style="color: #acf9ff">词条属性</span>
                             </div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c1.name}}</span>
+                            <div style="color: rgb(255, 255, 255);">
+                                <span v-if="c1.src"
+                                    style="color: rgb(136, 136, 136); text-decoration-line: line-through;">{{c1.src}}
+                                    </br></span>
+                                <span :style="{color:globalColor}">{{c1.name}}</span>
                             </div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c2.name}}</span></div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c3.name}}</span></div>
-                            <div style="color: rgb(255, 255, 255);"><span
-                                    :style="{color:globalColor}">{{c4.name}}</span>
+                            <div style="color: rgb(255, 255, 255);">
+                                <span v-if="c2.src"
+                                    style="color: rgb(136, 136, 136); text-decoration-line: line-through;">{{c2.src}}
+                                    </br></span>
+
+                                <span :style="{color:globalColor}">{{c2.name}}</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);">
+                                <span v-if="c3.src"
+                                    style="color: rgb(136, 136, 136); text-decoration-line: line-through;">{{c3.src}}
+                                    </br></span>
+                                <span :style="{color:globalColor}">{{c3.name}}</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);">
+                                <span v-if="c4.src"
+                                    style="color: rgb(136, 136, 136); text-decoration-line: line-through;">{{c4.src}}
+                                    </br></span>
+                                <span :style="{color:globalColor}">{{c4.name}}</span>
                             </div>
 
                             <div style="color: rgb(255, 255, 255)" v-for="ct in
                                         citiao">
+                                <span v-if="ct.src"
+                                    style="color: rgb(136, 136, 136); text-decoration-line: line-through;">{{ct.src}}
+                                    </br></span>
                                 <span :style="{color:globalColor}">{{ ct.name}}</span>
                             </div>
                         </div>
@@ -72,10 +91,10 @@
                 <button type="button" class="btn btn-primary" @click="xiLian">洗词条</button>
             </div>
             <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
-                <button type="button" class="btn btn-info" @click="zhiHuan">词条置换</button>
+                <button type="button" class="btn btn-info" @click="zhiHuan" :disabled="zhiHuanDisabled">词条置换</button>
             </div>
             <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
-                <button type="button" class="btn btn-danger" @click="reset">重置</button>
+                <button type="button" class="btn btn-danger" @click="reset">重置鬼装</button>
             </div>
         </div>
         <div style="margin-top:6px;">
@@ -375,11 +394,11 @@
                 c3.value = getOneRdCiTiao(c3Arr);
                 c4.value = getOneRdCiTiao(c4Arr);
 
-                xiLian()
+                xiLian(1);
             }
-
+            const zhiHuanDisabled = ref(false)
             function zhiHuan() {
-
+                zhiHuanDisabled.value = true;
                 var c = getClassys();
                 var ctArr = getRdCiTiaoByClassify(c);
                 var single = getOneRdCiTiao(ctArr);
@@ -402,13 +421,14 @@
 
                 var citiaoArr = ctData.filter(item => item.classify === single.classify)
                 zhcs.value += 1;
+
                 //固定的
                 switch (index) {
-                    case 0: c1.value = single, c1Arr = citiaoArr; break;
-                    case 1: c2.value = single, c2Arr = citiaoArr; break;
-                    case 2: c3.value = single, c3Arr = citiaoArr; break;
-                    case 3: c4.value = single, c4Arr = citiaoArr; break;
-                    default: citiao.value.splice(index - 4, 1, single); break;
+                    case 0: single.src = c1.value.name, c1.value = single, c1Arr = citiaoArr; break;
+                    case 1: single.src = c2.value.name, c2.value = single, c2Arr = citiaoArr; break;
+                    case 2: single.src = c3.value.name, c3.value = single, c3Arr = citiaoArr; break;
+                    case 3: single.src = c4.value.name, c4.value = single, c4Arr = citiaoArr; break;
+                    default: single.src = citiao.value[index - 4].name, citiao.value.splice(index - 4, 1, single); break;
                 }
 
                 dj.value = 137;
@@ -419,10 +439,21 @@
                     if (single.name == "【轻鸿】装备佩戴需求等级 -8级") {
                         dj.value = 137 - 8;
                     }
+
+
+                setTimeout(() => {
+                    c1.value.src = '';
+                    c2.value.src = '';
+                    c3.value.src = '';
+                    c4.value.src = '';
+                    citiao.value.forEach(function (e) {
+                        e.src = '';
+                        zhiHuanDisabled.value = false;
+                    });
+                }, 500);
             }
 
-
-            function xiLian() {
+            function xiLian(initQty) {
                 var sl = 0;
                 //保底机制 
                 if ((xlcs.value + 1) % 1200 == 0) {
@@ -433,7 +464,12 @@
                 else if ((xlcs.value + 1) % 15 == 0) {
                     sl = 2;
                 } else {
-                    sl = getCiTiaoQty();
+                    if (typeof initQty === 'number') {
+                        sl =initQty;
+                    } else {
+                        sl = getCiTiaoQty();
+                    }
+
                 }
 
                 var citiaos = [];
@@ -506,6 +542,7 @@
                 zhiHuan,
                 reset,
                 globalColor,
+                zhiHuanDisabled,
                 zffsgj,
                 zxfsgj,
                 xlcs,
