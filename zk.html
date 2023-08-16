@@ -431,15 +431,34 @@
                     default: single.src = citiao.value[index - 4].name, citiao.value.splice(index - 4, 1, single); break;
                 }
 
+              
+                var citiaos=[];
+                citiaos.push(c1.value)
+                citiaos.push(c2.value)
+                citiaos.push(c3.value)
+                citiaos.push(c4.value)
+                
+                citiao.value.forEach(function (e) {
+                    citiaos.push(e);
+                });
+
+                var keywords = ["无钻", "坚脆"];
+                var wqty = count50Qty(citiaos, keywords);
+                zffsgj.value = jisuanMax(3865.0, citiaos.length, wqty);
+                zxfsgj.value = jisuanMax(1656.0, citiaos.length, wqty);
+
                 dj.value = 137;
-
-                if (single.name == "【轻鸿】装备佩戴需求等级 -5级") {
+                if(citiaos.some(function (e) {
+                    return e.name ==="【轻鸿】装备佩戴需求等级 -5级";
+                })){
                     dj.value = 137 - 5;
-                } else
-                    if (single.name == "【轻鸿】装备佩戴需求等级 -8级") {
-                        dj.value = 137 - 8;
-                    }
+                }
 
+                if(citiaos.some(function (e) {
+                    return e.name ==="【轻鸿】装备佩戴需求等级 -8级";
+                })){
+                    dj.value = 137 - 8;
+                }
 
                 setTimeout(() => {
                     c1.value.src = '';
