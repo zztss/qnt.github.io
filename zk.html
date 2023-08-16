@@ -313,7 +313,7 @@
 
                 //开始校验 
                 //强控类
-                if (arr.filter(item => item.category === "控制类").length > 0) {
+                if (arr.filter(item => item.category === "控制类").length > 1) {
                     return false
                 }
 
@@ -390,13 +390,19 @@
                 var single = getOneRdCiTiao(ctArr);
                 //根据现有词条随机一个值
                 var index = Math.floor(Math.random() * (citiao.value.length + 4));
+                var vs = false;
 
-                if (!choubingValid(index, single)) {
+                while (!vs) {
+
                     c = getClassys();
                     ctArr = getRdCiTiaoByClassify(c);
                     single = getOneRdCiTiao(ctArr);
                     //根据现有词条随机一个值
-                    index = Math.floor(Math.random() * (citiao.value.length + 4));
+                    var ls = choubingValid(index, single);
+                    console.log(ls);
+                    if (ls) {
+                        vs = true;
+                    }
                 }
 
                 var citiaoArr = ctData.filter(item => item.classify === single.classify)
@@ -409,6 +415,15 @@
                     case 3: c4.value = single, c4Arr = citiaoArr; break;
                     default: citiao.value.splice(index - 4, 1, single); break;
                 }
+                
+                dj.value = 137;
+
+                if (single.name == "【轻鸿】装备佩戴需求等级 -5级") {
+                    dj.value = 137 - 5;
+                } else
+                    if (single.name == "【轻鸿】装备佩戴需求等级 -8级") {
+                        dj.value = 137 - 8;
+                    } 
             }
 
             function xiLian() {
@@ -457,21 +472,34 @@
                 xlcs.value += 1;
                 hfly.value += 30;
 
-                for (var i = 0; i < citiaos.length; i++) {
-                    if (citiaos[0].name == "【轻鸿】装备佩戴需求等级 -5级") {
-                        dj.value = 137 - 5;
-                    } else
-                        if (citiaos[0].name == "【轻鸿】装备佩戴需求等级 -8级") {
-                            dj.value = 137 - 8;
-                        } else {
-                            dj.value = 137;
-                        }
-                }
 
                 c1.value = getOneRdCiTiao(c1Arr);
                 c2.value = getOneRdCiTiao(c2Arr);
                 c3.value = getOneRdCiTiao(c3Arr);
                 c4.value = getOneRdCiTiao(c4Arr);
+
+                dj.value = 137;
+
+                const arr = [];
+                arr.push(c1.value)
+                arr.push(c2.value)
+                arr.push(c3.value)
+                arr.push(c4.value)
+
+                citiaos.forEach(function (e) {
+                    arr.push(e);
+                });
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].name == "【轻鸿】装备佩戴需求等级 -5级") {
+                        dj.value = 137 - 5;
+                    } else
+                        if (arr[i].name == "【轻鸿】装备佩戴需求等级 -8级") {
+                            dj.value = 137 - 8;
+                        } 
+                }
+
+
             }
             xiLian();
 
@@ -497,12 +525,12 @@
     }).mount('#app')
 
     var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?afe009f9488feba4ead42d92d3766c08";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?afe009f9488feba4ead42d92d3766c08";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
 
 </script>
 

@@ -277,14 +277,14 @@
                 xlcs.value += 1;
                 hfly.value += 30;
 
+                dj.value = 137;
+
                 for (var i = 0; i < citiaos.length; i++) {
-                    if (citiaos[0] == "【轻鸿】装备佩戴需求等级 -5级") {
+                    if (citiaos[i] == "【轻鸿】装备佩戴需求等级 -5级") {
                         dj.value = 137 - 5;
                     } else
-                        if (citiaos[0] == "【轻鸿】装备佩戴需求等级 -8级") {
+                        if (citiaos[i] == "【轻鸿】装备佩戴需求等级 -8级") {
                             dj.value = 137 - 8;
-                        } else {
-                            dj.value = 137;
                         }
                 }
 
