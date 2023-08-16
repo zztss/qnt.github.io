@@ -382,6 +382,13 @@
             }
 
             function reset() {
+                c1.value.src = '';
+                c2.value.src = '';
+                c3.value.src = '';
+                c4.value.src = '';
+                citiao.value.forEach(function (e) {
+                    e.src = '';
+                });
                 xlcs.value = 0
                 hfly.value = 0
                 zhcs.value = 0
@@ -473,6 +480,13 @@
             }
 
             function xiLian(initQty) {
+                c1.value.src = '';
+                c2.value.src = '';
+                c3.value.src = '';
+                c4.value.src = '';
+                citiao.value.forEach(function (e) {
+                    e.src = '';
+                });
                 var sl = 0;
                 //保底机制 
                 if ((xlcs.value + 1) % 1200 == 0) {
