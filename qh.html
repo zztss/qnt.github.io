@@ -1,97 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="viewport" content="width=device-width, initial-scale=1,
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,
             user-scalable=no">
-        <title>幻神模拟器</title>
-        <link
-            href="bootstrap.min.css" rel="stylesheet">
-        <style>
-     
-    </style>
-        <body>
-            <div class="container" id="app">
-                <h1 class="text-center">幻神模拟器</h1>
-                <div class="alert alert-warning" role="alert">
-                   注：此工具仅供学习测试之用，具体以游戏内容为准
-                  </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="swiper-slide" style="padding-left: 4px;
+    <title>幻神模拟器</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container" id="app">
+        <h1 class="text-center">幻神模拟器</h1>
+        <div class="alert alert-warning" role="alert">
+            注：此工具仅供学习测试之用，具体以游戏内容为准
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="swiper-slide" style="padding-left: 4px;
                             width:
                             100%;height:420px;background: rgba(11,21,42,.9);">
-                            <div popup-scroll-wrapper="" data-index="0"
-                                class="containter">
-                                <div>
-                                    <div class="preview has-border">
-                                        <div class="info">
-                                            <p class="name"
-                                                :style="{color:globalColor}">
-                                                {{zbTitie}}
-                                            </p>
+                    <div popup-scroll-wrapper="" data-index="0" class="containter">
+                        <div>
+                            <div class="preview has-border">
+                                <div class="info">
+                                    <p class="name" :style="{color:globalColor}">
+                                        {{zbTitie}}
+                                    </p>
 
-                                            <p style="color:rgb(255, 255,255)">琴扇
-                                                单手&nbsp;&nbsp;{{dj}}级</p>
-                                        </div>
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255)">
-                                        <span style="color: #acf9ff">基础属性</span>
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255)">
-                                        &nbsp;&nbsp;法术攻击&nbsp;{{zxfsgj}}-{{zffsgj}}
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255)">
-                                        &nbsp;&nbsp;攻击速度&nbsp;1.319
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255)">
-                                        <span style="color: #acf9ff">耐久度</span>&nbsp;&nbsp;&nbsp;&nbsp;320/320
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255)">
-                                        <span style="color: #acf9ff">词条属性</span>
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255);"><span
-                                            :style="{color:globalColor}">{{c1}}</span>
-                                    </div>
-                                    <div style="color: rgb(255, 255, 255);"><span
-                                            :style="{color:globalColor}">{{c2}}</span></div>
-                                    <div style="color: rgb(255, 255, 255);"><span
-                                            :style="{color:globalColor}">{{c3}}</span></div>
-                                    <div style="color: rgb(255, 255, 255);"><span
-                                            :style="{color:globalColor}">{{c4}}</span>
-                                    </div>
-
-                                    <div style="color: rgb(255, 255, 255)"
-                                        v-for="ct in
-                                        citiao">
-                                        <span :style="{color:globalColor}">{{ ct
-                                            }}</span>
-                                    </div>
+                                    <p style="color:rgb(255, 255,255)">琴扇
+                                        单手&nbsp;&nbsp;{{dj}}级</p>
                                 </div>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">基础属性</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                &nbsp;&nbsp;法术攻击&nbsp;{{zxfsgj}}-{{zffsgj}}
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                &nbsp;&nbsp;攻击速度&nbsp;1.319
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">耐久度</span>&nbsp;&nbsp;&nbsp;&nbsp;320/320
+                            </div>
+                            <div style="color: rgb(255, 255, 255)">
+                                <span style="color: #acf9ff">词条属性</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);"><span :style="{color:globalColor}">{{c1}}</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);"><span :style="{color:globalColor}">{{c2}}</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);"><span :style="{color:globalColor}">{{c3}}</span>
+                            </div>
+                            <div style="color: rgb(255, 255, 255);"><span :style="{color:globalColor}">{{c4}}</span>
+                            </div>
+
+                            <div style="color: rgb(255, 255, 255)" v-for="ct in
+                                        citiao">
+                                <span :style="{color:globalColor}">{{ ct
+                                    }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row text-center">
-                    <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
-                        <button type="button" class="btn btn-primary"
-                            @click="xiLian">洗词条</button>
-                    </div>
-                </div>
-                <p>
-                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
-                </p>
-                <p>
-                    花费灵玉: <span class="badge text-bg-danger">{{hfly}}</span>
-                </p>
             </div>
+        </div>
+        <div class="row text-center">
+            <div class="col" style="margin-top: 10px;margin-bottom: 10px;">
+                <button type="button" class="btn btn-primary" @click="xiLian">洗词条</button>
+            </div>
+        </div>
+        <p>
+            洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
+        </p>
+        <p>
+            花费灵玉: <span class="badge text-bg-danger">{{hfly}}</span>
+        </p>
+    </div>
 
-        </body>
-        <script src="vue.global.min.js"></script>
-    </head>
-    <script>
+</body>
+<script src="vue.global.min.js"></script>
+<script>
     const { createApp, ref } = Vue
 
     createApp({
@@ -313,12 +304,7 @@
         }
     }).mount('#app')
 
-    var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?afe009f9488feba4ead42d92d3766c08";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+   
 </script>
+
 </html>
