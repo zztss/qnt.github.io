@@ -8,13 +8,58 @@
             user-scalable=no">
     <title>战狂模拟器</title>
     <link href="bootstrap.min.css" rel="stylesheet">
+    <style>
+        .fire_text {
+            text-align: center;
+            font-family: "微软雅黑";
+            font-weight: bold;
+            color: #f20;
+            animation: fireText 1s infinite;
+        }
+
+        @keyframes fireText {
+            0% {
+                text-shadow: 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3,
+                    -2px -15px 11px #f80, 2px -25px 18px #f20;
+            }
+
+            25% {
+                text-shadow: 0 0 4px white, 2px -7px 6px #ff3, 2px -12px 8px #fd3,
+                    -3px -20px 11px #f80, 4px -30px 22px #f20;
+            }
+
+            50% {
+                text-shadow: 0 0 4px white, 2px -10px 8px #ff3, 2px -14px 10px #fd3,
+                    -4px -25px 11px #f80, 4px -35px 25px #f20;
+            }
+
+            75% {
+                text-shadow: 0 0 4px white, 2px -7px 6px #ff3, 2px -12px 8px #fd3,
+                    -3px -20px 11px #f80, 4px -30px 22px #f20;
+            }
+
+            100% {
+                text-shadow: 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3,
+                    -2px -15px 11px #f80, 2px -25px 18px #f20;
+            }
+        }
+
+        .superImage {
+            background-image: url('zk.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            /* 根据需要设置高度 */
+        }
+    </style>
 </head>
 
 <body>
     <div class="container" id="app">
-        <h1  v-if="isSuper" class="text-center text-danger">战狂模拟器</h1>
+        <h1 v-if="isSuper" class="text-center fire_text superImage">战狂模拟器</h1>
         <h1 v-else class="text-center">战狂模拟器</h1>
-        <div class="alert alert-warning" role="alert">
+        <div v-if="!isSuper" class="alert alert-warning" role="alert">
             注：此工具仅供学习测试之用，具体以游戏内容为准
         </div>
         <div class="row">
@@ -144,6 +189,10 @@
                 superCount.value += 1;
                 if (superCount.value % 10 == 0) {
                     isSuper.value = !isSuper.value;
+                    if (isSuper.value) {
+                        const audio = new Audio('zk.mp3');
+                        audio.play();
+                    }
                 }
             }
 
