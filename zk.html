@@ -541,10 +541,7 @@
                 }
 
                 citiao.value = citiaos;
-                var keywords = ["无钻", "坚脆"];
-                var wqty = count50Qty(citiaos, keywords)
-                zffsgj.value = jisuanMax(3865, sl + 4, wqty)
-                zxfsgj.value = jisuanMax(1656, sl + 4, wqty)
+           
                 if (sl == 1) {
                     globalColor.value = 'rgb(255, 136, 255)'
 
@@ -559,7 +556,6 @@
                 }
                 xlcs.value += 1;
                 hfly.value += 30;
-
 
                 c1.value = getOneRdCiTiao(c1Arr);
                 c2.value = getOneRdCiTiao(c2Arr);
@@ -577,6 +573,11 @@
                 citiaos.forEach(function (e) {
                     arr.push(e);
                 });
+
+                var keywords = ["无钻", "坚脆"];
+                var wqty = count50Qty(arr, keywords)
+                zffsgj.value = jisuanMax(3865, sl + 4, wqty)
+                zxfsgj.value = jisuanMax(1656, sl + 4, wqty)
 
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i].name == "【轻鸿】装备佩戴需求等级 -5级") {
