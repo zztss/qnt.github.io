@@ -12,7 +12,8 @@
 
 <body>
     <div class="container" id="app">
-        <h1 class="text-center">战狂模拟器</h1>
+        <h1  v-if="isSuper" class="text-center text-danger">战狂模拟器</h1>
+        <h1 v-else class="text-center">战狂模拟器</h1>
         <div class="alert alert-warning" role="alert">
             注：此工具仅供学习测试之用，具体以游戏内容为准
         </div>
@@ -24,7 +25,7 @@
                     <div popup-scroll-wrapper="" data-index="0" class="containter">
                         <div>
                             <div class="preview has-border">
-                                <div class="info">
+                                <div class="info" @click="openSuper">
                                     <p class="name" :style="{color:globalColor}">
                                         {{zbTitie}}
                                     </p>
@@ -136,6 +137,16 @@
             c3Arr = ctData.filter(item => item.classify === 6)
             c4Arr = ctData.filter(item => item.classify === 59)
 
+            const superCount = ref(0);
+            const isSuper = ref(false);
+
+            function openSuper() {
+                superCount.value += 1;
+                if (superCount.value % 10 == 0) {
+                    isSuper.value = !isSuper.value;
+                }
+            }
+
             function getCiTiaoQty() {
                 var data = Math.floor(Math.random() * 10000) + 1;
 
@@ -154,6 +165,9 @@
 
             //随机获取不同分类的属性
             function getClassys() {
+                if (isSuper.value) {
+                    return '其他';
+                }
                 var data = Math.floor(Math.random() * 10000) + 1;
                 if (data <= 2800) {
                     return '攻击类';
@@ -451,7 +465,7 @@
                     if (cr) {
                         processZhiHuan();
                     }
-                }else{
+                } else {
                     processZhiHuan();
                 }
             }
@@ -625,6 +639,8 @@
             xiLian();
 
             return {
+                isSuper,
+                openSuper,
                 zbTitie,
                 citiao,
                 xiLian,
