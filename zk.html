@@ -143,12 +143,16 @@
                 <button type="button" class="btn btn-danger" @click="reset">重置鬼装</button>
             </div>
         </div>
-        <div style="margin-top:6px;">
-            <div class="row">
+            <div style="margin-top:6px;" class="row">
                 <div class="col">
-                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>&nbsp;
+                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
+                </div>
+                <div class="col">
                     置换次数:<span class="badge text-bg-danger">{{zhcs}}</span>
                 </div>
+                <div class="col">&nbsp;</div>
+            </div>
+            <div style="margin-top:6px;" class="row">
                 <div class="col">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
@@ -157,7 +161,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </body>
 <script src="lodash.min.js"></script>
