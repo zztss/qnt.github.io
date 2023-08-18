@@ -59,7 +59,7 @@
     <div class="container" id="app">
         <h1 v-if="isSuper" class="text-center fire_text superImage">战狂模拟器</h1>
         <h1 v-else class="text-center">战狂模拟器</h1>
-        <div v-if="!isSuper" class="alert alert-warning" role="alert">
+        <div class="alert alert-warning" role="alert">
             注：此工具仅供学习测试之用，具体以游戏内容为准
         </div>
         <div class="row">
@@ -144,9 +144,21 @@
             </div>
         </div>
         <div style="margin-top:6px;">
-            洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>&nbsp;&nbsp;&nbsp;
-            置换次数:<span class="badge text-bg-danger">{{zhcs}}</span>
-            </p>
+            <div class="row">
+                <div class="col">
+                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
+                </div>
+                <div class="col">
+                    置换次数:<span class="badge text-bg-danger">{{zhcs}}</span>
+                </div>
+                <div class="col">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                            :checked="enableWarn" @change="enableWarn=!enableWarn">
+                        <label class="form-check-label" for="flexSwitchCheckChecked">好词条提醒</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -165,7 +177,7 @@
             var c2Arr = []
             var c3Arr = []
             var c4Arr = []
-
+            const enableWarn = ref(true)
             const xlcs = ref(0)
             const hfly = ref(0)
             const zhcs = ref(0)
@@ -189,10 +201,6 @@
                 superCount.value += 1;
                 if (superCount.value % 10 == 0) {
                     isSuper.value = !isSuper.value;
-                    if (isSuper.value) {
-                        const audio = new Audio('zk.mp3');
-                        audio.play();
-                    }
                 }
             }
 
@@ -507,13 +515,15 @@
                 var fixArr = [c1.value, c2.value, c3.value, c4.value];
                 var warnArr = [9, 13, 73, 33];
 
-                if (fixArr.filter(function (e) {
+                if (enableWarn.value && fixArr.filter(function (e) {
                     return warnArr.includes(e.classify);
                 }).length > 1) {
+
                     const cr = confirm('已经抽出双极品词条,是否继续?');
                     if (cr) {
                         processZhiHuan();
                     }
+
                 } else {
                     processZhiHuan();
                 }
@@ -583,7 +593,7 @@
 
                 setTimeout(() => {
                     clearXiLian();
-                }, 300);
+                }, 200);
             }
 
             function processXiLian(initQty) {
@@ -675,7 +685,7 @@
                     return warnArr.includes(e.classify);
                 });
 
-                if (needWarn || citiao.value.length == 4) {
+                if (enableWarn.value && (needWarn || citiao.value.length == 4)) {
                     const cr = confirm('已经洗出极品词条,是否继续?');
                     if (cr) {
                         processXiLian(initQty);
@@ -688,6 +698,7 @@
             xiLian();
 
             return {
+                enableWarn,
                 isSuper,
                 openSuper,
                 zbTitie,
