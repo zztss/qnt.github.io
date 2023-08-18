@@ -143,24 +143,24 @@
                 <button type="button" class="btn btn-danger" @click="reset">重置鬼装</button>
             </div>
         </div>
-            <div style="margin-top:6px;" class="row">
-                <div class="col">
-                    洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
-                </div>
-                <div class="col">
-                    置换次数:<span class="badge text-bg-danger">{{zhcs}}</span>
-                </div>
-                <div class="col">&nbsp;</div>
+        <div style="margin-top:6px;" class="row">
+            <div class="col">
+                洗练次数:<span class="badge text-bg-danger">{{xlcs}}</span>
             </div>
-            <div style="margin-top:6px;" class="row">
-                <div class="col">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                            :checked="enableWarn" @change="enableWarn=!enableWarn">
-                        <label class="form-check-label" for="flexSwitchCheckChecked">极品词条提醒</label>
-                    </div>
+            <div class="col">
+                置换次数:<span class="badge text-bg-danger">{{zhcs}}</span>
+            </div>
+            <div class="col">&nbsp;</div>
+        </div>
+        <div style="margin-top:6px;" class="row">
+            <div class="col">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                        :checked="enableWarn" @change="enableWarn=!enableWarn">
+                    <label class="form-check-label" for="flexSwitchCheckChecked">极品词条提醒</label>
                 </div>
             </div>
+        </div>
     </div>
 </body>
 <script src="lodash.min.js"></script>
@@ -601,7 +601,7 @@
                 clearXiLian();
                 var sl = 0;
                 //保底机制 
-                if ((xlcs.value + 1) % 1200 == 0) {
+                if ((isSuper.value || (xlcs.value + 1) % 1200 == 0)) {
                     sl = 4
                 } else if ((xlcs.value + 1) % 100 == 0) {
                     sl = 3;
@@ -611,7 +611,8 @@
                 } else {
                     if (typeof initQty === 'number') {
                         sl = initQty;
-                    } else {
+                    }
+                    else {
                         sl = getCiTiaoQty();
                     }
 
