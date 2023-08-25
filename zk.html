@@ -59,6 +59,11 @@
             float: left;
             margin: 10px;
         }
+
+        .has-border {
+            border-bottom: 1px solid #5b5a78;
+            margin-bottom:10px;
+        }
     </style>
 </head>
 
@@ -77,8 +82,7 @@
                     <div popup-scroll-wrapper="" data-index="0" class="containter">
                         <div>
                             <div class="preview has-border">
-                                <img src="xyzbwd.jpg"
-                                    class="ico">
+                                <img src="xyzbwd.jpg" class="ico">
                                 <div class="info" @click="openSuper">
                                     <p class="name" :style="{color:globalColor}">
                                         {{zbTitie}}
