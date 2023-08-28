@@ -181,7 +181,6 @@
     </div>
     </div>
 </body>
-<script src="lodash.min.js"></script>
 <script src="vue.global.min.js"></script>
 <script>
     const { createApp, ref } = Vue
@@ -285,7 +284,8 @@
             //获取词条
             function getOneRdCiTiao(arr) {
                 var randomIndex = Math.floor(Math.random() * arr.length);
-                var result = _.cloneDeep(arr[randomIndex]);
+                var originalObject = arr[randomIndex];
+                var result = Object.assign({}, originalObject);
 
                 return result;
             }
