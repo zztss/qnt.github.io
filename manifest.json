@@ -375,6 +375,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/sdjxhm/gjyfy.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/sdjxhm/gjyfy.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/sdjxhm/hm.jpg",
       "output": {
         "resource": {
@@ -634,6 +644,56 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/bdcx.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/bdcx.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/ksyb.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/ksyb.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/mcjj.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/mcjj.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/pfcz.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/pfcz.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/sdgx.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/sdgx.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "articles/intro.md",
       "output": {
@@ -682,6 +742,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/开服时间表.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/探索PVE刀客.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/探索PVE刀客.html"
         }
       },
       "version": ""

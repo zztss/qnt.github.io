@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>探索PVE刀客 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="探索PVE刀客 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/探索PVE刀客.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h2 id="探索pve刀客">探索PVE刀客</h2>
+
+<p>作者：[德库拉]</p>
+<h3 id="核心技能">核心技能</h3>
+<ul>
+<li>芒刺在背</li>
+</ul>
+<p>47级芒刺的描述如下<br>
+<img src="images/tspvedk/mcjj.png" alt="Mcjj"></p>
+<p>因为本篇文章是探讨PVE，所以只需关注这句话<br>
+<strong>目标是怪物时自身攻击增加35%并造成2.47倍伤害。</strong></p>
+<p>根据这句话我们得到芒刺在背的伤害公式</p>
+<pre><code>伤害公式=瞬时攻击*1.35*2.47*(1+BOSS伤害百分比)*(1+物理致命伤%)
+</code></pre>
+<p>以我的角色为例，物理攻击 <code>28989-54008</code>,物理致命伤害<code>125%</code>,BOSS伤害百分比<code>4%</code>，那么瞬时攻击就是从这大小攻击区间随机取一个值，假设是40000，带入计算如下</p>
+<pre><code>40000*1.35*2.47*(1+0.04)*(1+1.25)=312109
+</code></pre>
+<ul>
+<li>困兽一博</li>
+</ul>
+<p>47级困兽一博的描述如下</p>
+<p><img src="images/tspvedk/ksyb.png" alt="Ksyb"></p>
+<p>可以看出困兽一博有2个效果</p>
+<ol>
+<li>攻击增加33.5%</li>
+<li>气血越低增加的攻击越高</li>
+</ol>
+<div class="TIP">
+<h5>Tip</h5>
+<p>注意：困兽一搏的攻击增加不是面板的攻击，而是基础攻击的33.5%，想知道自己的基础攻击多少，可以从人物面板-&gt;物理攻击-&gt;属性构成-&gt;最大物理攻击-&gt;基础加成 中查看数值</p>
+</div>
+<p>困兽一搏还有一个100级技能天赋<code>破釜沉舟</code>可以增强，40级的效果如下：</p>
+<p><img src="images/tspvedk/pfcz.png" alt="Pfcz"></p>
+<ul>
+<li>蛇毒攻心</li>
+</ul>
+<p>47级蛇毒攻心的描述如下</p>
+<p><img src="images/tspvedk/sdgx.png" alt="Sdgx"></p>
+<p>可以看出蛇毒攻心有2个效果</p>
+<ol>
+<li>直接造成毒伤害</li>
+<li>附加心魔效果</li>
+</ol>
+<p>虽然描述中没有写出来，但是实际中蛇毒攻心的伤害会加上<code>瞬时攻击</code>,也就是说，它最终的伤害如下</p>
+<pre><code>蛇毒攻心伤害= 毒伤害+瞬时物理攻击+心魔加成
+</code></pre>
+<p>心魔状态有3层，我们一般只关注第三层<code>百毒穿心</code></p>
+<p><img src="images/tspvedk/bdcx.png" alt="Bdcx"></p>
+<p>未完结，有空再更新</p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/探索PVE刀客.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
