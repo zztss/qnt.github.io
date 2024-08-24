@@ -655,6 +655,26 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/cfhx.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/cfhx.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/dk.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/dk.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/jtsk.png",
       "output": {
         "resource": {
@@ -679,6 +699,16 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/mcjj.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/mcrg.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/mcrg.png"
         }
       },
       "version": ""

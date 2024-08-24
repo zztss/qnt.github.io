@@ -72,10 +72,13 @@
         </div>
 
         <article data-uid="">
-<h2 id="探索pve刀客">探索PVE刀客</h2>
+<h1 id="探索pve刀客">探索PVE刀客</h1>
 
 <p>作者：[德库拉]</p>
-<h3 id="核心技能">核心技能</h3>
+<h2 id="前言">前言</h2>
+<p>刀客作为近身刺客职业，拥有着高爆发输出，同时还具备减伤，控制，位移，破防，回血能力，在PVE的玩法中可称得上<code>综合实力</code>最强的职业了</p>
+<p><img src="images/tspvedk/dk.png" alt="Dk"></p>
+<h2 id="核心技能">核心技能</h2>
 <p>刀客核心输出技能有4个，以下是打家园绝难度<code>巫先生</code>时各技能的伤害占比</p>
 <table>
 <thead>
@@ -125,7 +128,6 @@
 </tr>
 </tbody>
 </table>
-<p>接下来依顺序讲解这4个技能</p>
 <ul>
 <li>狡兔三窟</li>
 </ul>
@@ -160,6 +162,7 @@
 <pre><code>40000*1.35*2.47*(1+0.04)*(1+1.25)=312109
 </code></pre>
 <p><code>芒刺在背</code>的提升巨大，PVE刀客<strong>可优先考虑此技能</strong></p>
+<p>60级天赋技能<code>芒刺入骨</code>可以带出<code>血蛭陷阱</code>，打怪时优先带此天赋</p>
 <ul>
 <li>困兽一博</li>
 </ul>
@@ -171,7 +174,7 @@
 </ol>
 <div class="TIP">
 <h5>Tip</h5>
-<p>注意：困兽一搏的攻击增加不是面板的攻击，而是基础攻击的33.5%，想知道自己的基础攻击多少，可以从人物面板-&gt;物理攻击-&gt;属性构成-&gt;最大物理攻击-&gt;基础加成 中查看数值</p>
+<p>注意：困兽一搏的攻击增加不是面板的攻击，而是基础攻击的33.5%，想知道自己的基础攻击，可以从人物面板-&gt;物理攻击-&gt;属性构成-&gt;最大物理攻击-&gt;基础加成 中查看数值</p>
 </div>
 <p>困兽一搏还有一个100级技能天赋<code>破釜沉舟</code>可以增强，40级的效果如下：</p>
 <p><img src="images/tspvedk/pfcz.png" alt="Pfcz"></p>
@@ -179,13 +182,56 @@
 <li>血蛭陷阱</li>
 </ul>
 <p><img src="images/tspvedk/xzxj.png" alt="Xzxj"></p>
-<h3 id="项链选择">项链选择</h3>
+<h2 id="项链选择">项链选择</h2>
 <p>在致命伤没有达到125%时，优先选择多致命项链，已达到125%，按照以下选择</p>
 <p><code>芒刺在背</code>&gt;<code>血蛭陷阱</code>&gt;<code>百毒穿心</code>&gt;<code>困兽一博</code></p>
 <p>考虑不容易洗出双6技能，最优解还是</p>
 <p>固定 <code>全技能+3</code>+致命</p>
-<h3 id="进阶提升">进阶提升</h3>
-<h3 id="攻速vs攻击">攻速VS攻击</h3>
+<h2 id="进阶提升">进阶提升</h2>
+<ul>
+<li>武器神兵重铸出<code>芒刺入骨</code>可以让刀客在打出极致伤害下且最大程度回血</li>
+</ul>
+<p><img src="images/tspvedk/mcrg.png" alt="Mcrg"></p>
+<p>回血原理</p>
+<ol>
+<li><code>芒刺在背</code> 触发 <code>芒刺入骨</code></li>
+<li><code>芒刺入骨</code> 触发 <code>血蛭陷阱</code></li>
+<li><code>血蛭陷阱</code> 触发 <code>噬血沁骨</code> 流血</li>
+<li>流血 触发 <code>血饮狂歌</code> 进入可回血状态</li>
+<li>任意非持续性技能触发<code>11%</code>回血</li>
+</ol>
+<p><img src="images/tspvedk/cfhx.jpg" alt="Cfhx"></p>
+<p>在芒刺打出致命的情况下，回血量是相当可观</p>
+<ul>
+<li>卡攻速</li>
+</ul>
+<p>刀客在PVE情况下，一般轮按这一套技能 <code>蛇毒攻心</code>,<code>芒刺在背</code>，<code>困兽一搏</code>,频率最高的是蛇毒攻心，它的冷却时间是0.7秒，
+核心技能是<code>芒刺在背</code>，在理想情况下，它的冷却时间一结束，迅速释放是最佳策略。</p>
+<p><code>困兽一搏</code>=&gt;<code>芒刺在背</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>芒刺在背</code></p>
+<p>想要让<code>芒刺在背</code>及时释放，那它的冷却时间最好卡在0.7的倍数上，再一些点缓冲操作的延迟，例如 2.8，3.5，4.2，<code>芒刺在背</code>的原始冷却是6秒，相关冷却时间和攻速关系如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">冷却时间（秒）</th>
+<th style="text-align: right;">攻速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">2.15</td>
+</tr>
+<tr>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: right;">1.72</td>
+</tr>
+<tr>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">1.43</td>
+</tr>
+</tbody>
+</table>
+<p>此外攻速还可以减少分身及持有困兽一搏的冷却时间，这2个都可以大幅提高刀客的副本输出能力</p>
 </article>
 
         <div class="contribution d-print-none">
