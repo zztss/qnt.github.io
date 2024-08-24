@@ -76,27 +76,97 @@
 
 <p>作者：[德库拉]</p>
 <h3 id="核心技能">核心技能</h3>
+<p>刀客核心输出技能有4个，以下是打家园绝难度<code>巫先生</code>时各技能的伤害占比</p>
+<table>
+<thead>
+<tr>
+<th>技能名称</th>
+<th style="text-align: right;">总命中率</th>
+<th style="text-align: right;">总致命率</th>
+<th style="text-align: right;">伤害</th>
+<th style="text-align: right;">伤害占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>狡兔三窟</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">4491611</td>
+<td style="text-align: right;">33.8%</td>
+</tr>
+<tr>
+<td>蛇毒攻心</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">66.7%</td>
+<td style="text-align: right;">3118672</td>
+<td style="text-align: right;">23.4%</td>
+</tr>
+<tr>
+<td>芒刺在背</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">42.9%</td>
+<td style="text-align: right;">2936823</td>
+<td style="text-align: right;">22.1%</td>
+</tr>
+<tr>
+<td>血蛭陷阱</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">42.9%</td>
+<td style="text-align: right;">2737398</td>
+<td style="text-align: right;">20.6%</td>
+</tr>
+<tr>
+<td>其它</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">12806</td>
+<td style="text-align: right;">0.1%</td>
+</tr>
+</tbody>
+</table>
+<p>接下来依顺序讲解这4个技能</p>
+<ul>
+<li>狡兔三窟</li>
+</ul>
+<p><img src="images/tspvedk/jtsk.png" alt="Jtsk"></p>
+<p>分身继承部分人物属性,同时享受野狼铠效果。分身拥有普通攻击、蛇毒攻心、芒刺在背三项技能。每提升1级技能,可增加0.5%人物属性。分身与人物实时同步属性,利用这一特性,<strong>可以使用技能项链卡分身等级</strong>。</p>
+<ul>
+<li>蛇毒攻心</li>
+</ul>
+<p><img src="images/tspvedk/sdgx.png" alt="Sdgx"></p>
+<p>蛇毒攻心有2个效果</p>
+<ol>
+<li>直接造成毒伤害</li>
+<li>附加心魔效果</li>
+</ol>
+<p>实际中蛇毒攻心的伤害还会加上<code>瞬时攻击</code>,它最终的伤害如下</p>
+<pre><code>蛇毒攻心伤害= 毒伤害+瞬时物理攻击+心魔加成
+</code></pre>
+<p>心魔状态有3层，重点关注第三层<code>百毒穿心</code> ，该状态是集体共享且高等级覆盖低等级，<strong>在团本中可以优先考虑此技能</strong></p>
+<p><img src="images/tspvedk/bdcx.png" alt="Bdcx"></p>
+<p>心魔状态的最终物理伤害受平均物攻影响，数值为<code>4%</code></p>
+<pre><code>心魔状态最终物理伤害=技能描述部分+人物平均攻击4%
+</code></pre>
 <ul>
 <li>芒刺在背</li>
 </ul>
-<p>47级芒刺的描述如下<br>
-<img src="images/tspvedk/mcjj.png" alt="Mcjj"></p>
-<p>因为本篇文章是探讨PVE，所以只需关注这句话<br>
-<strong>目标是怪物时自身攻击增加35%并造成2.47倍伤害。</strong></p>
+<p><img src="images/tspvedk/mcjj.png" alt="Mcjj"></p>
+<p><strong>当目标为怪物时,自身攻击力增加35%,同时造成2.47倍的伤害</strong></p>
 <p>根据这句话我们得到芒刺在背的伤害公式</p>
 <pre><code>伤害公式=瞬时攻击*1.35*2.47*(1+BOSS伤害百分比)*(1+物理致命伤%)
 </code></pre>
 <p>以我的角色为例，物理攻击 <code>28989-54008</code>,物理致命伤害<code>125%</code>,BOSS伤害百分比<code>4%</code>，那么瞬时攻击就是从这大小攻击区间随机取一个值，假设是40000，带入计算如下</p>
 <pre><code>40000*1.35*2.47*(1+0.04)*(1+1.25)=312109
 </code></pre>
+<p><code>芒刺在背</code>的提升巨大，PVE刀客<strong>可优先考虑此技能</strong></p>
 <ul>
 <li>困兽一博</li>
 </ul>
-<p>47级困兽一博的描述如下</p>
 <p><img src="images/tspvedk/ksyb.png" alt="Ksyb"></p>
 <p>可以看出困兽一博有2个效果</p>
 <ol>
-<li>攻击增加33.5%</li>
+<li>攻击增加</li>
 <li>气血越低增加的攻击越高</li>
 </ol>
 <div class="TIP">
@@ -106,21 +176,16 @@
 <p>困兽一搏还有一个100级技能天赋<code>破釜沉舟</code>可以增强，40级的效果如下：</p>
 <p><img src="images/tspvedk/pfcz.png" alt="Pfcz"></p>
 <ul>
-<li>蛇毒攻心</li>
+<li>血蛭陷阱</li>
 </ul>
-<p>47级蛇毒攻心的描述如下</p>
-<p><img src="images/tspvedk/sdgx.png" alt="Sdgx"></p>
-<p>可以看出蛇毒攻心有2个效果</p>
-<ol>
-<li>直接造成毒伤害</li>
-<li>附加心魔效果</li>
-</ol>
-<p>虽然描述中没有写出来，但是实际中蛇毒攻心的伤害会加上<code>瞬时攻击</code>,也就是说，它最终的伤害如下</p>
-<pre><code>蛇毒攻心伤害= 毒伤害+瞬时物理攻击+心魔加成
-</code></pre>
-<p>心魔状态有3层，我们一般只关注第三层<code>百毒穿心</code></p>
-<p><img src="images/tspvedk/bdcx.png" alt="Bdcx"></p>
-<p>未完结，有空再更新</p>
+<p><img src="images/tspvedk/xzxj.png" alt="Xzxj"></p>
+<h3 id="项链选择">项链选择</h3>
+<p>在致命伤没有达到125%时，优先选择多致命项链，已达到125%，按照以下选择</p>
+<p><code>芒刺在背</code>&gt;<code>血蛭陷阱</code>&gt;<code>百毒穿心</code>&gt;<code>困兽一博</code></p>
+<p>考虑不容易洗出双6技能，最优解还是</p>
+<p>固定 <code>全技能+3</code>+致命</p>
+<h3 id="进阶提升">进阶提升</h3>
+<h3 id="攻速vs攻击">攻速VS攻击</h3>
 </article>
 
         <div class="contribution d-print-none">
