@@ -675,6 +675,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/jn1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/jn1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/jtsk.png",
       "output": {
         "resource": {
@@ -729,6 +739,46 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/sdgx.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/tf1.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/tf1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/tf2.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/tf2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/tf3.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/tf3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/tf4.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/tf4.png"
         }
       },
       "version": ""
