@@ -160,10 +160,10 @@
 <p><img src="images/tspvedk/mcjj.png" alt="Mcjj"></p>
 <p><strong>当目标为怪物时,自身攻击力增加35%,同时造成2.47倍的伤害</strong></p>
 <p>根据这句话我们得到芒刺在背的伤害公式</p>
-<pre><code>芒刺伤害公式=瞬时攻击*1.35*2.47*(1+BOSS伤害百分比)*(1+物理致命伤%)
+<pre><code>芒刺伤害公式=瞬时攻击 * 1.35 * 2.47 * (1 + BOSS伤害百分比) * (1 + 物理致命伤%)
 </code></pre>
 <p>以我的角色为例，物理攻击 <code>28989-54008</code>,物理致命伤害<code>125%</code>,BOSS伤害百分比<code>4%</code>，那么瞬时攻击就是从这大小攻击区间随机取一个值，假设是40000，带入计算如下</p>
-<pre><code>40000*1.35*2.47*(1+0.04)*(1+1.25)=312109
+<pre><code>40000 * 1.35 * 2.47 * (1 + 0.04) * (1 + 1.25) = 312109
 </code></pre>
 <p><code>芒刺在背</code>的提升巨大，PVE刀客<strong>可优先考虑此技能</strong></p>
 <p>60级天赋技能<code>芒刺入骨</code>可以带出<code>血蛭陷阱</code>，打怪时优先带此天赋</p>
@@ -203,11 +203,11 @@
 </ul>
 <p>普通玩家</p>
 <p><img src="images/tspvedk/tf1.png" alt="Tf1"></p>
-<p>高致命玩家（无<code>抽刀断恨</code>情况下，能达到125%减伤)</p>
+<p>高致命玩家（无<code>抽刀断恨</code>情况下，能达到125%物理致命伤）</p>
 <p><img src="images/tspvedk/tf2.png" alt="Tf2"></p>
 <p>武器有<code>芒刺入骨</code> 普通玩家</p>
 <p><img src="images/tspvedk/tf3.png" alt="Tf3"></p>
-<p>武器有<code>芒刺入骨</code> 高致命玩家</p>
+<p>武器有<code>芒刺入骨</code> 高致命玩家（无<code>抽刀断恨</code>情况下，能达到125%物理致命伤）</p>
 <p><img src="images/tspvedk/tf4.png" alt="Tf4"></p>
 <h2 id="进阶提升">进阶提升</h2>
 <ul>
@@ -228,7 +228,7 @@
 <li>卡攻速</li>
 </ul>
 <p>刀客在PVE情况下，一般轮按这一套技能 <code>蛇毒攻心</code>,<code>芒刺在背</code>，<code>困兽一搏</code>,频率最高的是蛇毒攻心，它的冷却时间是0.7秒，
-核心技能是<code>芒刺在背</code>，在理想情况下，它的冷却时间一结束，迅速释放是最佳策略。</p>
+核心技能是<code>芒刺在背</code>，在理想情况下，它的冷却时间一结束，应该迅速释放。</p>
 <p><code>困兽一搏</code>=&gt;<code>芒刺在背</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>蛇毒攻心</code>=&gt;<code>芒刺在背</code></p>
 <p>想要让<code>芒刺在背</code>及时释放，那它的冷却时间最好卡在0.7的倍数上，再一些点缓冲操作的延迟，例如 2.8，3.5，4.2，<code>芒刺在背</code>的原始冷却是6秒，相关冷却时间和攻速关系如下：</p>
 <table>
@@ -253,7 +253,7 @@
 </tr>
 </tbody>
 </table>
-<p>此外攻速还可以减少分身及持有困兽一搏的冷却时间，这2个都可以大幅提高刀客的副本输出能力</p>
+<p>此外攻速还可以减少分身及困兽一搏的冷却时间，这2个都可以大幅提高刀客的副本输出能力</p>
 </article>
 
         <div class="contribution d-print-none">
