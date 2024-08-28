@@ -795,6 +795,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/sypftl.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/sypftl.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/tf1.png",
       "output": {
         "resource": {
