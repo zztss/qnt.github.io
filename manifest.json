@@ -695,6 +695,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/dsszz.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/dsszz.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/jn1.png",
       "output": {
         "resource": {
