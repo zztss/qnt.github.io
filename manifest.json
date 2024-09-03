@@ -685,6 +685,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/dhk.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/dhk.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/dk.jpg",
       "output": {
         "resource": {
