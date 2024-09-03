@@ -335,11 +335,199 @@
 </table>
 <p>一些14级蜃妖防御属性相当高，常令许多中低下玩家束手无策，根本破不了防，伤害也无法发挥出来。而这个组合在极致情况下可以破<code>70%</code>防御，难度大大降低，很好解决了这个痛点。</p>
 <p><img src="images/tspvedk/sypftl.jpg" alt="Sypftl"></p>
-<h2 id="蜃者为王">蜃者为王</h2>
+<h2 id="单双手之争">单双手之争</h2>
+<p><img src="images/tspvedk/dsszz.png" alt="Dsszz"></p>
+<p>使用双手武器的角色通常攻速较慢但攻击力较高，而使用单手武器的角色攻速较快但攻击力较低。那么，在打副本时，哪种选择更强呢？</p>
+<p>在实际战斗中，由于技能数量众多且伤害会叠加，我们无法仅通过单一技能进行直接比较。在之前的章节中，我们已经推导出了<code>芒刺在背</code>和<code>蛇毒攻心</code>的伤害计算公式。接下来，我们可以用代码来模拟释放技能的过程，以便更好地理解两者的表现。</p>
 <ul>
-<li>单刷十四镇狱王</li>
+<li>变化的攻速</li>
 </ul>
-<div class="embeddedvideo"><iframe src="https://www.bilibili.com/video/BV1ALHFeJEGJ" frameborder="0" allowfullscreen="true"></iframe></div>
+<p>完成模拟逻辑后，我们将攻击力和攻速应用于一个为时5分钟的副本模拟，以我的角色为例。角色的攻击力范围在29000到54000之间。为了简化细节，我们假设物理致命伤已提升至125%，且致命一击的伤害达到了230以上（具有50%的致命率）。接下来，我们将首先观察攻速变化对伤害的影响。</p>
+<p><img src="images/tspvedk/gsshzx.png" alt="Gsshzx"></p>
+<p>根据上述折线图，我们可以观察到攻速与伤害之间基本呈现线性正比关系。此外，在攻速为1.43、1.72和2.15时，伤害有明显的提升，这与前面章节的内容相呼应。</p>
+<ul>
+<li>变化的攻击</li>
+</ul>
+<p><code>1.43</code>攻速每提升500平均攻击的伤害变化图表</p>
+<p><img src="images/tspvedk/143gspjgjysh.png" alt="143Gspjgjysh"></p>
+<p><code>1.96</code>攻速每提升500平均攻击的伤害变化图表</p>
+<p><img src="images/tspvedk/196gspjgjysh.png" alt="196Gspjgjysh"></p>
+<p>可以看出，对于刀客而言，虽然提升攻击力能够增加伤害，但其效果远不及攻速的提升。从上图中1.43和1.96的攻速趋势可以明显看出这一点。</p>
+<p>以我的角色为参考，攻速从1提升至2.1，相当于在1.43的攻速下增加了1万的平均攻击力。此外，使用双手武器时，也很难达到1.43的攻速。</p>
+<table>
+<thead>
+<tr>
+<th>攻速</th>
+<th>伤害</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>91388780.60</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>96685083.80</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>99119596.30</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>104306933.30</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>104668131.90</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>111756626.10</td>
+</tr>
+<tr>
+<td>1.6</td>
+<td>113728832.50</td>
+</tr>
+<tr>
+<td>1.7</td>
+<td>125070096.00</td>
+</tr>
+<tr>
+<td>1.8</td>
+<td>128800628.80</td>
+</tr>
+<tr>
+<td>1.9</td>
+<td>134994078.00</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>135762858.00</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>139198412.30</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">攻击速度</th>
+<th>平均攻击</th>
+<th>伤害</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>41500.00</td>
+<td>112105095.30</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>42500.00</td>
+<td>119529687.60</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>42000.00</td>
+<td>115288609.70</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>43000.00</td>
+<td>117067425.50</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>43500.00</td>
+<td>119500698.70</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>44000.00</td>
+<td>120532369.50</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>44500.00</td>
+<td>122732070.90</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>45000.00</td>
+<td>124011995.90</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>45500.00</td>
+<td>124775195.60</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>46000.00</td>
+<td>124970456.60</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>46500.00</td>
+<td>125988347.00</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>47000.00</td>
+<td>128916024.20</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>47500.00</td>
+<td>130360538.60</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>48000.00</td>
+<td>129292339.40</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>48500.00</td>
+<td>134534381.70</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>49000.00</td>
+<td>131481400.80</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>49500.00</td>
+<td>133900051.80</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>50000.00</td>
+<td>136946745.30</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>50500.00</td>
+<td>135888128.50</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>51000.00</td>
+<td>138236342.40</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.43</td>
+<td>51500.00</td>
+<td>140066624.50</td>
+</tr>
+</tbody>
+</table>
 </article>
 
         <div class="contribution d-print-none">

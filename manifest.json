@@ -645,6 +645,26 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/143gspjgjysh.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/143gspjgjysh.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/196gspjgjysh.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/196gspjgjysh.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/bdcx.png",
       "output": {
         "resource": {
@@ -699,6 +719,46 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/dsszz.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/gsshgxt.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/gsshgxt.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/gsshpbt.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/gsshpbt.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/gsshzx.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/gsshzx.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/gsysh.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/gsysh.png"
         }
       },
       "version": ""
@@ -769,6 +829,16 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/pfcz.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/pjgjyshpbt.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/pjgjyshpbt.png"
         }
       },
       "version": ""
