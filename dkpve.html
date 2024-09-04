@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVE刀客伤害计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #e7f3fe;
+            padding: 10px;
+            border: 1px solid #b3d7ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <label for="weapon-type">选择武器类型:</label>
+        <select id="weapon-type">
+            <option value="single">单手</option>
+            <option value="double">双手</option>
+        </select>
+
+        <label for="min-attack">最小攻击:</label>
+        <input type="number" id="min-attack" placeholder="输入最小攻击" required>
+
+        <label for="max-attack">最大攻击:</label>
+        <input type="number" id="max-attack" placeholder="输入最大攻击" required>
+
+        <label for="attack-speed">攻速:</label>
+        <input type="number" id="attack-speed" placeholder="输入攻速" required>
+
+        <button id="calculate-btn">计算伤害</button>
+
+        <div class="result" id="result">
+            <h2>计算过程:</h2>
+            <pre id="calculation-output"></pre>
+        </div>
+    </div>
+</body>
+<script>
+    let processMsg = '';
+    class DaoKe {
+        constructor(zuiXiaoGongJi, zuiDaGongJi) {
+            this._zuiXiaoGongJi = zuiXiaoGongJi;
+            this._zuiDaGongJi = zuiDaGongJi;
+            this._isKunShou = false;
+        }
+
+        static _randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        _isZhiMing() {
+            return DaoKe._randomInt(0, 1) > 0;
+        }
+
+        _getSuiJiGongJi(min, max) {
+            return DaoKe._randomInt(min, max);
+        }
+
+        manCiZaiBei() {
+            let suiJiGongJi;
+            let result;
+            const xmBase = 4340;
+            const xmFactor = 0.04;
+
+            if (!this._isKunShou) {
+                suiJiGongJi = this._getSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+                result = suiJiGongJi * 1.35 * 2.47 * 1.04;
+                const xm = ((this._zuiXiaoGongJi + this._zuiDaGongJi) / 2.0) * xmFactor + xmBase;
+
+                if (this._isZhiMing()) {
+                    result = result * 2.25 + xm;
+                } else {
+                    result += xm;
+                }
+            } else {
+                const min = this._zuiXiaoGongJi + this._zuiXiaoGongJi * 0.8 * 0.485;
+                const max = this._zuiDaGongJi + this._zuiDaGongJi * 0.8 * 0.485;
+
+                suiJiGongJi = this._getSuiJiGongJi(Math.floor(min), Math.floor(max));
+                const xm = ((min + max) / 2.0) * xmFactor + xmBase;
+
+                result = suiJiGongJi * 1.35 * 2.47 * 1.25;
+
+                if (this._isZhiMing()) {
+                    result = result * 2.25 + xm;
+                } else {
+                    result += xm;
+                }
+            }
+
+            return parseFloat(result.toFixed(2));
+        }
+
+        sheDuGongXin() {
+            let suiJiGongJi;
+            let result;
+            const xmBase = 4340;
+            const xmFactor = 0.04;
+            const baseDamage = 9486;
+
+            if (!this._isKunShou) {
+                suiJiGongJi = this._getSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+                const xm = xmBase + ((this._zuiXiaoGongJi + this._zuiDaGongJi) / 2.0) * xmFactor;
+
+                result = suiJiGongJi + baseDamage;
+
+                if (this._isZhiMing()) {
+                    result = result * 2.25 + xm;
+                } else {
+                    result += xm;
+                }
+            } else {
+                const min = this._zuiXiaoGongJi + this._zuiXiaoGongJi * 0.8 * 0.485;
+                const max = this._zuiDaGongJi + this._zuiDaGongJi * 0.8 * 0.485;
+
+                suiJiGongJi = this._getSuiJiGongJi(Math.floor(min), Math.floor(max));
+                const xm = xmBase + ((min + max) / 2.0) * xmFactor;
+
+                result = suiJiGongJi + baseDamage;
+
+                if (this._isZhiMing()) {
+                    result = result * 2.25 + xm;
+                } else {
+                    result += xm;
+                }
+            }
+
+            return parseFloat(result.toFixed(2));
+        }
+
+        setKunShouTrue() {
+            this._isKunShou = true;
+        }
+
+        setKunShouFalse() {
+            this._isKunShou = false;
+        }
+    }
+
+    function getShangHai(min, max, gs, ds) {
+        let currentTime = 0.0;
+        const totalDuration = 300.0;
+
+        let skill1Cooldown = 0.0;
+        let skill2Cooldown = 0.0;
+        let skill3Cooldown = 0.0;
+        let skill4Cooldown = 0.0;
+        let skill1EffectEnd = 0.0;
+        let skill4EffectEnd = 0.0;
+        let totalShangHai = 0.0;
+        let someMcShangHai = 0.0;
+        let totalMcShangHai = 0.0;
+        let totalSdShangHai = 0.0;
+        let totalFsShangHai = 0.0;
+        let totalXzShangHai = 0.0;
+        let hasFs = false;
+        const dk = new DaoKe(min, max);
+
+        while (currentTime < totalDuration) {
+            if (currentTime >= skill4Cooldown) {
+                hasFs = true;
+                processMsg += (`${currentTime.toFixed(1)}s: 使用 - 狡兔三窟 \n`);
+                currentTime += 0.7; // 吟唱时间
+                skill4Cooldown = currentTime + Math.round(210.0 / gs * 10) / 10; // 冷却时间
+                skill4EffectEnd = currentTime + 70.0; // 状态持续时间
+            } else if (currentTime >= skill1Cooldown) {
+                dk.setKunShouTrue();
+                processMsg += (`${currentTime.toFixed(1)}`);
+                currentTime += 0.7; // 吟唱时间
+                if (ds) {
+                    processMsg += (`s: 使用单手 - 困兽一搏 \n`);
+                    skill1Cooldown = currentTime + Math.round(25 / gs * 10) / 10; // 冷却时间
+                } else {
+                    processMsg += (`s: 使用双手 - 困兽一搏 \n`);
+                    skill1Cooldown = currentTime + Math.round((25 * 0.75) / gs * 10) / 10; // 冷却时间
+                }
+
+                skill1EffectEnd = currentTime + 10.0; // 状态持续时间
+            } else if (currentTime >= skill2Cooldown) {
+                const mc = dk.manCiZaiBei();
+                processMsg += (`${currentTime.toFixed(1)}s: 使用 - 芒刺在背 ${mc} \n`);
+
+                if (hasFs) {
+                    someMcShangHai += mc;
+                }
+                totalMcShangHai += mc;
+                totalShangHai += mc;
+                currentTime += 0.7; // 吟唱时间
+                skill2Cooldown = currentTime + Math.round(6 / gs * 10) / 10 - 0.7; // 冷却时间
+            } else if (currentTime >= skill3Cooldown) {
+                const sd = dk.sheDuGongXin();
+                processMsg += (`${currentTime.toFixed(1)}s: 使用 - 蛇毒攻心 ${sd} \n`);
+                totalShangHai += sd;
+                totalSdShangHai += sd;
+                currentTime += 0.7; // 吟唱时间
+                skill3Cooldown = currentTime + 0; // 冷却时间
+            } else {
+                // 如果所有技能都在冷却中，推进时间到下一个可用技能
+                const nextEvent = Math.min(skill4Cooldown, skill1Cooldown, skill2Cooldown, skill3Cooldown);
+                currentTime = nextEvent;
+            }
+
+            // 检查技能1的状态是否结束
+            if (currentTime >= skill1EffectEnd && skill1EffectEnd > 0) {
+                processMsg += (`${skill1EffectEnd.toFixed(1)}s: 困兽一搏结束 \n`);
+                dk.setKunShouFalse();
+                skill1EffectEnd = 0; // 重置状态结束时间
+            }
+
+            // 检查技能4的状态是否结束
+            if (currentTime >= skill4EffectEnd && skill4EffectEnd > 0) {
+                hasFs = false;
+                totalShangHai += someMcShangHai * 1.52;
+                totalFsShangHai += someMcShangHai * 1.52;
+                processMsg += (`${skill4EffectEnd.toFixed(1)}s: 狡兔三窟结束 ${(someMcShangHai * 1.52).toFixed(1)} \n`);
+                someMcShangHai = 0.0; // 重新计算
+                skill4EffectEnd = 0; // 重置状态结束时间
+            }
+        }
+
+        const tmc = totalMcShangHai * 0.93;
+        totalShangHai += tmc;
+        totalXzShangHai = tmc;
+
+        return Math.round(totalShangHai);
+    }
+
+
+    document.getElementById('calculate-btn').addEventListener('click', function () {
+        const weaponType = document.getElementById('weapon-type').value;
+        const minAttack = parseFloat(document.getElementById('min-attack').value);
+        const maxAttack = parseFloat(document.getElementById('max-attack').value);
+        const attackSpeed = parseFloat(document.getElementById('attack-speed').value);
+        let calculationProcess = `武器类型: ${weaponType === 'single' ? '单手' : '双手'}\n`;
+        calculationProcess += `最小攻击: ${minAttack}\n`;
+        calculationProcess += `最大攻击: ${maxAttack}\n`;
+        const averageAttack = (minAttack + maxAttack) / 2;
+        const damage = averageAttack * attackSpeed; // 简单计算示例
+        calculationProcess += `平均攻击: ${averageAttack}\n`;
+        calculationProcess += `攻速: ${attackSpeed}\n`;
+
+        let ds = weaponType === 'single' ? true : false;
+        // 示例计算（实际计算逻辑可根据需要调整）
+   
+        const sh = getShangHai(minAttack, maxAttack, attackSpeed, ds);
+        calculationProcess += `伤害统计: ${sh} \n`;
+
+        calculationProcess += processMsg;
+
+        document.getElementById('calculation-output').textContent = calculationProcess;
+        processMsg='';
+    });
+
+</script>
+
+</html>
