@@ -214,7 +214,7 @@
             if (currentTime >= skill4Cooldown) {
                 hasFs = true;
                 processMsg += (`${currentTime.toFixed(1)}s: 使用 - 狡兔三窟 \n`);
-                currentTime += 0.7; // 吟唱时间
+                currentTime += 1.5; // 吟唱时间
                 skill4Cooldown = currentTime + Math.round(210.0 / gs * 10) / 10; // 冷却时间
                 skill4EffectEnd = currentTime + 70.0; // 状态持续时间
             } else if (currentTime >= skill1Cooldown) {
