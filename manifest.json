@@ -735,6 +735,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/fb.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/fb.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/gsshgxt.png",
       "output": {
         "resource": {
@@ -849,6 +859,16 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/pjgjyshpbt.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/pzs.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/pzs.png"
         }
       },
       "version": ""
