@@ -735,10 +735,30 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/dxt.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/dxt.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/tspvedk/fb.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/tspvedk/fb.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tspvedk/gssh.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tspvedk/gssh.png"
         }
       },
       "version": ""

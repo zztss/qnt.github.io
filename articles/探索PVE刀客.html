@@ -479,15 +479,15 @@
 <p><img src="images/tspvedk/sypftl.jpg" alt="Sypftl"></p>
 <h2 id="单双手之争">单双手之争</h2>
 <p><img src="images/tspvedk/dsszz.png" alt="Dsszz"></p>
-<p>使用双手武器的角色通常攻速较慢但攻击力较高，而使用单手武器的角色攻速较快但攻击力较低。那么，在打副本时，哪种选择更强呢？</p>
-<p>在实际战斗中，由于技能数量众多且伤害会叠加，我们无法仅通过单一技能进行直接比较。在之前的章节中，我们已经推导出了<code>芒刺在背</code>和<code>蛇毒攻心</code>的伤害计算公式。接下来，我们可以用代码来模拟释放技能的过程，以便更好地理解两者的表现。</p>
+<p>使用双手武器的角色通常攻速较慢但攻击力较高，而使用单手武器的角色攻速较快但攻击力较低。那么，在打副本时选择哪种更强呢？</p>
+<p>在实际战斗中，由于技能数量多且伤害会叠加，我们无法仅通过单一技能伤害进行直接比较。在之前的章节中，我们已经推导出了<code>芒刺在背</code>和<code>蛇毒攻心</code>的伤害计算公式。接下来，我们可以用代码来模拟释放技能的过程，以便更好地观察两者的表现。</p>
 <p>需要模拟的技能有</p>
 <ol>
-<li>困兽一搏（10秒有效,攻击增加基础攻击的48.5%且对怪物增伤21%,冷却时间=25/攻速）</li>
-<li>芒刺在背（上面章节公式计算，这里需要考虑的是实战需要加入心魔伤害）</li>
-<li>血蛭陷阱（多段伤害不好计算，经验粗略统计是芒刺的0.93倍）</li>
+<li>困兽一搏（10秒有效,攻击增加基础攻击的48.5%且对怪物增伤21%,(单)冷却时间=25/攻速,(双)冷却时间=25*0.75/攻速）</li>
+<li>芒刺在背（上面章节公式计算，这里需要考虑的是实战加入心魔伤害）</li>
+<li>血蛭陷阱（多段伤害不好计算，经验我号粗略统计是芒刺的<code>0.93</code>倍）</li>
 <li>蛇毒攻心（实际数据直接用第三形态百毒穿心来计算，实战中基本是用这个）</li>
-<li>狡兔三窟（分身多段攻击不好总结，但是经验告诉我们，分身的伤害是<code>分身时间段内</code>芒刺的1.52倍，就是说分身开启直到结束这段时间芒刺的伤害*1.52就是分身的总伤害）</li>
+<li>狡兔三窟（分身多段攻击不好总结，经验我号分身的伤害是<code>分身时间段内</code>芒刺的1.52倍，就是说分身开启直到结束这段时间芒刺的伤害*1.52就是分身的总伤害）</li>
 </ol>
 <p>思路清晰了，核心代码实现如下</p>
 <pre><code class="lang-C#"> while (currentTime &lt; totalDuration)
@@ -597,7 +597,7 @@
 总血蛭伤害:39666221
 总伤害:161785185
 </code></pre>
-<p>看了下，技能优先级，频率全部正确，伤害也基本符合，这样子就确保了技能伤害的可靠性，我们只要把这些技能的伤害累积计算就是总伤害，当然因为代码加入了致命，为了避免单次结果偏向性，需要把每个数据循环10遍，再取平均值,进一步提高后面图表数据的可靠稳定性。</p>
+<p>通过观察，技能的优先级和频率都正确，伤害值也基本符合预期。这样一来，技能伤害的可靠性得以保证。我们只需将这些技能的伤害进行累积计算，就能得到总伤害。为了避免单次结果的偏差，由于代码中加入了致命伤害，我们需要将每个数据循环10遍，并取其平均值，以进一步提高后续图表数据的稳定性和可靠性。</p>
 <pre><code class="lang-C#"> for (decimal i = 1; i &lt;= 2.5m; i += 0.1m)
 {
     decimal s = 0.0m;
@@ -613,9 +613,9 @@
 <ul>
 <li>变化的攻速</li>
 </ul>
-<p>完成模拟逻辑后，我们将攻击力和攻速应用于一个为时5分钟的副本模拟，以我的角色为例。角色的攻击力范围在29000到54000之间。为了简化细节，我们假设物理致命伤已提升至125%，且致命一击的伤害达到了230以上（具有50%的致命率）。接下来，我们将首先观察攻速变化对伤害的影响。</p>
+<p>完成模拟逻辑后，我们将攻击力和攻速应用于一个时长<code>5</code>分钟的副本模拟，怪物这里假设<code>0</code>防御，以我的角色为例全技能<code>47</code>级。角色的攻击力范围在<code>29000</code>到<code>54000</code>之间。为了降低细节影响，我们假设物理致命伤已提升至<code>125%</code>，且致命一击的伤害达到了<code>230</code>以上（具有50%的致命率）。接下来，我们将首先观察攻速变化对伤害的影响。</p>
 <p><img src="images/tspvedk/gsshzx.png" alt="Gsshzx"></p>
-<p>根据上述折线图，我们可以观察到攻速与伤害之间基本呈现线性正比关系。此外，在攻速为1.43、1.72和2.15时，伤害有明显的提升，这与前面章节的内容相呼应。</p>
+<p>根据上述折线图，我们可以观察到攻速与伤害之间基本呈现线性正比关系。此外，在攻速为<code>1.43</code>、<code>1.72</code>和<code>2.15</code>时，伤害有明显的提升，这与前面章节的内容相呼应。</p>
 <ul>
 <li>变化的攻击</li>
 </ul>
@@ -623,62 +623,75 @@
 <p><img src="images/tspvedk/143gspjgjysh.png" alt="143Gspjgjysh"></p>
 <p><code>1.96</code>攻速每提升500平均攻击的伤害变化图表</p>
 <p><img src="images/tspvedk/196gspjgjysh.png" alt="196Gspjgjysh"></p>
-<p>可以看出，对于刀客而言，虽然提升攻击力能够增加伤害，但其效果远不及攻速的提升。从上图中<code>1.43</code>和<code>1.96</code>的攻速趋势可以明显看出这一点。</p>
+<p>可以看出，对于刀客而言，虽然提升攻击力能够增加伤害，但其效果远不及攻速的提升。</p>
 <p>以我的角色为参考，攻速提升至<code>2.1</code>，相当于在<code>1.43</code>的攻速下增加了<code>1万</code>的平均攻击力。我们平时使用双手武器时，也很难达到<code>1.43</code>的攻速，所以加成不多，好在双手武器可以用单手攻速武器卡分身时间。</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: right;">攻速</th>
+<th style="text-align: right;">攻击速度</th>
+<th style="text-align: right;">平均攻击</th>
 <th style="text-align: right;">伤害</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: right;">1.0</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">91388780.60</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.1</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">96685083.80</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.2</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">99119596.30</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.3</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">104306933.30</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.4</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">104668131.90</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.5</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">111756626.10</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.6</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">113728832.50</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.7</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">125070096.00</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.8</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">128800628.80</td>
 </tr>
 <tr>
 <td style="text-align: right;">1.9</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">134994078.00</td>
 </tr>
 <tr>
 <td style="text-align: right;">2.0</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">135762858.00</td>
 </tr>
 <tr>
 <td style="text-align: right;">2.1</td>
+<td style="text-align: right;">41500.00</td>
 <td style="text-align: right;">139198412.30</td>
 </tr>
 </tbody>
@@ -799,10 +812,22 @@
 </tr>
 </tbody>
 </table>
+<p>接下来我们进一步研究攻速和平均攻击的等效关系，把攻速和伤害导入<code>Excel</code>,可以得出拟合公式</p>
+<p><img src="images/tspvedk/gssh.png" alt="Gssh"></p>
+<pre><code>y=50,000,000x+40,000,000
+</code></pre>
+<p>把平均攻击和伤害导入Excel,同样得到拟合公式</p>
+<pre><code> y=3055.2x+10,000,000
+</code></pre>
+<p>最后将得到的数据导入<code>Origin</code>,就可以得到全技能<code>47</code>级下的伤害和攻速与伤害等效图</p>
+<p><img src="images/tspvedk/dxt.png" alt="Dxt"></p>
+<p>通过这图可以直观看出，平均攻击，攻速，平均秒伤的关系</p>
+<h2 id="伤害计算器">伤害计算器</h2>
+<p>最后留个伤害计算器给大家，可以进一步验证</p>
 <p><img src="images/tspvedk/dhk.jpg" alt="Dhk"></p>
 <ul>
 <li>
-<iframe src="https://zztss.github.io/qnm.github.io/dkpve.html" frameborder="0" allowfullscreen="true" width="100%" height="600px"></iframe>
+<div class="embeddedvideo"><iframe src="https://zztss.github.io/qnm.github.io/dkpve.html" frameborder="0" allowfullscreen="true"></iframe></div>
 </li>
 </ul>
 </article>
