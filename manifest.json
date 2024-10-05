@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Users/mic27/Desktop/MyDoc/qnm/docfx_project",
+  "source_base_path": "C:/Code/MyDoc/qnm/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -39,6 +39,16 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/hhhdshcs/c3.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/hhhdshcs/dxt.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/hhhdshcs/dxt.png"
         }
       },
       "version": ""
