@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>PVE下致命对异人的伤害收益 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="PVE下致命对异人的伤害收益 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/PVE下致命对异人的伤害收益分析.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="pve下致命对异人的伤害收益">PVE下致命对异人的伤害收益</h1>
+
+<p>作者：[德库拉]</p>
+<p>我们知道提高致命对伤害的提升有显著的效果，可是到了异人这个职业，却颇有争议。主要原因是无结伴的情况下异人的鬼灵不继承人物的致命，而结伴<code>傲苍生</code>点满30级普通气场也只能继承人物30%致命，紫色气场才能继承人物50%致命。
+从字面上看确实很低，而且异人并没有包含提升自身致命的技能，所以提升致命非常困难，最终致命路线变成<code>氪金</code>大佬的专属，所以很有必要探索下致命对异人的影响。</p>
+<h2 id="核心技能">核心技能</h2>
+<p>老规矩，先梳洗下异人几个核心技能的伤害计算公式，为了快速奔向主题，我会直接跳过推理过程，直接展示公式，如果有问题，请不吝指出。</p>
+<h3 id="骨灵">骨灵</h3>
+<p><img src="images/pvexzmdyrsy/gl.png" alt="Gl"></p>
+<p>最小攻击</p>
+<pre><code>骨灵最小攻击= 人物面板最小攻击 * 0.5 + 骨灵技能等级*78
+</code></pre>
+<p>最大攻击</p>
+<pre><code>骨灵最大攻击= 人物面板最大攻击 * 0.5 + 骨灵技能等级*120
+</code></pre>
+<p>60级天赋<code>散魄赋</code>可以使<code>骨灵</code>对怪物造成的伤害增加<code>30%</code></p>
+<h3 id="石灵">石灵</h3>
+<p><img src="images/pvexzmdyrsy/sl.png" alt="Sl"></p>
+<p>最小攻击</p>
+<pre><code>石灵最小攻击= 人物面板最小攻击 * 0.5 + 石灵技能等级*96
+</code></pre>
+<p>最大攻击</p>
+<pre><code>石灵最大攻击= 人物面板最大攻击 * 0.5 + 石灵技能等级*162
+</code></pre>
+<h3 id="催山裂石">催山裂石</h3>
+<pre><code>催山裂石下的鬼灵面板攻击=鬼灵面板攻击 * 1.12
+</code></pre>
+<h3 id="血饲">血饲</h3>
+<pre><code>血饲后的鬼灵面板攻击=鬼灵面板攻击 * 1.25
+</code></pre>
+<p>因为后面我准备用全技能<code>40</code>级来模拟，所以这里血饲的加成是25%</p>
+<h3 id="碧血诀">碧血诀</h3>
+<pre><code>碧血诀伤害= 人物面板随机攻击+技能描述法术伤害
+</code></pre>
+<h3 id="山灵知我意">山灵知我意</h3>
+<pre><code>山灵知我意面板= 鬼灵面板攻击 * 1.18
+</code></pre>
+<p>假设30级秘术</p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>注意：山灵知我意,血饲,催山裂石技能叠加时，计算是用连续的乘法，也就是 鬼灵面板×催山裂石尘×血祠×山灵知我意</p>
+</div>
+<h2 id="模拟实际场景">模拟实际场景</h2>
+<ul>
+<li><p>鬼灵属性</p>
+<ol>
+<li>致命一击 39 (天生)</li>
+<li>致命伤 50%  (天生)</li>
+</ol>
+</li>
+<li><p>人物属性</p>
+<ol>
+<li>攻速<code>1.43</code></li>
+<li>致命一击：0-230</li>
+<li>致命伤：(致命一击 / (230.0 / 75.0)) + 50</li>
+</ol>
+<p>因为致命一击是确定的，致命伤却不固定，有的人可能200致命一击，但是致命伤已经到125%。因此这里我假设 230致命一击时，致命伤恰到达到125%，这样子的好处就是我可以直接通过致命一击估算致命伤。</p>
+</li>
+<li><p>天赋</p>
+<p>散魄赋+催山裂石</p>
+</li>
+<li><p>技能</p>
+<p>骨灵+木灵+碧血诀 （全部40级）,这里不选择<code>冥凤临世</code>是因为它的攻击会随着时间衰减不好模拟，因此实际伤害会比我呈现的高一些。但是这不影响我们对致命对伤害增长趋势观察。</p>
+</li>
+<li><p>怪物属性</p>
+<p>单只怪物<code>0防御</code>，<code>0躲避</code>也就是每次必中，不用罗衫渐阔破防，方便测试</p>
+</li>
+<li><p>时长</p>
+<p>五分钟</p>
+</li>
+</ul>
+<p><strong>打印出模拟的结果</strong></p>
+<pre><code>0.00s: 开始血饲
+0.00s: 骨灵1 42375 骨灵2 38541 石灵1 38432 石灵2 18544
+0.70s: 碧血诀 73326
+1.00s: 骨灵1 45436 骨灵2 79273 石灵1 33788 石灵2 23892
+1.40s: 碧血诀 42453
+2.00s: 骨灵1 37205 骨灵2 43454 石灵1 18990 石灵2 33627
+2.10s: 碧血诀 36574
+2.80s: 碧血诀 42400
+3.00s: 骨灵1 44140 骨灵2 45880 石灵1 28593 石灵2 22620
+3.50s: 碧血诀 91692
+4.00s: 骨灵1 30953 骨灵2 51437 石灵1 23342 石灵2 25973
+4.20s: 碧血诀 41084
+4.90s: 碧血诀 81140
+5.00s: 骨灵1 39062 骨灵2 42623 石灵1 33411 石灵2 30647
+5.60s: 碧血诀 33237
+6.00s: 骨灵1 35066 骨灵2 48664 石灵1 32448 石灵2 28892
+6.30s: 碧血诀 88716
+7.00s: 碧血诀 46149
+7.00s: 骨灵1 32638 骨灵2 41098 石灵1 20211 石灵2 30305
+7.70s: 碧血诀 28748
+8.00s: 骨灵1 42632 骨灵2 38437 石灵1 23844 石灵2 25310
+8.40s: 碧血诀 80146
+9.00s: 骨灵1 29774 骨灵2 74314 石灵1 23402 石灵2 29518
+9.10s: 碧血诀 41727
+9.80s: 碧血诀 36055
+10.00s: 骨灵1 46385 骨灵2 55657 石灵1 31338 石灵2 34018
+10.50s: 碧血诀 65228
+11.00s: 骨灵1 45304 骨灵2 34558 石灵1 24670 石灵2 19827
+11.20s: 碧血诀 33890
+11.90s: 碧血诀 39981
+12.00s: 骨灵1 52853 骨灵2 44993 石灵1 28600 石灵2 25221
+12.60s: 碧血诀 37369
+13.00s: 骨灵1 34901 骨灵2 43852 石灵1 25453 石灵2 27669
+13.30s: 碧血诀 30532
+14.00s: 碧血诀 82824
+14.00s: 骨灵1 49004 骨灵2 45464 石灵1 19809 石灵2 27803
+14.70s: 碧血诀 40523
+15.00s: 骨灵1 45400 骨灵2 30475 石灵1 33484 石灵2 26461
+15.40s: 碧血诀 34641
+16.00s: 骨灵1 41297 骨灵2 45394 石灵1 34217 石灵2 23459
+16.10s: 碧血诀 39511
+16.80s: 碧血诀 39840
+17.00s: 骨灵1 73111 骨灵2 41889 石灵1 33891 石灵2 25897
+.....................
+293.30s: 碧血诀 36677
+294.00s: 碧血诀 39503
+294.00s: 骨灵1 34618 骨灵2 68572 石灵1 40046 石灵2 25888
+294.70s: 碧血诀 91032
+295.00s: 骨灵1 51392 骨灵2 28232 石灵1 34559 石灵2 23925
+295.40s: 碧血诀 91512
+296.00s: 骨灵1 46216 骨灵2 42514 石灵1 21461 石灵2 30279
+296.10s: 碧血诀 79888
+296.80s: 碧血诀 45304
+297.00s: 骨灵1 37519 骨灵2 41948 石灵1 24333 石灵2 52161
+297.50s: 碧血诀 31174
+298.00s: 骨灵1 32324 骨灵2 53145 石灵1 25560 石灵2 30768
+298.20s: 碧血诀 54834
+298.90s: 碧血诀 67976
+299.00s: 骨灵1 48049 骨灵2 39380 石灵1 43994 石灵2 29677
+299.60s: 碧血诀 92496
+总伤害:62549430
+平均秒伤:208498
+
+</code></pre>
+<p>鬼灵的攻击频率是<code>1</code>秒<code>1</code>次，人物<code>0.7</code>秒释放一次碧血诀，血饲有空挡就放，所以上面的释放符合预期，接下来就开始收集数据分析</p>
+<h3 id="无结伴143攻速下致命和异人平均攻击的关系">无结伴1.43攻速下致命和异人平均攻击的关系</h3>
+<p><img src="images/pvexzmdyrsy/yr0.0.png" alt="Yr0.0"></p>
+<h3 id="普通气场143攻速下致命和异人平均攻击的关系">普通气场1.43攻速下致命和异人平均攻击的关系</h3>
+<p><img src="images/pvexzmdyrsy/yr0.3.png" alt="Yr0.3"></p>
+<h3 id="紫色气场143攻速下致命和异人平均攻击的关系">紫色气场1.43攻速下致命和异人平均攻击的关系</h3>
+<p><img src="images/pvexzmdyrsy/yr0.5.png" alt="Yr0.5"></p>
+<p>为了更直观看出三者的差异，我们挑选平均法攻为<code>4万</code>来放在一起对比</p>
+<p><img src="images/pvexzmdyrsy/yrqczh.png" alt="Yrqczh"></p>
+<h2 id="结论">结论</h2>
+<p><strong>PVE场景下致命一击和结伴对异人的伤害提升明显</strong></p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/PVE下致命对异人的伤害收益分析.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

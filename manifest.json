@@ -4,6 +4,16 @@
   "xrefmap": "xrefmap.yml",
   "files": [
     {
+      "type": "Conceptual",
+      "source_relative_path": "articles/PVE下致命对异人的伤害收益分析.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/PVE下致命对异人的伤害收益分析.html"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Resource",
       "source_relative_path": "articles/images/clpf/clpfms.jpg",
       "output": {
@@ -299,6 +309,66 @@
       "output": {
         "resource": {
           "relative_path": "articles/images/pdygd/pd2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/gl.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/gl.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/sl.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/sl.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.0.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/yr0.0.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.3.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/yr0.3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.5.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/yr0.5.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/yrqczh.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/yrqczh.png"
         }
       },
       "version": ""
