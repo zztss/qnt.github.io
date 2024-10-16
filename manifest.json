@@ -325,40 +325,40 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/qc0.34.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/qc0.34.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/qc0.54.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/qc0.54.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/pvexzmdyrsy/qcwjb.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/pvexzmdyrsy/qcwjb.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/pvexzmdyrsy/sl.png",
       "output": {
         "resource": {
           "relative_path": "articles/images/pvexzmdyrsy/sl.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.0.png",
-      "output": {
-        "resource": {
-          "relative_path": "articles/images/pvexzmdyrsy/yr0.0.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.3.png",
-      "output": {
-        "resource": {
-          "relative_path": "articles/images/pvexzmdyrsy/yr0.3.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "articles/images/pvexzmdyrsy/yr0.5.png",
-      "output": {
-        "resource": {
-          "relative_path": "articles/images/pvexzmdyrsy/yr0.5.png"
         }
       },
       "version": ""
