@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>射手技能计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #e7f3fe;
+            padding: 10px;
+            border: 1px solid #b3d7ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>射手伤害计算器</h1>
+        <label for="weapon-type">选择武器类型:</label>
+        <select id="weapon-type">
+            <option value="single">单手</option>
+            <option value="double">双手</option>
+        </select>
+
+        <label for="min-attack">最小攻击:</label>
+        <input type="number" id="min-attack" placeholder="输入最小攻击" required>
+
+        <label for="max-attack">最大攻击:</label>
+        <input type="number" id="max-attack" placeholder="输入最大攻击" required>
+
+        <label for="attack-speed">攻速:</label>
+        <input type="number" id="attack-speed" placeholder="输入攻速" required>
+
+        <label for="attack-speed">目标防御:</label>
+        <input type="number" id="target-defense" placeholder="输入目标防御" required>
+
+        <button id="calculate-btn">计算伤害</button>
+
+        <div class="result" id="result">
+            <h2>计算过程:</h2>
+            <pre id="calculation-output"></pre>
+        </div>
+    </div>
+
+</body>
+<script>
+    let processMsg = '';
+    class SheShou {
+    constructor(zuiXiaoGongJi, zuiDaGongJi, gs, isSingle, descFy = 0) {
+        this._zuiXiaoGongJi = zuiXiaoGongJi;
+        this._zuiDaGongJi = zuiDaGongJi;
+        this._gs = gs;
+        this._isSingle = isSingle;
+        this._descFy = descFy;
+        this._isLiXianFeiJian = false;
+        this._isLiuHuo = false;
+        this._isXinXian = false;
+    }
+
+    static _rd = () => Math.floor(Math.random() * 2);
+
+    IsZhiMing() {
+        return SheShou._rd() > 0;
+    }
+
+    SetXinXianTrue() {
+        this._isXinXian = true;
+        const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+        let sh = 5036 + rdGj - this._descFy;
+
+        if (sh < (sh + this._descFy) * 0.02) {
+            return (sh + this._descFy) * 0.02;
+        } else {
+            return this.IsZhiMing() ? sh * 2.25 : sh;
+        }
+    }
+
+    SetXinXianFalse() {
+        this._isXinXian = false;
+    }
+
+    SetLiHuoTrue() {
+        this._isLiuHuo = true;
+    }
+
+    SetLiHuoFalse() {
+        this._isLiuHuo = false;
+    }
+
+    SetLiXianTrue() {
+        this._isLiXianFeiJian = true;
+    }
+
+    SetLiXianFalse() {
+        this._isLiXianFeiJian = false;
+    }
+
+    GetSuiJiGongJi(min, max) {
+        if (this._isLiXianFeiJian) {
+            let cGs = this._gs + 0.222;
+            if (cGs > 1.4) {
+                let cyGs = cGs - 1.4;
+                min += Math.floor(min * 0.65 * cyGs);
+                max += Math.floor(max * 0.65 * cyGs);
+            }
+        }
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    YiSheJiuRi() {
+        const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+        let sh = 3130 + rdGj - this._descFy;
+
+        if (sh < (sh + this._descFy) * 0.02) {
+            return (sh + this._descFy) * 0.02;
+        } else {
+            return this.IsZhiMing() ? sh * 2.25 : sh;
+        }
+    }
+
+    LiuHuo() {
+        const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+        let sh = 2196 + rdGj - this._descFy;
+
+        if (sh < (sh + this._descFy) * 0.02) {
+            return (sh + this._descFy) * 0.02;
+        } else {
+            return this.IsZhiMing() ? sh * 2.25 : sh;
+        }
+    }
+
+    XieWei() {
+        const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+        const xwBasic = rdGj + 2235;
+        let wuli = 0;
+        let xxjc = this._isXinXian ? 0.21 : 0.0;
+
+        if (this._isLiuHuo) {
+            if (this._isSingle) {
+                wuli = (xwBasic + 4752 + 3558) * (1 + ((0.384 + 0.384 + xxjc) / 2)) - this._descFy;
+            } else {
+                wuli = (xwBasic + 1568 + 3558) * (1 + ((0.384 + 0.384 + xxjc) / 2)) - this._descFy;
+            }
+        } else {
+            if (this._isSingle) {
+                wuli = (xwBasic + 4752 + 3558) * (1 + (xxjc / 2)) - this._descFy;
+            } else {
+                wuli = (xwBasic + 1568 + 3558) * (1 + (xxjc / 2)) - this._descFy;
+            }
+        }
+
+        if (wuli < (wuli + this._descFy) * 0.02) {
+            return (wuli + this._descFy) * 0.02;
+        } else {
+            return this.IsZhiMing() ? wuli * 2.25 : wuli;
+        }
+    }
+
+    ZhuangTaiQiWang() {
+        let cyJn = 0.0;
+        let bcyJn = 0.0;
+        let avgGj = (this._zuiXiaoGongJi + this._zuiDaGongJi) / 2;
+        let xwBasic = (avgGj * 0.6) + 942;
+        let xd = xwBasic * (1 + (0.384 + 0.384 + 0.21) / 2) - this._descFy;
+
+        if (xd<0||xd < (xd + this._descFy) * 0.02) {
+            bcyJn += (xd + this._descFy) * 0.02;
+        } else {
+            cyJn += xd;
+        }
+
+        let lh = (avgGj * 0.6) + 219 - this._descFy;
+        if (lh<0||lh < (lh + this._descFy) * 0.02) {
+            bcyJn += (lh + this._descFy) * 0.02;
+        } else {
+            cyJn += lh;
+        }
+
+        let ysjr = (avgGj * 0.6) + 316 - this._descFy;
+        if (ysjr<0||ysjr < (ysjr + this._descFy) * 0.02) {
+            bcyJn += (ysjr + this._descFy) * 0.02;
+        } else {
+            cyJn += ysjr;
+        }
+
+        let jtsh = avgGj * 0.87 - this._descFy;
+        if (jtsh<0||jtsh < (jtsh + this._descFy) * 0.02) {
+            bcyJn += (jtsh + this._descFy) * 0.02;
+        } else {
+            bcyJn += jtsh;
+        }
+
+        return (cyJn * 2.25 * 0.5 + cyJn * 0.5) + bcyJn;
+    }
+
+    static FormatGs(gs) {
+        var rs= gs < 0.7 ? 0.7 : gs;
+        return parseFloat(rs);
+    }
+
+    static GetSheShouSh(min, max, gs, isSingle, fy, isPrint = false) {
+        let currentTime = 0.0;
+        const totalDuration = 300.0;
+
+        let skill1Cooldown = 0.0;
+        let skill2Cooldown = 0.0;
+        let skill3Cooldown = 0.0;
+        let skill4Cooldown = 0.0;
+        let skill1EffectEnd = 0.0;
+        let skill2EffectEnd = 0.0;
+        let skill4EffectEnd = 0.0;
+        let gsZy = 0.00;
+        let lastSh = 0.0;
+
+        const ss = new SheShou(min, max, gs, isSingle, fy);
+
+        while (currentTime < totalDuration) {
+            if (currentTime >= skill4Cooldown) {
+                ss.SetLiXianTrue();
+                if (isPrint) {
+                    processMsg += (`${currentTime.toFixed(2)}s: 离弦飞箭\n`);
+                }
+                currentTime += 0.7;
+                skill4Cooldown = currentTime + (40.0 / gs).toFixed(2);
+                skill4EffectEnd = currentTime + 8.0;
+                gsZy = 0.222;
+            } else if (currentTime >= skill1Cooldown) {
+                ss.SetLiHuoTrue();
+                const shSH = ss.LiuHuo() + ss.YiSheJiuRi();
+                lastSh += shSH;
+                if (isPrint) {
+                    processMsg += (`${currentTime.toFixed(2)}s: 流火+羿射九日 ${shSH.toFixed(0)}\n`);
+                }
+                currentTime += 0.7;
+                skill1Cooldown = currentTime + 10.8;
+                skill1EffectEnd = currentTime + 10;
+            } else if (currentTime >= skill2Cooldown) {
+                const xxsh = ss.SetXinXianTrue();
+                lastSh += xxsh;
+                if (isPrint) {
+                    processMsg += (`${currentTime.toFixed(2)}s: 心弦 ${xxsh.toFixed(0)}\n`);
+                }
+                currentTime += 0.7;
+                skill2Cooldown = currentTime + 12;
+                skill2EffectEnd = currentTime + 12;
+            } else if (currentTime >= skill3Cooldown) {
+                const xwSH = ss.XieWei();
+                lastSh += xwSH;
+                if (isPrint) {
+                    processMsg += (`${currentTime.toFixed(2)}s: 蝎尾 ${xwSH.toFixed(0)}\n`);
+                }
+                currentTime += SheShou.FormatGs((1 / (gs + gsZy)).toFixed(2));
+                skill3Cooldown = currentTime;
+            } else {
+                const nextEvent = Math.min(skill4Cooldown, Math.min(skill1Cooldown, skill3Cooldown));
+                currentTime = nextEvent;
+            }
+
+            if (currentTime >= skill4EffectEnd && skill4EffectEnd > 0) {
+                ss.SetLiXianFalse();
+                gsZy = 0;
+                if (isPrint) {
+                    processMsg +=(`${skill4EffectEnd.toFixed(1)}s: 离弦飞箭结束\n`);
+                }
+                skill4EffectEnd = 0;
+            }
+
+            if (currentTime >= skill1EffectEnd && skill1EffectEnd > 0) {
+                ss.SetLiHuoFalse();
+                if (isPrint) {
+                    processMsg +=(`${skill1EffectEnd.toFixed(2)}s: 流火结束\n`);
+                }
+                skill1EffectEnd = 0;
+            }
+
+            if (currentTime >= skill2EffectEnd && skill2EffectEnd > 0) {
+                ss.SetXinXianFalse();
+                if (isPrint) {
+                    processMsg +=(`${skill2EffectEnd.toFixed(2)}s: 心弦结束\n`);
+                }
+                skill2EffectEnd = 0;
+            }
+        }
+
+        const qwZT = ss.ZhuangTaiQiWang();
+        if (isPrint) {
+            processMsg +=(`蝎尾毒攻击，流火，羿射九日，箭塔伤害每秒伤害:${qwZT.toFixed(0)}\n`);
+        }
+        lastSh += qwZT * 300;
+        if (isPrint) {
+            processMsg +=(`总伤害:${lastSh.toFixed(0)}\n`);
+        }
+
+        return lastSh;
+    }
+}
+
+
+document.getElementById('calculate-btn').addEventListener('click', function () {
+        const weaponType = document.getElementById('weapon-type').value;
+        const minAttack = parseFloat(document.getElementById('min-attack').value);
+        const maxAttack = parseFloat(document.getElementById('max-attack').value);
+        const attackSpeed = parseFloat(document.getElementById('attack-speed').value);
+        const targetDefense = parseFloat(document.getElementById('target-defense').value);
+        let calculationProcess = `武器类型: ${weaponType === 'single' ? '单手' : '双手'}\n`;
+        calculationProcess += `全技能43级 致命伤125% 致命率50%\n`;
+        calculationProcess += `最小攻击: ${minAttack}\n`;
+        calculationProcess += `最大攻击: ${maxAttack}\n`;
+        const averageAttack = (minAttack + maxAttack) / 2;
+        const damage = averageAttack * attackSpeed; // 简单计算示例
+        calculationProcess += `平均攻击: ${averageAttack}\n`;
+        calculationProcess += `攻速: ${attackSpeed}\n`;
+        calculationProcess += `目标防御: ${targetDefense}\n`;
+
+        let ds = weaponType === 'single' ? true : false;
+        // 示例计算（实际计算逻辑可根据需要调整）
+   
+        const sh = SheShou.GetSheShouSh(minAttack, maxAttack, attackSpeed, ds,targetDefense,true);
+        calculationProcess += `平均秒伤: ${(sh/300).toFixed(0)} \n`;
+        calculationProcess += `--------------------------------\n`;
+        calculationProcess += processMsg;
+
+        document.getElementById('calculation-output').textContent = calculationProcess;
+        processMsg='';
+    });
+
+
+</script>
+</html>
