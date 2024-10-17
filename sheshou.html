@@ -351,7 +351,7 @@ document.getElementById('calculate-btn').addEventListener('click', function () {
         const attackSpeed = parseFloat(document.getElementById('attack-speed').value);
         const targetDefense = parseFloat(document.getElementById('target-defense').value);
         let calculationProcess = `武器类型: ${weaponType === 'single' ? '单手' : '双手'}\n`;
-        calculationProcess += `全技能43级 致命伤125% 致命率50%\n`;
+        calculationProcess += `副本5分钟 全技能43级 致命伤125% 致命率50% 忽视毒管够\n`;
         calculationProcess += `最小攻击: ${minAttack}\n`;
         calculationProcess += `最大攻击: ${maxAttack}\n`;
         const averageAttack = (minAttack + maxAttack) / 2;
