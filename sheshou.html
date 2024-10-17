@@ -269,7 +269,7 @@
                     processMsg += (`${currentTime.toFixed(2)}s: 离弦飞箭\n`);
                 }
                 currentTime += 0.7;
-                skill4Cooldown = currentTime + (40.0 / gs).toFixed(2);
+                skill4Cooldown = currentTime + parseFloat((40.0 / gs).toFixed(2));
                 skill4EffectEnd = currentTime + 8.0;
                 gsZy = 0.222;
             } else if (currentTime >= skill1Cooldown) {
