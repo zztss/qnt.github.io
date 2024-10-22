@@ -23,6 +23,11 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap;
+        }
+        .purple {
+            color: purple;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -37,8 +42,8 @@
 
     <script>
         const supremeRewards = [
-            {name: "碧海晴澜天衣锦盒", probability: 0.0025},
-            {name: "璇玑仙玉", probability: 0.0135}
+            {name: "碧海晴澜天衣锦盒", probability: 0.0025, isSpecial: true},
+            {name: "璇玑仙玉", probability: 0.0135, isSpecial: true}
         ];
 
         const deluxeRewards = [
@@ -92,7 +97,7 @@
             }
 
             totalDraws += times;
-            totalCurrency += times * 1800;
+            totalCurrency += times * 180;
 
             // Guarantee logic for 10 draws
             if (times === 10 && !hasSupreme && !hasDeluxe) {
@@ -109,13 +114,17 @@
                 cumulativeRewards[guaranteedReward.name] = (cumulativeRewards[guaranteedReward.name] || 0) + 1;
             }
 
-            document.getElementById('result').innerText = results.join(', ');
+            document.getElementById('result').innerHTML = results.map(r => {
+                const reward = [...supremeRewards, ...deluxeRewards, ...refinedRewards].find(reward => reward.name === r);
+                return reward.isSpecial ? `<span class="purple">${r}</span>` : r;
+            }).join(', ');
 
             let summaryText = `已抽次数: ${totalDraws}, 累计花费: ${totalCurrency} 玉\n累计获得的道具:\n`;
             for (let reward in cumulativeRewards) {
-                summaryText += `${reward}: ${cumulativeRewards[reward]} 次\n`;
+                const rewardObj = [...supremeRewards, ...deluxeRewards, ...refinedRewards].find(r => r.name === reward);
+                summaryText += rewardObj.isSpecial ? `<span class="purple">${reward}</span>: ${cumulativeRewards[reward]} 次\n` : `${reward}: ${cumulativeRewards[reward]} 次\n`;
             }
-            document.getElementById('summary').innerText = summaryText;
+            document.getElementById('summary').innerHTML = summaryText;
         }
 
         function getRandomReward(isGuaranteed = false) {
