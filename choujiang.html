@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽奖游戏</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result, #summary {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>抽奖游戏</h1>
+    <button onclick="draw(1)">抽1次</button>
+    <button onclick="draw(10)">抽10次</button>
+
+    <div id="result">抽奖结果将在这里显示</div>
+    <div id="summary">累计获得的道具和抽奖次数将在这里显示</div>
+
+    <script>
+        const supremeRewards = [
+            {name: "碧海晴澜天衣锦盒", probability: 0.0025},
+            {name: "璇玑仙玉", probability: 0.0135}
+        ];
+
+        const deluxeRewards = [
+            {name: "精巧时装璇玑礼盒", probability: 0.005},
+            {name: "以爱之名", probability: 0.05},
+            {name: "璇玑玉屑*10", probability: 0.045},
+            {name: "璇玑玉屑*5", probability: 0.05},
+            {name: "璇玑队标", probability: 0.01},
+            {name: "幻术生花动作", probability: 0.01},
+            {name: "伞韵·晴夏艳阳", probability: 0.01},
+            {name: "枫锦流岚·背饰礼盒", probability: 0.01}
+        ];
+
+        const refinedRewards = [
+            {name: "璇玑玉屑*2", probability: 0.045},
+            {name: "璇玑玉屑", probability: 0.045},
+            {name: "璇玑喇叭", probability: 0.09},
+            {name: "净瓶*100", probability: 0.09},
+            {name: "琉璃染", probability: 0.018},
+            {name: "绮罗染", probability: 0.028},
+            {name: "云染", probability: 0.028},
+            {name: "彩虹碎片", probability: 0.09},
+            {name: "千韧丝", probability: 0.09},
+            {name: "红包", probability: 0.09},
+            {name: "火树银花·盲盒烟花筒", probability: 0.045},
+            {name: "绚丽玫瑰", probability: 0.045},
+            {name: "玫瑰", probability: 0.09}
+        ];
+
+        let totalDraws = 0;
+        let totalCurrency = 0;
+        let cumulativeRewards = {};
+
+        function draw(times) {
+            let results = [];
+            let hasSupreme = false;
+            let hasDeluxe = false;
+
+            for (let i = 0; i < times; i++) {
+                let reward = getRandomReward();
+                results.push(reward.name);
+
+                if (supremeRewards.find(r => r.name === reward.name)) {
+                    hasSupreme = true;
+                } else if (deluxeRewards.find(r => r.name === reward.name)) {
+                    hasDeluxe = true;
+                }
+
+                // Accumulate rewards
+                cumulativeRewards[reward.name] = (cumulativeRewards[reward.name] || 0) + 1;
+            }
+
+            totalDraws += times;
+            totalCurrency += times * 1800;
+
+            // Guarantee logic for 10 draws
+            if (times === 10 && !hasSupreme && !hasDeluxe) {
+                let forcedReward = getRandomReward(true);
+                results.push(`保底获得: ${forcedReward.name}`);
+                cumulativeRewards[forcedReward.name] = (cumulativeRewards[forcedReward.name] || 0) + 1;
+            }
+
+            // Guarantee logic for 80 draws
+            if (totalDraws >= 80) {
+                totalDraws = 0;
+                let guaranteedReward = supremeRewards[Math.floor(Math.random() * supremeRewards.length)];
+                results.push(`80次保底获得: ${guaranteedReward.name}`);
+                cumulativeRewards[guaranteedReward.name] = (cumulativeRewards[guaranteedReward.name] || 0) + 1;
+            }
+
+            document.getElementById('result').innerText = results.join(', ');
+
+            let summaryText = `已抽次数: ${totalDraws}, 累计花费: ${totalCurrency} 玉\n累计获得的道具:\n`;
+            for (let reward in cumulativeRewards) {
+                summaryText += `${reward}: ${cumulativeRewards[reward]} 次\n`;
+            }
+            document.getElementById('summary').innerText = summaryText;
+        }
+
+        function getRandomReward(isGuaranteed = false) {
+            let random = Math.random();
+            let rewards = [...supremeRewards, ...deluxeRewards, ...refinedRewards];
+
+            if (isGuaranteed) {
+                rewards = [...supremeRewards, ...deluxeRewards];
+            }
+
+            let cumulativeProbability = 0;
+            for (let reward of rewards) {
+                cumulativeProbability += reward.probability;
+                if (random < cumulativeProbability) {
+                    return reward;
+                }
+            }
+
+            return refinedRewards[refinedRewards.length - 1];
+        }
+    </script>
+
+</body>
+</html>
