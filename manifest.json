@@ -1074,6 +1074,16 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "articles/images/zdzxjx/wqth.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/zdzxjx/wqth.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "articles/intro.md",
       "output": {
@@ -1132,6 +1142,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/探索PVE刀客.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/最小最大攻击解析.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/最小最大攻击解析.html"
         }
       },
       "version": ""
