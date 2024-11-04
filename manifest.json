@@ -1075,6 +1075,26 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/images/tsxyhdbl/bgsj.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tsxyhdbl/bgsj.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/images/tsxyhdbl/bgws.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/images/tsxyhdbl/bgws.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/images/zdzxjx/wqth.png",
       "output": {
         "resource": {
@@ -1142,6 +1162,16 @@
       "output": {
         ".html": {
           "relative_path": "articles/探索PVE刀客.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/提升幸运号的爆率.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/提升幸运号的爆率.html"
         }
       },
       "version": ""

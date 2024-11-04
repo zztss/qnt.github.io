@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>提升幸运号的爆率 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="提升幸运号的爆率 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/提升幸运号的爆率.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="提升幸运号的爆率">提升幸运号的爆率</h1>
+
+<h2 id="爆率与幸运点数">爆率与幸运点数</h2>
+<p>首先，爆率与幸运点数关系不大，但幸运点数会影响稀有物品的掉落，如鬼装，带鉴定装备，逆天装备等。</p>
+<p>游戏的概率机制通常采用PRD算法：</p>
+<pre><code>P(N)(爆率) = C * N
+</code></pre>
+<ul>
+<li>C 代表幸运爆率增量。例如，500幸运对应6%的C值。</li>
+<li>N 是打BOSS的数量。</li>
+</ul>
+<p>爆率计算如下：</p>
+<ul>
+<li>P(1) = 6% * 1</li>
+<li>P(2) = 12%</li>
+<li>P(3) = 18%</li>
+<li>...</li>
+<li>P(17) = 102%</li>
+</ul>
+<p>可以理解为，前16个BOSS不掉稀有物品时，第17个BOSS必掉。但红装和紫装的掉落是分开的，比例为90:10。</p>
+<h2 id="提升爆率的方法">提升爆率的方法</h2>
+<h3 id="叠加boss数量">叠加BOSS数量</h3>
+<p>每天增加打BOSS的数量（如黄金图，守财，一条龙，画壁等），可以有效提升爆率。</p>
+<h3 id="爆鬼的问题">爆鬼的问题</h3>
+<p>经过测算，爆鬼的C值是正常C值的1/100。500幸运对应的爆鬼C值为0.06%，即P(1666) = 1。这意味着在打了1600个BOSS左右时，爆鬼的可能性大增。</p>
+<h3 id="小怪的影响">小怪的影响</h3>
+<p>除了BOSS，击杀小怪也可以提高爆率。100个小怪的爆率相当于10个单精英或1个BOSS。</p>
+<h2 id="提升爆率的策略">提升爆率的策略</h2>
+<ol>
+<li>固定BOSS数量：每天保持40-50个BOSS，数据分布要稳定。</li>
+<li>多挂机刷小怪数量，积累C值</li>
+<li>保持稳定的C值：避免频繁切换装备，使用一套幸运装备打小怪和BOSS。</li>
+<li>观察长期趋势：如果一周内能稳定爆出2-3个鬼，无需调整幸运点数。否则，可尝试使用自己的幸运数字作为尾数。<br>
+<img src="images/tsxyhdbl/bgws.png" alt="Bgws"></li>
+<li>优化打怪顺序：先打一条龙、黄金图、守财奴，再进行蜃妖和高级剧情。</li>
+<li>记录爆鬼时间：监控密集爆鬼的时间段，在爆鬼率高的时间点进行高级剧情和蜃妖。<br>
+<img src="images/tsxyhdbl/bgsj.png" alt="Bgsj"></li>
+</ol>
+<p>通过这些方法，你可以更科学地提升幸运号的爆率，获取更多稀有装备。</p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/提升幸运号的爆率.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
