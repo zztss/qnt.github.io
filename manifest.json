@@ -5,6 +5,16 @@
   "files": [
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/Boss仇恨机制.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Boss仇恨机制.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/PVE下致命对异人的伤害收益分析.md",
       "output": {
         ".html": {

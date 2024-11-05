@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>BOSS仇恨机制 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="BOSS仇恨机制 ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/Boss仇恨机制.md/#L1">
+  </head>
+
+  <script type="module">
+    import options from './../public/main.js'
+    import { init } from './../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="boss仇恨机制">BOSS仇恨机制</h1>
+
+<p>在倩女幽魂手游中，你是否曾作为脆皮输出，频繁吸引BOSS仇恨而被瞬间击败？是否对BOSS为何总是针对你而非他人感到困惑？接下来，请跟随小编一起，深入了解这款游戏中的BOSS仇恨机制。</p>
+<h2 id="一boss仇恨机制概述">一、BOSS仇恨机制概述</h2>
+<p>本文重点探讨在打BOSS时如何控制仇恨。在游戏中，吸引BOSS仇恨的因素主要包括以下几点：</p>
+<ol>
+<li>视野仇恨（V）</li>
+</ol>
+<p>BOSS在其仇恨视野范围内会随机选择目标进行攻击。通常，坦克职业因站位靠前，更容易成为BOSS的首要攻击对象，而远程输出职业则相对安全。</p>
+<ol start="2">
+<li>坦克仇恨修正（T）</li>
+</ol>
+<p>BOSS对坦克类职业具有优先仇恨判定，这减轻了坦克在拉怪时的压力，使其能够更有效地控制战场。</p>
+<ol start="3">
+<li>技能仇恨（S）</li>
+</ol>
+<p>使用某些特定技能会增加BOSS的仇恨值。例如，甲鱼的<code>司怪困</code>技能就是拉仇恨的神技。</p>
+<ol start="4">
+<li>伤害仇恨（D）</li>
+</ol>
+<p>BOSS产生的仇恨与玩家对其造成的伤害成正比。因此，输出伤害最高的玩家往往会成为BOSS的主要攻击目标。</p>
+<ol start="5">
+<li>威胁值（O）</li>
+</ol>
+<p>任何动作都可能对BOSS产生威胁值，从而增加仇恨。这包括攻击、治疗等行为。</p>
+<h2 id="二仇恨计算方式">二、仇恨计算方式</h2>
+<p>总仇恨值由视野仇恨、伤害仇恨以及技能威胁（如奶妈的加血）等共同构成。这些因素相互叠加，形成最终的仇恨值。</p>
+<pre><code>
+总仇恨值（H） = 视野仇恨（V） + 坦克仇恨修正（T） + 技能仇恨（S） + 伤害仇恨（D） + 其他威胁（O）
+</code></pre>
+<p><strong>此外，公式中的各项（V、T、S、D、O）可能并不是简单的数值相加，而是可能通过某种权重或函数关系进行组合。</strong></p>
+<h2 id="三脆皮职业降低仇恨的方法">三、脆皮职业降低仇恨的方法</h2>
+<p>对于脆皮职业而言，降低BOSS仇恨至关重要。以下是一些有效的方法：</p>
+<ol>
+<li><p>暂停攻击（但显然这不是长久之计）</p>
+</li>
+<li><p>角色死亡（虽然能暂时摆脱仇恨，但显然不是解决问题的根本方法）</p>
+</li>
+<li><p>使用降低仇恨的技能(例如，奶妈的<code>钩吻射罔</code>,射手、影灵、魅者的<code>隐身</code>)。</p>
+</li>
+</ol>
+<h2 id="结语">结语</h2>
+<p>通过了解并掌握BOSS仇恨机制，你将能够更好地在倩女幽魂手游中生存下来。希望本文能够帮助你解决在游戏中遇到的困惑，让你在战斗中更加游刃有余。最后，祝愿各位玩家在游戏中玩得开心！</p>
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/zztss/MyDoc/blob/main/qnm/docfx_project/articles/Boss仇恨机制.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
