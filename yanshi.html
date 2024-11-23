@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>偃师技能计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #e7f3fe;
+            padding: 10px;
+            border: 1px solid #b3d7ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>偃师伤害计算器</h1>
+        <label for="batter-type">选择连击点:</label>
+        <select id="batter-type">
+            <option value="bfour">四连击</option>
+            <option value="bfive">五连击</option>
+        </select>
+
+        <label for="min-attack">最小攻击:</label>
+        <input type="number" id="min-attack" placeholder="输入最小攻击" required>
+
+        <label for="max-attack">最大攻击:</label>
+        <input type="number" id="max-attack" placeholder="输入最大攻击" required>
+
+        <label for="attack-speed">攻速:</label>
+        <input type="number" id="attack-speed" placeholder="输入攻速" required>
+
+        <label for="attack-speed">目标防御:</label>
+        <input type="number" id="target-defense" placeholder="输入目标防御" required>
+
+        <button id="calculate-btn">计算伤害</button>
+
+        <div class="result" id="result">
+            <h2>计算过程:</h2>
+            <pre id="calculation-output"></pre>
+        </div>
+    </div>
+
+</body>
+<script>
+    let processMsg = '';
+
+    class YanShi {
+        constructor(zuiXiaoGongJi, zuiDaGongJi, gs, clbfb, cljc, descFy = 0) {
+            this._zuiXiaoGongJi = zuiXiaoGongJi;
+            this._zuiDaGongJi = zuiDaGongJi;
+            this._gs = gs;
+            this._descFy = descFy;
+            this._clbfb = clbfb;
+            this._clJc = cljc;
+        }
+
+        // 随机数生成器
+        static _rd = () => Math.random();
+
+        // 是否致命
+        IsZhiMing() {
+            return YanShi._rd() > 0.5;
+        }
+
+        // 获取随机攻击
+        GetSuiJiGongJi(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 格式化gs
+        static FormatGs(gs) {
+            return gs < 0.7 ? 0.7 : gs;
+        }
+
+        // 双龙臂
+        ShuangLongBi() {
+            const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+            const xwBasic = rdGj + 12941;
+            const wuli = xwBasic - this._descFy;
+
+            // 保底
+            if (wuli < 0 || wuli < (wuli + this._descFy) * 0.02) {
+                return (wuli + this._descFy) * 0.02;
+            } else {
+                if (this.IsZhiMing()) {
+                    return wuli * 2.25;
+                } else {
+                    return wuli;
+                }
+            }
+        }
+
+        // 穿云手
+        ChuanYunShou() {
+            const avgGj = (this._zuiXiaoGongJi + this._zuiDaGongJi) / 2;
+            const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+            const basic = avgGj + 7286 * this._clbfb;
+            const wuli = basic * (1 + this._clJc) + rdGj - this._descFy;
+
+            // 保底
+            if (wuli < 0 || wuli < (wuli + this._descFy) * 0.02) {
+                return (wuli + this._descFy) * 0.02;
+            } else {
+                if (this.IsZhiMing()) {
+                    return wuli * 2.25;
+                } else {
+                    return wuli;
+                }
+            }
+        }
+
+        // 穿云手流血期望
+        ChuanYunShouLiuXue() {
+            const avgGj = (this._zuiXiaoGongJi + this._zuiDaGongJi) / 2;
+            const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+            const basic = avgGj + 3805 * this._clbfb;
+            const wuli = basic * (1 + this._clJc) * 0.9 + rdGj * 0.8 - this._descFy;
+
+            let rs = 0;
+            // 保底
+            if (wuli < 0 || wuli < (wuli + this._descFy) * 0.02) {
+                rs = (wuli + this._descFy) * 0.02;
+            } else {
+                rs = wuli * 2.25 * 0.5 + wuli * 0.5;
+            }
+
+            return rs;
+        }
+
+        // 获取伤害
+        static GetHarm(min, max, gs, clbfb, cljc, fy, isPrint = false) {
+            let currentTime = 0;
+            const totalDuration = 300;
+
+            let skill1Cooldown = 0;
+            let skill2Cooldown = 0;
+            let lastSh = 0;
+            let ljd = 0;
+
+            const ys = new YanShi(min, max, gs, clbfb, cljc, fy);
+
+            while (currentTime < totalDuration) {
+                if (currentTime >= skill2Cooldown && ljd >= 5) {
+                    ljd = 3;
+                    const sh = ys.ChuanYunShou();
+                    if (isPrint) {
+                        processMsg +=(`${currentTime.toFixed(2)}s: 穿云手 ${sh.toFixed(0)}\n`);
+                    }
+                    lastSh += sh;
+
+                    currentTime += YanShi.FormatGs(1 / gs); // 吟唱时间
+                    skill2Cooldown = currentTime + 0; // 冷却时间
+                } else if (currentTime >= skill1Cooldown) {
+                    ljd++;
+                    const sh = ys.ShuangLongBi();
+
+                    if (isPrint) {
+                        processMsg +=(`${currentTime.toFixed(2)}s: 双龙臂 ${sh.toFixed(0)}\n`);
+                    }
+                    lastSh += sh;
+
+                    currentTime += YanShi.FormatGs(1 / gs); // 吟唱时间
+                    skill1Cooldown = currentTime + 0; // 冷却时间
+                } else {
+                    // 如果所有技能都在冷却中，推进时间到下一个可用技能
+                    const nextEvent = Math.min(skill1Cooldown, skill2Cooldown);
+                    currentTime = nextEvent;
+                }
+            }
+
+            const cysLiuXue = ys.ChuanYunShouLiuXue();
+            const cysLiuXueTotal = cysLiuXue * totalDuration;
+            lastSh += cysLiuXueTotal;
+
+            if (isPrint) {
+                processMsg +=(`流血总伤害: ${cysLiuXueTotal.toFixed(0)}\n`);
+                processMsg +=(`总伤害: ${lastSh.toFixed(0)}\n`);
+                processMsg +=(`每秒伤害: ${(lastSh / 300).toFixed(0)}\n`);
+            }
+
+            return lastSh;
+        }
+    }
+
+    document.getElementById('calculate-btn').addEventListener('click', function () {
+        const batterType = document.getElementById('batter-type').value;
+        const minAttack = parseFloat(document.getElementById('min-attack').value);
+        const maxAttack = parseFloat(document.getElementById('max-attack').value);
+        const attackSpeed = parseFloat(document.getElementById('attack-speed').value);
+        const targetDefense = parseFloat(document.getElementById('target-defense').value);
+        let calculationProcess = `连击点: ${batterType === 'bfour' ? '四连击' : '五连击'}\n`;
+        calculationProcess += `副本5分钟 双龙臂穿云手50级 致命伤125% 致命率50%\n`;
+        calculationProcess += `最小攻击: ${minAttack}\n`;
+        calculationProcess += `最大攻击: ${maxAttack}\n`;
+        const averageAttack = (minAttack + maxAttack) / 2;
+        const damage = averageAttack * attackSpeed; // 简单计算示例
+        calculationProcess += `平均攻击: ${averageAttack}\n`;
+        calculationProcess += `攻速: ${attackSpeed}\n`;
+        calculationProcess += `目标防御: ${targetDefense}\n`;
+
+        let cljc = batterType === 'bfour' ? 1 : 1.72;
+       
+        const sh = YanShi.GetHarm(minAttack, maxAttack, attackSpeed, 0.393,cljc, targetDefense, true);
+        calculationProcess += `平均秒伤: ${(sh / 300).toFixed(0)} \n`;
+        calculationProcess += `--------------------------------\n`;
+        calculationProcess += processMsg;
+
+        document.getElementById('calculation-output').textContent = calculationProcess;
+        processMsg = '';
+    });
+
+
+</script>
+
+</html>
