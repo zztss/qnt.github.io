@@ -164,9 +164,9 @@
         // 穿云手流血期望
         ChuanYunShouLiuXue() {
             const avgGj = (this._zuiXiaoGongJi + this._zuiDaGongJi) / 2;
-            const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);
+            //const rdGj = this.GetSuiJiGongJi(this._zuiXiaoGongJi, this._zuiDaGongJi);计算期望不要用随机攻击，移除
             const basic = avgGj + 3805 * this._clbfb;
-            const wuli = basic * (1 + this._clJc) * 0.9 + rdGj * 0.8 - this._descFy;
+            const wuli = basic * (1 + this._clJc) * 0.9 + avgGj * 0.8 - this._descFy;
 
             let rs = 0;
             // 保底
