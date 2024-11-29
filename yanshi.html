@@ -59,6 +59,7 @@
             padding: 10px;
             border: 1px solid #b3d7ff;
             border-radius: 4px;
+            overflow-x: hidden;
         }
     </style>
 </head>
@@ -349,8 +350,8 @@
             }
 
             if (isPrint) {
-                processMsg+=(`流血伤害:${lxsh.toFixed(0)} 占比:${(lxsh/lastSh).toFixed(2)*100}%\n`);
-                processMsg+=(`机关伤害:${jgsh.toFixed(0)} 占比:${(jgsh/lastSh).toFixed(2)*100}%\n`);
+                processMsg+=(`流血伤害:${lxsh.toFixed(0)} 占比:${(lxsh/lastSh*100).toFixed(2)}%\n`);
+                processMsg+=(`机关伤害:${jgsh.toFixed(0)} 占比:${(jgsh/lastSh*100).toFixed(2)}%\n`);
                 processMsg+=(`总伤害:${lastSh.toFixed(0)}\n`);
                 processMsg+=(`每秒伤害:${(lastSh / 300).toFixed(0)}\n`);
             }
