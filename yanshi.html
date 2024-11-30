@@ -146,11 +146,12 @@
                 Math.floor(this._zuiXiaoGongJi * 0.9),
                 Math.floor(this._zuiDaGongJi * 0.9)
             );
-            let sh = (7314 + rdGj) * 1.4 - this._descFy;
+            let sh = ((7314 + rdGj) - this._descFy) * 1.4;
+            let cp = (7314 + rdGj) * 1.4 * 0.02;
 
             // 保底伤害
-            if (sh < (sh + this._descFy) * 0.02) {
-                return (sh + this._descFy) * 0.02;
+            if (sh < 0 || sh < cp) {
+                return cp;
             } else {
                 return this.IsJGZhiMing() ? sh * 1.5 : sh;
             }
@@ -210,11 +211,12 @@
         YinKui() {
             const min = this._zuiXiaoGongJi * 0.3 + 50 * 32;
             const max = this._zuiDaGongJi * 0.3 + 50 * 80;
-            let wuli = this.GetYKSuiJiGongJi(Math.floor(min), Math.floor(max)) * 1.4 - this._descFy;
+            let wuli = (this.GetYKSuiJiGongJi(Math.floor(min), Math.floor(max)) - this._descFy) * 1.4;
+            let cp = this.GetYKSuiJiGongJi(Math.floor(min), Math.floor(max)) * 1.4 * 0.02;
 
             // 保底伤害
-            if (wuli < 0 || wuli < (wuli + this._descFy) * 0.02) {
-                return (wuli + this._descFy) * 0.02;
+            if (wuli < 0 || wuli < cp) {
+                return cp;
             } else {
                 return this.IsJGZhiMing() ? wuli * 1.5 : wuli;
             }
@@ -234,7 +236,7 @@
             }
         }
 
-        static GetHarm(min, max, gs, clbfb, cljc, ylbjc,fy, isPrint = false) {
+        static GetHarm(min, max, gs, clbfb, cljc, ylbjc, fy, isPrint = false) {
             let currentTime = 0.0;
             const totalDuration = 300.0;
 
@@ -247,7 +249,7 @@
             let startLiuXue = false;
             let jgsh = 0;
             let lxsh = 0;
-            let cyslxfix=0;
+            let cyslxfix = 0;
 
             const ys = new YanShi(min, max, gs, clbfb, cljc, ylbjc, fy);
 
@@ -256,18 +258,18 @@
                     if (currentTime >= skill3Cooldown) {
                         ys.SetHuaDiTrue();
                         if (isPrint) {
-                            processMsg+=(`${currentTime.toFixed(2)}s: 启动化地之能\n`);
+                            processMsg += (`${currentTime.toFixed(2)}s: 启动化地之能\n`);
                         }
                         currentTime += 0.7;
                         skill3Cooldown = currentTime + Math.round(210.0 / gs);
                         skill3EffectEnd = currentTime + 10.0;
-                    } else if (currentTime >= skill2Cooldown && ljd >= (cljc===1.72?5:4)) {
+                    } else if (currentTime >= skill2Cooldown && ljd >= (cljc === 1.72 ? 5 : 4)) {
                         startLiuXue = true;
-                        cyslxfix=ys.ChuanYunShouLiuXue();
-                        ljd =(cljc===1.72?3:2);
+                        cyslxfix = ys.ChuanYunShouLiuXue();
+                        ljd = (cljc === 1.72 ? 3 : 2);
                         const sh = ys.ChuanYunShou();
                         if (isPrint) {
-                            processMsg+=(`${currentTime.toFixed(2)}s: 穿云手 ${sh.toFixed(0)}\n`);
+                            processMsg += (`${currentTime.toFixed(2)}s: 穿云手 ${sh.toFixed(0)}\n`);
                         }
                         lastSh += sh;
                         currentTime += YanShi.FormatGs(1.0 / gs);
@@ -276,7 +278,7 @@
                         ljd += ys.LianJiDian();
                         const sh = ys.ShuangLongBi();
                         if (isPrint) {
-                            processMsg+=(`${currentTime.toFixed(2)}s: 双龙臂 ${sh.toFixed(0)}\n`);
+                            processMsg += (`${currentTime.toFixed(2)}s: 双龙臂 ${sh.toFixed(0)}\n`);
                         }
                         lastSh += sh;
                         currentTime += YanShi.FormatGs(1.0 / gs);
@@ -288,13 +290,13 @@
                     if (currentTime >= skill3EffectEnd && skill3EffectEnd > 0) {
                         ys.SetHuaDiFalse();
                         if (isPrint) {
-                            processMsg+=(`${skill3EffectEnd.toFixed(1)}s: 化地之能结束\n`);
+                            processMsg += (`${skill3EffectEnd.toFixed(1)}s: 化地之能结束\n`);
                         }
                         skill3EffectEnd = 0;
                     }
                 }
 
-                if (parseFloat(i.toFixed(2))  % 1 === 0) {
+                if (parseFloat(i.toFixed(2)) % 1 === 0) {
                     const y1 = ys.YinKui();
                     const y2 = ys.YinKui();
                     const y3 = ys.YinKui();
@@ -316,7 +318,7 @@
                     if (isPrint) {
                         if (ys._isHuaDi) {
                             if (startLiuXue) {
-                                processMsg+=(
+                                processMsg += (
                                     `${i.toFixed(2)}s: 化地之能:${h1.toFixed(0)} 银傀1 ${y1.toFixed(
                                         0
                                     )} 银傀2 ${y2.toFixed(0)} 银傀3 ${y3.toFixed(0)} 流血:${cysLiuXue.toFixed(
@@ -324,7 +326,7 @@
                                     )}\n`
                                 );
                             } else {
-                                processMsg+=(
+                                processMsg += (
                                     `${i.toFixed(2)}s: 化地之能:${h1.toFixed(0)} 银傀1 ${y1.toFixed(
                                         0
                                     )} 银傀2 ${y2.toFixed(0)} 银傀3 ${y3.toFixed(0)}\n`
@@ -332,13 +334,13 @@
                             }
                         } else {
                             if (startLiuXue) {
-                                processMsg+=(
+                                processMsg += (
                                     `${i.toFixed(2)}s: 银傀1 ${y1.toFixed(0)} 银傀2 ${y2.toFixed(
                                         0
                                     )} 银傀3 ${y3.toFixed(0)} 流血:${cysLiuXue.toFixed(0)}\n`
                                 );
                             } else {
-                                processMsg+=(
+                                processMsg += (
                                     `${i.toFixed(2)}s: 银傀1 ${y1.toFixed(0)} 银傀2 ${y2.toFixed(
                                         0
                                     )} 银傀3 ${y3.toFixed(0)}\n`
@@ -350,10 +352,10 @@
             }
 
             if (isPrint) {
-                processMsg+=(`流血伤害:${lxsh.toFixed(0)} 占比:${(lxsh/lastSh*100).toFixed(2)}%\n`);
-                processMsg+=(`机关伤害:${jgsh.toFixed(0)} 占比:${(jgsh/lastSh*100).toFixed(2)}%\n`);
-                processMsg+=(`总伤害:${lastSh.toFixed(0)}\n`);
-                processMsg+=(`每秒伤害:${(lastSh / 300).toFixed(0)}\n`);
+                processMsg += (`流血伤害:${lxsh.toFixed(0)} 占比:${(lxsh / lastSh * 100).toFixed(2)}%\n`);
+                processMsg += (`机关伤害:${jgsh.toFixed(0)} 占比:${(jgsh / lastSh * 100).toFixed(2)}%\n`);
+                processMsg += (`总伤害:${lastSh.toFixed(0)}\n`);
+                processMsg += (`每秒伤害:${(lastSh / 300).toFixed(0)}\n`);
             }
 
             return lastSh;
@@ -380,7 +382,7 @@
 
         let cljc = batterType === 'bfour' ? 1 : 1.72;
 
-        const sh = YanShi.GetHarm(minAttack, maxAttack, attackSpeed, 0.393, cljc,ylbjc,targetDefense, true);
+        const sh = YanShi.GetHarm(minAttack, maxAttack, attackSpeed, 0.393, cljc, ylbjc, targetDefense, true);
         calculationProcess += `平均秒伤: ${(sh / 300).toFixed(0)} \n`;
         calculationProcess += `--------------------------------\n`;
         calculationProcess += processMsg;
