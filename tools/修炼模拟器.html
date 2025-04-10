@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>修炼属性模拟器</title>
+  <script src="tailwindcss.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5D5CDE',
+          }
+        }
+      },
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    .level-slider {
+      accent-color: #5D5CDE;
+    }
+    .level-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #5D5CDE;
+      cursor: pointer;
+    }
+    .dark .level-slider::-webkit-slider-thumb {
+      background: #7A79E6;
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200">
+  <!-- Main application container -->
+  <div class="container mx-auto px-4 py-6 max-w-6xl">
+    <h1 class="text-3xl font-bold text-center mb-6">修炼属性模拟器</h1>
+    
+    <!-- Total stats display -->
+    <div class="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-2">总消耗</h2>
+      <div class="flex flex-wrap gap-4">
+        <div class="bg-white dark:bg-gray-700 p-3 rounded shadow flex-1 text-center">
+          <span class="block text-primary font-bold text-2xl" id="totalBangGong">0</span>
+          <span class="text-gray-600 dark:text-gray-400">帮贡</span>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-3 rounded shadow flex-1 text-center">
+          <span class="block text-primary font-bold text-2xl" id="totalYinPiao">0</span>
+          <span class="text-gray-600 dark:text-gray-400">银票/万</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories container -->
+    <div class="space-y-6">
+      <!-- Category 1: 基础属性 -->
+      <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">1. 基础属性</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="category1">
+          <!-- Attributes will be generated here -->
+        </div>
+      </div>
+
+      <!-- Category 2: 控制抗性 -->
+      <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">2. 控制抗性</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="category2">
+          <!-- Attributes will be generated here -->
+        </div>
+      </div>
+
+      <!-- Category 3: 强控制 -->
+      <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">3. 强控制</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="category3">
+          <!-- Attributes will be generated here -->
+        </div>
+      </div>
+
+      <!-- Category 4: 元素抗性 -->
+      <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">4. 元素抗性</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4" id="category4">
+          <!-- Attributes will be generated here -->
+        </div>
+      </div>
+
+      <!-- Category 5: 元素忽视 -->
+      <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">5. 元素忽视</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4" id="category5">
+          <!-- Attributes will be generated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="mt-6 flex flex-wrap justify-center gap-4">
+      <button id="clearAll" class="bg-primary hover:bg-primary/80 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition duration-200">
+        清空所有属性
+      </button>
+      <button id="maxAllBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition duration-200">
+        全部满级
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Cost data for each level
+    const costData = [
+      { level: 1, bangGong: 6, yinPiao: 1.5 },
+      { level: 2, bangGong: 40, yinPiao: 10 },
+      { level: 3, bangGong: 70, yinPiao: 19.5 },
+      { level: 4, bangGong: 98, yinPiao: 24.5 },
+      { level: 5, bangGong: 122, yinPiao: 30.5 },
+      { level: 6, bangGong: 150, yinPiao: 37.5 },
+      { level: 7, bangGong: 180, yinPiao: 45 },
+      { level: 8, bangGong: 212, yinPiao: 53 },
+      { level: 9, bangGong: 250, yinPiao: 62.5 },
+      { level: 10, bangGong: 290, yinPiao: 72.5 },
+      { level: 11, bangGong: 332, yinPiao: 83 },
+      { level: 12, bangGong: 378, yinPiao: 94.5 },
+      { level: 13, bangGong: 428, yinPiao: 107 },
+      { level: 14, bangGong: 480, yinPiao: 120 },
+      { level: 15, bangGong: 804, yinPiao: 134 },
+      { level: 16, bangGong: 894, yinPiao: 149 },
+      { level: 17, bangGong: 987, yinPiao: 164.5 },
+      { level: 18, bangGong: 1083, yinPiao: 180.5 },
+      { level: 19, bangGong: 1188, yinPiao: 198 },
+      { level: 20, bangGong: 1296, yinPiao: 216 },
+      { level: 21, bangGong: 1407, yinPiao: 234.5 },
+      { level: 22, bangGong: 1524, yinPiao: 254 },
+      { level: 23, bangGong: 1647, yinPiao: 274.5 },
+      { level: 24, bangGong: 1773, yinPiao: 295.5 },
+      { level: 25, bangGong: 1905, yinPiao: 317.5 },
+      { level: 26, bangGong: 2043, yinPiao: 340.5 },
+      { level: 27, bangGong: 2184, yinPiao: 364 },
+      { level: 28, bangGong: 2328, yinPiao: 388 },
+      { level: 29, bangGong: 2481, yinPiao: 496.2 },
+      { level: 30, bangGong: 3516, yinPiao: 527.4 },
+      { level: 31, bangGong: 3728, yinPiao: 559.2 },
+      { level: 32, bangGong: 8952, yinPiao: 895.2 },
+      { level: 33, bangGong: 16512, yinPiao: 1238.4 },
+    ];
+
+    // Attribute categories and their attributes
+    const attributeCategories = {
+      '1': ['物理攻击', '物理防御', '法术攻击', '法术防御'],
+      '2': ['眩晕抗性', '定身抗性', '沉默抗性', '睡眠抗性', '混乱抗性', '束缚抗性'],
+      '3': ['强眩晕', '强定身', '强沉默', '强睡眠', '强混乱', '强束缚'],
+      '4': ['风抗性', '火抗性', '冰抗性', '电抗性', '毒抗性', '光抗性', '幻抗性', '水抗性', '格挡', '格挡伤害减免'],
+      '5': ['忽视风抗', '忽视火抗', '忽视冰抗', '忽视电抗', '忽视毒抗', '忽视光抗', '忽视幻抗', '忽视水抗', '破盾', '忽视格挡减免']
+    };
+
+    // Dark mode detection
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+
+    // Initialize all attributes with level 0
+    const attributeValues = {};
+    Object.values(attributeCategories).flat().forEach(attr => {
+      attributeValues[attr] = 0;
+    });
+
+    // Create attribute cards for each category
+    document.addEventListener('DOMContentLoaded', () => {
+      // Generate cards for each category
+      Object.keys(attributeCategories).forEach(categoryKey => {
+        const categoryContainer = document.getElementById(`category${categoryKey}`);
+        const attributes = attributeCategories[categoryKey];
+        
+        attributes.forEach(attribute => {
+          const card = document.createElement('div');
+          card.className = 'attribute-card';
+          card.dataset.attribute = attribute;
+          
+          card.innerHTML = `
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-medium">${attribute}</h3>
+                <div class="text-sm text-primary font-semibold">Lv. <span class="attribute-level">0</span></div>
+              </div>
+              <div class="flex items-center gap-2 mb-2">
+                <button class="decrement-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold w-8 h-8 rounded-full">-</button>
+                <input type="range" min="0" max="33" value="0" class="level-slider flex-1 h-2 appearance-none bg-gray-300 dark:bg-gray-700 rounded-full">
+                <button class="increment-btn bg-primary hover:bg-primary/80 text-white font-bold w-8 h-8 rounded-full">+</button>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <div class="p-1.5 bg-gray-100 dark:bg-gray-700 rounded">
+                  帮贡: <span class="bang-gong font-medium">0</span>
+                </div>
+                <div class="p-1.5 bg-gray-100 dark:bg-gray-700 rounded">
+                  银票: <span class="yin-piao font-medium">0</span>万
+                </div>
+              </div>
+            </div>
+          `;
+          
+          categoryContainer.appendChild(card);
+          
+          const levelDisplay = card.querySelector('.attribute-level');
+          const levelSlider = card.querySelector('.level-slider');
+          const decrementBtn = card.querySelector('.decrement-btn');
+          const incrementBtn = card.querySelector('.increment-btn');
+          const bangGongDisplay = card.querySelector('.bang-gong');
+          const yinPiaoDisplay = card.querySelector('.yin-piao');
+
+          // Update UI when slider changes
+          levelSlider.addEventListener('input', () => {
+            const level = parseInt(levelSlider.value);
+            updateAttributeLevel(attribute, level);
+            levelDisplay.textContent = level;
+            updateAttributeCost(attribute, level, bangGongDisplay, yinPiaoDisplay);
+            calculateTotalCost();
+          });
+
+          // Decrement button
+          decrementBtn.addEventListener('click', () => {
+            const currentLevel = parseInt(levelSlider.value);
+            if (currentLevel > 0) {
+              const newLevel = currentLevel - 1;
+              levelSlider.value = newLevel;
+              updateAttributeLevel(attribute, newLevel);
+              levelDisplay.textContent = newLevel;
+              updateAttributeCost(attribute, newLevel, bangGongDisplay, yinPiaoDisplay);
+              calculateTotalCost();
+            }
+          });
+
+          // Increment button
+          incrementBtn.addEventListener('click', () => {
+            const currentLevel = parseInt(levelSlider.value);
+            if (currentLevel < 33) {
+              const newLevel = currentLevel + 1;
+              levelSlider.value = newLevel;
+              updateAttributeLevel(attribute, newLevel);
+              levelDisplay.textContent = newLevel;
+              updateAttributeCost(attribute, newLevel, bangGongDisplay, yinPiaoDisplay);
+              calculateTotalCost();
+            }
+          });
+        });
+      });
+
+      // Clear all button
+      document.getElementById('clearAll').addEventListener('click', () => {
+        setAllLevels(0);
+      });
+      
+      // Max all button
+      document.getElementById('maxAllBtn').addEventListener('click', () => {
+        setAllLevels(33);
+      });
+    });
+    
+    // Set all attributes to a specific level
+    function setAllLevels(level) {
+      document.querySelectorAll('.level-slider').forEach(slider => {
+        slider.value = level;
+        const card = slider.closest('.attribute-card');
+        const attribute = card.dataset.attribute;
+        const levelDisplay = card.querySelector('.attribute-level');
+        const bangGongDisplay = card.querySelector('.bang-gong');
+        const yinPiaoDisplay = card.querySelector('.yin-piao');
+        
+        updateAttributeLevel(attribute, level);
+        levelDisplay.textContent = level;
+        updateAttributeCost(attribute, level, bangGongDisplay, yinPiaoDisplay);
+      });
+      calculateTotalCost();
+    }
+
+    // Update attribute level in data
+    function updateAttributeLevel(attribute, level) {
+      attributeValues[attribute] = level;
+    }
+
+    // Update displayed cost for an attribute
+    function updateAttributeCost(attribute, level, bangGongElement, yinPiaoElement) {
+      let totalBangGong = 0;
+      let totalYinPiao = 0;
+      
+      // Sum up costs for each level
+      for (let i = 0; i < level; i++) {
+        totalBangGong += costData[i].bangGong;
+        totalYinPiao += costData[i].yinPiao;
+      }
+      
+      bangGongElement.textContent = totalBangGong.toLocaleString();
+      yinPiaoElement.textContent = totalYinPiao.toLocaleString();
+    }
+
+    // Calculate and update total cost
+    function calculateTotalCost() {
+      let totalBangGong = 0;
+      let totalYinPiao = 0;
+      
+      // Calculate total cost across all attributes
+      Object.entries(attributeValues).forEach(([attribute, level]) => {
+        for (let i = 0; i < level; i++) {
+          totalBangGong += costData[i].bangGong;
+          totalYinPiao += costData[i].yinPiao;
+        }
+      });
+      
+      // Update total display
+      document.getElementById('totalBangGong').textContent = totalBangGong.toLocaleString();
+      document.getElementById('totalYinPiao').textContent = totalYinPiao.toLocaleString();
+    }
+  </script>
+</body>
+</html>
