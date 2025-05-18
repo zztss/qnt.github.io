@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MACD日线图像工具</title>
+    <script src="tailwindcss.js"></script>
+    <script src="chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'a-stock-red': '#FF0D0D',    // A股上涨红
+                        'a-stock-green': '#00B800',  // A股下跌绿
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .slider-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        /* Custom CSS for slider labels */
+        .slider-label {
+            width: 50px;
+            text-align: right;
+            font-size: 12px;
+        }
+        
+        /* Custom styles for the chart appearance */
+        canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+        
+        /* Dark mode styles */
+        .dark {
+            background-color: #181818;
+            color: #e5e5e5;
+        }
+        
+        .dark .bg-white {
+            background-color: #222;
+        }
+        
+        .dark .border-gray-200 {
+            border-color: #333;
+        }
+        
+        .dark .text-gray-700 {
+            color: #e5e5e5;
+        }
+        
+        .dark .bg-gray-100 {
+            background-color: #2a2a2a;
+        }
+        
+        .dark input[type="range"]::-webkit-slider-thumb {
+            background: #5D5CDE;
+        }
+        
+        .dark input[type="range"]::-moz-range-thumb {
+            background: #5D5CDE;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen p-4">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-2xl font-bold text-center mb-6">MACD日线图像工具</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 图表区域 -->
+            <div class="lg:col-span-2 bg-white p-4 rounded shadow-md border border-gray-200">
+                <div>
+                    <canvas id="macdChart"></canvas>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">MACD指标说明</h3>
+                        <button id="regenerateBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90">
+                            重新生成
+                        </button>
+                    </div>
+                    <div class="text-sm mt-2">
+                        <p>- <span class="text-a-stock-red font-bold">红色柱</span>: 位于0轴上方，表示多头力量</p>
+                        <p>- <span class="text-a-stock-green font-bold">绿色柱</span>: 位于0轴下方，表示空头力量</p>
+                        <p>- <span class="text-blue-500 font-bold">蓝线(DIF)</span>: 差离值</p>
+                        <p>- <span class="text-yellow-500 font-bold">黄线(DEA)</span>: 信号线</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 控制面板 -->
+            <div class="bg-white p-4 rounded shadow-md border border-gray-200">
+                <div class="mb-4">
+                    <label for="pattern" class="block font-medium text-gray-700 mb-2">MACD形态选择:</label>
+                    <select id="pattern" class="w-full p-2 border border-gray-300 rounded text-base">
+                        <option value="random">随机生成</option>
+                        <option value="goldenCross">金叉形态</option>
+                        <option value="deathCross">死叉形态</option>
+                        <option value="topDivergence">顶背离形态</option>
+                        <option value="bottomDivergence">底背离形态</option>
+                        <option value="doubleCross">双重交叉形态</option>
+                        <option value="zeroCrossUp">零轴上穿形态</option>
+                        <option value="zeroCrossDown">零轴下穿形态</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="font-medium text-gray-700 mb-2">自定义每日价格:</h3>
+                    <p class="text-sm text-gray-500 mb-2">拖动滑块调整单日价格，观察MACD变化</p>
+                    
+                    <div class="slider-container" id="sliderContainer">
+                        <!-- 滑块将由JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">价格范围: 5.00 - 40.00元</span>
+                        <button id="resetBtn" class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
+                            重置价格
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 检测并应用深色模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // 全局变量
+        let prices = [];
+        let chart = null;
+        let currentPattern = 'random';
+        
+        // 生成指定范围内的随机数
+        function getRandomPrice(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        
+        // 生成随机价格数据
+        function generateRandomPrices(days = 30) {
+            const newPrices = [];
+            const basePrice = getRandomPrice(10, 25);
+            let currentPrice = basePrice;
+            
+            for (let i = 0; i < days; i++) {
+                // 模拟每日波动范围（+/-5%）
+                const change = currentPrice * (getRandomPrice(-0.05, 0.05));
+                currentPrice = Math.max(5, Math.min(40, currentPrice + change)); // 确保价格在5-40范围内
+                newPrices.push(parseFloat(currentPrice.toFixed(2)));
+            }
+            
+            return newPrices;
+        }
+        
+        // 计算MACD指标
+        function calculateMACD(prices, fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
+            // 计算EMA (指数移动平均线)
+            function calculateEMA(data, period) {
+                const k = 2 / (period + 1);
+                const emaData = [];
+                
+                // 初始EMA值等于第一个数据点
+                if (data.length > 0) {
+                    emaData.push(data[0]);
+                    
+                    for (let i = 1; i < data.length; i++) {
+                        const ema = data[i] * k + emaData[i - 1] * (1 - k);
+                        emaData.push(ema);
+                    }
+                }
+                
+                return emaData;
+            }
+            
+            // 计算快速与慢速EMA
+            const fastEMA = calculateEMA(prices, fastPeriod);
+            const slowEMA = calculateEMA(prices, slowPeriod);
+            
+            // 确保两个数组长度相同
+            const minLength = Math.min(fastEMA.length, slowEMA.length);
+            const adjustedFastEMA = fastEMA.slice(fastEMA.length - minLength);
+            const adjustedSlowEMA = slowEMA.slice(slowEMA.length - minLength);
+            
+            // 计算DIF (MACD值): 快速EMA - 慢速EMA
+            const dif = [];
+            for (let i = 0; i < minLength; i++) {
+                dif.push(adjustedFastEMA[i] - adjustedSlowEMA[i]);
+            }
+            
+            // 计算DEA (信号线): DIF的9日EMA
+            const dea = calculateEMA(dif, signalPeriod);
+            
+            // 计算MACD柱状图值 (DIF - DEA) * 2
+            const macdHistogram = [];
+            for (let i = 0; i < dea.length; i++) {
+                macdHistogram.push((dif[i] - dea[i]) * 2);
+            }
+            
+            return {
+                dif: dif,
+                dea: dea,
+                histogram: macdHistogram
+            };
+        }
+        
+        // 创建或更新MACD图表
+        function updateMACDChart() {
+            const ctx = document.getElementById('macdChart').getContext('2d');
+            const macdData = calculateMACD(prices);
+            
+            // 为A股配色方案准备柱状图颜色
+            const barColors = macdData.histogram.map(value => 
+                value >= 0 ? '#FF0D0D' : '#00B800'  // 红涨绿跌
+            );
+            
+            // 准备日期标签
+            const labels = [];
+            const currentDate = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(currentDate);
+                date.setDate(date.getDate() - i);
+                labels.push(date.getMonth() + 1 + '/' + date.getDate());
+            }
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'DIF',
+                            data: macdData.dif,
+                            borderColor: '#3772FF',
+                            backgroundColor: '#3772FF',
+                            pointRadius: 0,
+                            borderWidth: 2,
+                            yAxisID: 'y',
+                            tension: 0.1,
+                            order: 1
+                        },
+                        {
+                            type: 'line',
+                            label: 'DEA',
+                            data: macdData.dea,
+                            borderColor: '#F0B90B',
+                            backgroundColor: '#F0B90B',
+                            pointRadius: 0,
+                            borderWidth: 2,
+                            yAxisID: 'y',
+                            tension: 0.1,
+                            order: 0
+                        },
+                        {
+                            type: 'bar',
+                            label: 'MACD',
+                            data: macdData.histogram,
+                            backgroundColor: barColors,
+                            borderColor: barColors,
+                            yAxisID: 'y',
+                            order: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(4);
+                                    }
+                                    return label;
+                                },
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return `日期: ${labels[index]}, 价格: ${prices[index]}元`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false,
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)',
+                            },
+                            title: {
+                                display: true,
+                                text: 'MACD值'
+                            },
+                            beginAtZero: false,
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 生成滑块控件
+        function generateSliders() {
+            const container = document.getElementById('sliderContainer');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < prices.length; i++) {
+                const sliderRow = document.createElement('div');
+                sliderRow.className = 'flex items-center mb-2';
+                
+                const label = document.createElement('span');
+                label.className = 'slider-label mr-2';
+                label.textContent = `D${i+1}:`;
+                
+                const priceDisplay = document.createElement('span');
+                priceDisplay.className = 'w-14 text-right mr-2';
+                priceDisplay.textContent = prices[i].toFixed(2);
+                
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.className = 'w-full h-2 bg-gray-200 rounded appearance-none cursor-pointer';
+                slider.min = '5';
+                slider.max = '40';
+                slider.step = '0.01';
+                slider.value = prices[i];
+                
+                slider.addEventListener('input', function() {
+                    prices[i] = parseFloat(this.value);
+                    priceDisplay.textContent = prices[i].toFixed(2);
+                    updateMACDChart();
+                });
+                
+                sliderRow.appendChild(label);
+                sliderRow.appendChild(priceDisplay);
+                sliderRow.appendChild(slider);
+                container.appendChild(sliderRow);
+            }
+        }
+        
+        // 生成不同的MACD形态
+        function generatePattern(pattern) {
+            currentPattern = pattern;
+            
+            switch (pattern) {
+                case 'goldenCross':
+                    generateGoldenCross();
+                    break;
+                case 'deathCross':
+                    generateDeathCross();
+                    break;
+                case 'topDivergence':
+                    generateTopDivergence();
+                    break;
+                case 'bottomDivergence':
+                    generateBottomDivergence();
+                    break;
+                case 'doubleCross':
+                    generateDoubleCross();
+                    break;
+                case 'zeroCrossUp':
+                    generateZeroCrossUp();
+                    break;
+                case 'zeroCrossDown':
+                    generateZeroCrossDown();
+                    break;
+                default:
+                    prices = generateRandomPrices();
+            }
+            
+            generateSliders();
+            updateMACDChart();
+        }
+        
+        // 生成金叉形态
+        function generateGoldenCross() {
+            prices = generateRandomPrices();
+            
+            // 修改后半段数据以创建金叉形态
+            // 金叉: DIF线从下方上穿DEA线
+            const startIndex = Math.floor(prices.length * 0.6);
+            let downtrend = prices[startIndex];
+            
+            // 先创建下跌趋势
+            for (let i = startIndex; i < startIndex + 5; i++) {
+                downtrend = downtrend * (1 - getRandomPrice(0.01, 0.03));
+                prices[i] = downtrend;
+            }
+            
+            // 然后创建上涨趋势以形成金叉
+            for (let i = startIndex + 5; i < prices.length; i++) {
+                const intensity = (i - (startIndex + 5)) * 0.008;
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.01 + intensity, 0.03 + intensity));
+            }
+        }
+        
+        // 生成死叉形态
+        function generateDeathCross() {
+            prices = generateRandomPrices();
+            
+            // 修改后半段数据以创建死叉形态
+            // 死叉: DIF线从上方下穿DEA线
+            const startIndex = Math.floor(prices.length * 0.6);
+            let uptrend = prices[startIndex];
+            
+            // 先创建上涨趋势
+            for (let i = startIndex; i < startIndex + 5; i++) {
+                uptrend = uptrend * (1 + getRandomPrice(0.01, 0.03));
+                prices[i] = uptrend;
+            }
+            
+            // 然后创建下跌趋势以形成死叉
+            for (let i = startIndex + 5; i < prices.length; i++) {
+                const intensity = (i - (startIndex + 5)) * 0.008;
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.01 + intensity, 0.03 + intensity));
+            }
+        }
+        
+        // 生成顶背离形态
+        function generateTopDivergence() {
+            prices = generateRandomPrices();
+            
+            // 修改数据以创建顶背离形态
+            // 顶背离: 股价创新高，而MACD指标未创新高
+            const midPoint = Math.floor(prices.length * 0.5);
+            let highPrice = prices[midPoint];
+            
+            // 构建第一个高点
+            for (let i = midPoint - 5; i <= midPoint; i++) {
+                const intensity = 0.02 - Math.abs(i - midPoint) * 0.004;
+                prices[i] = prices[Math.max(0, i - 1)] * (1 + getRandomPrice(0.01, intensity));
+            }
+            
+            // 创建回调
+            for (let i = midPoint + 1; i < midPoint + 5; i++) {
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.005, 0.015));
+            }
+            
+            // 创建第二个更高的价格高点，但MACD将形成较弱的高点
+            for (let i = midPoint + 5; i < midPoint + 10; i++) {
+                const intensity = 0.025 - Math.abs(i - (midPoint + 7)) * 0.004;
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.01, intensity));
+            }
+            
+            // 最后创建下跌趋势，确认背离
+            for (let i = midPoint + 10; i < prices.length; i++) {
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.01, 0.02));
+            }
+        }
+        
+        // 生成底背离形态
+        function generateBottomDivergence() {
+            prices = generateRandomPrices();
+            
+            // 修改数据以创建底背离形态
+            // 底背离: 股价创新低，而MACD指标未创新低
+            const midPoint = Math.floor(prices.length * 0.5);
+            let lowPrice = prices[midPoint];
+            
+            // 构建第一个低点
+            for (let i = midPoint - 5; i <= midPoint; i++) {
+                const intensity = 0.02 - Math.abs(i - midPoint) * 0.004;
+                prices[i] = prices[Math.max(0, i - 1)] * (1 - getRandomPrice(0.01, intensity));
+            }
+            
+            // 创建反弹
+            for (let i = midPoint + 1; i < midPoint + 5; i++) {
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.005, 0.015));
+            }
+            
+            // 创建第二个更低的价格低点，但MACD将形成较高的低点
+            for (let i = midPoint + 5; i < midPoint + 10; i++) {
+                const intensity = 0.025 - Math.abs(i - (midPoint + 7)) * 0.004;
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.01, intensity));
+            }
+            
+            // 最后创建上涨趋势，确认背离
+            for (let i = midPoint + 10; i < prices.length; i++) {
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.01, 0.02));
+            }
+        }
+        
+        // 生成双重交叉形态
+        function generateDoubleCross() {
+            prices = generateRandomPrices();
+            
+            // 修改数据以创建双重交叉形态（先金叉后死叉）
+            const firstCross = Math.floor(prices.length * 0.3);
+            const secondCross = Math.floor(prices.length * 0.6);
+            
+            // 先创建一段下跌
+            for (let i = 5; i < firstCross - 5; i++) {
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.005, 0.015));
+            }
+            
+            // 创建第一个转折点（金叉）
+            for (let i = firstCross - 5; i < secondCross - 5; i++) {
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.005, 0.02));
+            }
+            
+            // 创建第二个转折点（死叉）
+            for (let i = secondCross - 5; i < prices.length; i++) {
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.005, 0.015));
+            }
+        }
+        
+        // 生成零轴上穿形态
+        function generateZeroCrossUp() {
+            prices = generateRandomPrices();
+            
+            // 修改数据以创建MACD从下方上穿零轴的形态
+            // 先创建一段下跌趋势使MACD处于零轴下方
+            for (let i = 0; i < 15; i++) {
+                prices[i] = 20 * (1 - (i * 0.01));
+            }
+            
+            // 然后创建强劲上涨趋势使MACD上穿零轴
+            for (let i = 15; i < prices.length; i++) {
+                const factor = 1 + ((i - 15) * 0.003);
+                prices[i] = prices[i - 1] * (1 + getRandomPrice(0.005 * factor, 0.015 * factor));
+            }
+        }
+        
+        // 生成零轴下穿形态
+        function generateZeroCrossDown() {
+            prices = generateRandomPrices();
+            
+            // 修改数据以创建MACD从上方下穿零轴的形态
+            // 先创建一段上涨趋势使MACD处于零轴上方
+            for (let i = 0; i < 15; i++) {
+                prices[i] = 20 * (1 + (i * 0.01));
+            }
+            
+            // 然后创建强劲下跌趋势使MACD下穿零轴
+            for (let i = 15; i < prices.length; i++) {
+                const factor = 1 + ((i - 15) * 0.003);
+                prices[i] = prices[i - 1] * (1 - getRandomPrice(0.005 * factor, 0.015 * factor));
+            }
+        }
+        
+        // 初始化
+        function init() {
+            // 初始随机数据
+            prices = generateRandomPrices();
+            
+            // 绘制图表
+            updateMACDChart();
+            
+            // 生成滑块
+            generateSliders();
+            
+            // 事件监听
+            document.getElementById('pattern').addEventListener('change', function() {
+                generatePattern(this.value);
+            });
+            
+            document.getElementById('regenerateBtn').addEventListener('click', function() {
+                generatePattern(currentPattern);
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                generatePattern(currentPattern);
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
