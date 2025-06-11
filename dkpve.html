@@ -264,9 +264,9 @@
             // 检查技能4的状态是否结束
             if (currentTime >= skill4EffectEnd && skill4EffectEnd > 0) {
                 hasFs = false;
-                totalShangHai += someMcShangHai * 1.52;
-                totalFsShangHai += someMcShangHai * 1.52;
-                processMsg += (`${skill4EffectEnd.toFixed(1)}s: 狡兔三窟结束 ${(someMcShangHai * 1.52).toFixed(1)} \n`);
+                totalShangHai += someMcShangHai * 1.32;
+                totalFsShangHai += someMcShangHai * 1.32;
+                processMsg += (`${skill4EffectEnd.toFixed(1)}s: 狡兔三窟结束 ${(someMcShangHai * 1.32).toFixed(1)} \n`);
                 someMcShangHai = 0.0; // 重新计算
                 skill4EffectEnd = 0; // 重置状态结束时间
             }
