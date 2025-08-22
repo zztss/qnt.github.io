@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>装备强化计算器</title>
+    <script src="tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自定义滑块样式 */
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #5D5CDE;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #5D5CDE;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 提示容器过渡效果 */
+        #toast-container.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #toast-container.hide {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+
+    <div id="toast-container" class="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-500 transform hide">
+        <div id="toast-message" class="mx-auto max-w-lg p-3 rounded-lg text-center font-bold shadow-lg"></div>
+    </div>
+
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row md:flex-row-reverse gap-8">
+                <div class="md:w-2/5 flex flex-col gap-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">设定目标</h3>
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">目标总和(%)</label>
+                                <input type="number" id="targetSum" value="126" min="0" max="200"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">元宝/灵玉比例</label>
+                                <input type="number" id="yuanbaoRatio" value="30" min="1"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">光效选择</label>
+                                <select id="lightEffect"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="20">全部</option>
+                                    <option value="12">黄光（最高12）</option>
+                                    <option value="15">蓝光（最高15）</option>
+                                    <option value="18">红光（最高18）</option>
+                                    <option value="20">紫光（最高20）</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">当前总和(%)</div>
+                                    <div class="text-2xl font-bold text-primary" id="currentSum">0</div>
+                                </div>
+                                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">还需强化(%)</div>
+                                    <div class="text-2xl font-bold text-red-500" id="needSum">126</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">💎 性价比推荐</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4" id="recommendations">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-3/5">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-full">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">装备强化设置</h3>
+                        <div class="space-y-4" id="equipmentList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 装备数据
+        const equipmentData = {
+            "等级1": { "元宝": "40", "灵玉": "0", "开始强化": "2", "结束强化": "4" },
+            "等级2": { "元宝": "95", "灵玉": "0", "开始强化": "2", "结束强化": "4" },
+            "等级3": { "元宝": "130", "灵玉": "0", "开始强化": "2", "结束强化": "5" },
+            "等级4": { "元宝": "370", "灵玉": "0", "开始强化": "2", "结束强化": "5" },
+            "等级5": { "元宝": "595", "灵玉": "0", "开始强化": "2", "结束强化": "5" },
+            "等级6": { "元宝": "780", "灵玉": "0", "开始强化": "2", "结束强化": "6" },
+            "等级7": { "元宝": "990", "灵玉": "0", "开始强化": "2", "结束强化": "6" },
+            "等级8": { "元宝": "1270", "灵玉": "0", "开始强化": "2", "结束强化": "6" },
+            "等级9": { "元宝": "1575", "灵玉": "0", "开始强化": "2", "结束强化": "7" },
+            "等级10": { "元宝": "1910", "灵玉": "0", "开始强化": "2", "结束强化": "7" },
+            "等级11": { "元宝": "0", "灵玉": "190", "开始强化": "2", "结束强化": "7" },
+            "等级12": { "元宝": "0", "灵玉": "285", "开始强化": "2", "结束强化": "8" },
+            "等级13": { "元宝": "0", "灵玉": "420", "开始强化": "2", "结束强化": "8" },
+            "等级14": { "元宝": "0", "灵玉": "595", "开始强化": "2", "结束强化": "8" },
+            "等级15": { "元宝": "0", "灵玉": "805", "开始强化": "2", "结束强化": "9" },
+            "等级16": { "元宝": "0", "灵玉": "1515", "开始强化": "2", "结束强化": "9" },
+            "等级17": { "元宝": "0", "灵玉": "2050", "开始强化": "2", "结束强化": "9" },
+            "等级18": { "元宝": "0", "灵玉": "2765", "开始强化": "2", "结束强化": "10" },
+            "等级19": { "元宝": "0", "灵玉": "3835", "开始强化": "2", "结束强化": "10" },
+            "等级20": { "元宝": "0", "灵玉": "5040", "开始强化": "2", "结束强化": "10" }
+        };
+
+        // 当前强化数值
+        let currentValues = {};
+        // 计时器，用于自动隐藏提示
+        let toastTimeout;
+
+        // 初始化
+        function init() {
+            // 初始化当前数值为0
+            for (let i = 1; i <= 20; i++) {
+                currentValues[`等级${i}`] = 0;
+            }
+
+            renderEquipmentList();
+            updateCalculations();
+        }
+
+        // 渲染装备列表
+        function renderEquipmentList() {
+            const container = document.getElementById('equipmentList');
+            container.innerHTML = '';
+
+            Object.keys(equipmentData).forEach(level => {
+                const data = equipmentData[level];
+                const currentValue = currentValues[level];
+                const minValue = parseInt(data.开始强化);
+                const maxValue = parseInt(data.结束强化);
+
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 dark:bg-gray-700 rounded-lg p-4';
+                item.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="font-semibold text-lg">${level}</span>
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-sm">
+                                    ${minValue}-${maxValue}%
+                                </span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">
+                                    ${data.元宝 !== "0" ? `${data.元宝}元宝` : `${data.灵玉}灵玉`}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <label class="text-sm text-gray-600 dark:text-gray-400 min-w-0">当前强化:</label>
+                                <input type="range"
+                                        id="slider-${level}"
+                                        min="0"
+                                        max="${maxValue}"
+                                        value="${currentValue}"
+                                        class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-600 slider">
+                                <span class="min-w-0 text-lg font-semibold text-primary" id="value-${level}">
+                                    ${currentValue === 0 ? '未强化' : `${currentValue}%`}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+
+                // 添加事件监听
+                const slider = document.getElementById(`slider-${level}`);
+                slider.addEventListener('input', (e) => {
+                    let value = parseInt(e.target.value);
+                    if (value === 1) {
+                        value = 2;
+                        e.target.value = 2;
+                    }
+                    currentValues[level] = value;
+                    document.getElementById(`value-${level}`).textContent = value === 0 ? '未强化' : `${value}%`;
+                    updateCalculations();
+                });
+            });
+        }
+
+        // 推荐：每个等级只保留性价比最高的提升（≥1%），按每提升1%期望成本排序
+        function calculateFlexiblePercentRecommendations() {
+            const allResults = [];
+            const maxLevel = parseInt(document.getElementById('lightEffect').value) || 20;
+            const yuanbaoRatio = parseInt(document.getElementById('yuanbaoRatio').value) || 30;
+
+            Object.keys(equipmentData).forEach(level => {
+                const levelNum = parseInt(level.replace('等级', ''));
+                if (levelNum > maxLevel) return;
+
+                const data = equipmentData[level];
+                const currentValue = currentValues[level];
+                const minValue = parseInt(data.开始强化);
+                const maxValue = parseInt(data.结束强化);
+
+                if (currentValue >= maxValue) return;
+
+                const cost = parseInt(data.元宝) + parseInt(data.灵玉) * yuanbaoRatio;
+
+                for (let nextValue = Math.max(minValue, currentValue + 1); nextValue <= maxValue; nextValue++) {
+                    const gain = nextValue - currentValue;
+                    if (gain < 1) continue;
+
+                    const possibleValues = [];
+                    for (let v = minValue; v <= maxValue; v++) {
+                        possibleValues.push(v);
+                    }
+                    const probability = possibleValues.includes(nextValue) ? 1 / possibleValues.length : 0;
+                    const expectedCost = probability > 0 ? cost / probability : 0;
+                    const costPerPercent = expectedCost / gain;
+
+                    allResults.push({
+                        level,
+                        currentValue,
+                        nextValue,
+                        gain,
+                        cost,
+                        probability,
+                        expectedCost,
+                        costPerPercent,
+                        minValue,
+                        maxValue,
+                        data
+                    });
+                }
+            });
+
+            const bestResults = {};
+            allResults.forEach(item => {
+                if (!bestResults[item.level] || item.costPerPercent < bestResults[item.level].costPerPercent) {
+                    bestResults[item.level] = item;
+                }
+            });
+
+            const results = Object.values(bestResults);
+            results.sort((a, b) => a.costPerPercent - b.costPerPercent);
+
+            return results.slice(0, 3);
+        }
+
+        // 更新推荐
+        function updateRecommendations() {
+            const recommendations = calculateFlexiblePercentRecommendations();
+            const container = document.getElementById('recommendations');
+            const yuanbaoRatio = parseInt(document.getElementById('yuanbaoRatio').value) || 30;
+
+            if (recommendations.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400">暂无推荐项目</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            recommendations.forEach((item, index) => {
+                const medal = ['🥇', '🥈', '🥉'][index];
+                const borderColor = ['border-yellow-400', 'border-gray-400', 'border-amber-600'][index];
+
+                const levelNum = parseInt(item.level.replace('等级', ''));
+                let costUnit = '元宝';
+                let displayedExpectedCost = item.expectedCost;
+                let displayedCostPerPercent = item.costPerPercent;
+                if (levelNum > 10) {
+                    costUnit = '灵玉';
+                    displayedExpectedCost = item.expectedCost / yuanbaoRatio;
+                    displayedCostPerPercent = item.costPerPercent / yuanbaoRatio;
+                }
+
+                const card = document.createElement('div');
+                card.className = `border-2 ${borderColor} rounded-lg p-4 bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800`;
+
+                card.innerHTML = `
+                    <div class="text-center mb-3">
+                        <div class="text-2xl mb-1">${medal}</div>
+                        <div class="font-bold text-lg">${item.level}</div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">当前强化:</span>
+                            <span class="font-semibold">${item.currentValue}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">本次提升:</span>
+                            <span class="font-semibold">+${item.gain}% (${item.nextValue}%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">概率:</span>
+                            <span class="font-semibold">${(item.probability * 100).toFixed(2)}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">期望成本:</span>
+                            <span class="font-semibold">${displayedExpectedCost.toFixed(0)}${costUnit}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">每提升1%期望成本:</span>
+                            <span class="font-bold text-primary">${displayedCostPerPercent.toFixed(0)}${costUnit}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 显示顶部下拉提示
+        function showToast(message, type) {
+            clearTimeout(toastTimeout);
+
+            const toastContainer = document.getElementById('toast-container');
+            const toastMessage = document.getElementById('toast-message');
+
+            toastMessage.textContent = message;
+            let bgColor = 'bg-gray-800';
+            let textColor = 'text-white';
+            if (type === 'success') {
+                bgColor = 'bg-green-500';
+                textColor = 'text-white';
+            } else if (type === 'warning') {
+                bgColor = 'bg-yellow-500';
+                textColor = 'text-white';
+            }
+            toastMessage.className = `mx-auto max-w-lg p-3 rounded-lg text-center font-bold shadow-lg ${bgColor} ${textColor}`;
+
+            toastContainer.classList.remove('hide');
+            toastContainer.classList.add('show');
+
+            toastTimeout = setTimeout(() => {
+                toastContainer.classList.remove('show');
+                toastContainer.classList.add('hide');
+            }, 5000);
+        }
+
+        // 更新计算
+        function updateCalculations() {
+            const currentSum = Object.values(currentValues).reduce((sum, value) => sum + value, 0);
+            const targetSum = parseInt(document.getElementById('targetSum').value) || 0;
+            const needSum = Math.max(0, targetSum - currentSum);
+
+            document.getElementById('currentSum').textContent = currentSum;
+            document.getElementById('needSum').textContent = needSum;
+
+            updateRecommendations();
+
+            if (currentSum >= targetSum && targetSum > 0) {
+                showToast('🎉 已达成目标！', 'success');
+            }
+
+            const lightEffect = document.getElementById('lightEffect').value;
+            let maxLevel = parseInt(lightEffect) || 20;
+            let maxSum = 0;
+            for (let i = 1; i <= maxLevel; i++) {
+                maxSum += parseInt(equipmentData[`等级${i}`].结束强化);
+            }
+
+            if (targetSum > maxSum) {
+                showToast(`⚠️ 目标超出当前光效最大可达成数值（${maxSum}%），请降低目标或更换光效！`, 'warning');
+            }
+        }
+
+        document.getElementById('targetSum').addEventListener('blur', updateCalculations);
+        document.getElementById('yuanbaoRatio').addEventListener('blur', updateCalculations);
+        document.getElementById('lightEffect').addEventListener('change', () => {
+            renderEquipmentList();
+            updateCalculations();
+        });
+
+        init();
+    </script>
+</body>
+
+</html>
