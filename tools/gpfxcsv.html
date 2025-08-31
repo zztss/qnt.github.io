@@ -333,7 +333,7 @@
         const preDaySeries = Object.values(preDayData);
 
         chartWeekday.setOption({
-            title: { text: '周几涨跌总和', left: 'center' },
+            title: { text: '星期涨跌总和', left: 'center' },
             tooltip: { trigger: 'axis', formatter: '{b}: {c}%', axisPointer: { type: 'shadow' } },
             xAxis: { data: weekdayLabels },
             yAxis: { name: '涨跌总和 (%)', min: 'dataMin', axisLabel: { formatter: '{value}%' } },
