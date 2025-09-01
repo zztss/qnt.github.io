@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票数据回测系统</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-color: #2e3048;
+            --text-color: #e0e0e0;
+            --highlight-color: #63d1f4;
+            --button-color: #4b88a2;
+            --border-color: #44445c;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --color-positive: #f44337;
+            --color-negative: #4caf50;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--highlight-color);
+            font-size: 2.5em;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        p {
+            text-align: center;
+            color: #b0b0b0;
+            margin-top: 0;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .upload-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        input[type="file"] {
+            color: var(--text-color);
+            border: 2px dashed var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="file"]:hover {
+            border-color: var(--highlight-color);
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            padding: 50px;
+        }
+
+        #backtest-config {
+            display: none;
+        }
+
+        .config-group {
+            margin-bottom: 15px;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .config-group input, .config-group select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            background-color: #3e4157;
+            color: var(--text-color);
+            border-radius: 6px;
+            font-size: 1em;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .config-group input.flatpickr-input {
+            cursor: pointer;
+        }
+
+        #run-backtest-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        
+        #run-backtest-btn:hover {
+            background-color: var(--highlight-color);
+        }
+
+        #backtest-results {
+            display: none;
+        }
+        
+        #animated-summary {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        #animated-summary div {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .positive {
+            color: var(--color-positive);
+        }
+        
+        .negative {
+            color: var(--color-negative);
+        }
+
+        #result-text {
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #252538;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        #equity-chart {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        /* Flatpickr 样式优化 */
+        .flatpickr-calendar {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            color: var(--text-color);
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month .flatpickr-monthDropdown-months option,
+        .flatpickr-current-month .flatpickr-yearDropdown-years,
+        .flatpickr-current-month .flatpickr-yearDropdown-years option {
+            color: var(--text-color);
+            background: var(--card-color);
+        }
+        .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+            fill: var(--text-color);
+        }
+        .flatpickr-day {
+            color: var(--text-color);
+        }
+        .flatpickr-day.selected, .flatpickr-day.selected:hover, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.today.selected, .flatpickr-day.today.startRange, .flatpickr-day.today.endRange {
+            background-color: var(--highlight-color);
+            border-color: var(--highlight-color);
+            color: #fff;
+        }
+        .flatpickr-day.in-range {
+            background-color: rgba(99, 209, 244, 0.2);
+            border-color: rgba(99, 209, 244, 0.2);
+        }
+        .flatpickr-day.flatpickr-disabled, .flatpickr-day.flatpickr-disabled:hover {
+            color: #666 !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h1>股票数据回测系统</h1>
+        <p>请上传您的历史日数据 CSV 文件以开始回测</p>
+        <div class="upload-section">
+            <input type="file" id="csv-file-input" accept=".csv" />
+        </div>
+    </div>
+
+    <div id="loading" class="card loading" style="display: none;">
+        正在处理数据，请稍候...
+    </div>
+
+    <div id="backtest-config" class="card">
+        <h2>回测配置</h2>
+        <div class="config-group">
+            <label for="initial-cash">初始资金 (元):</label>
+            <input type="number" id="initial-cash" value="100000" min="1000" step="1000">
+        </div>
+        <div class="config-group">
+            <label for="strategy-select">选择策略:</label>
+            <select id="strategy-select">
+                <option value="macd_crossover">MACD金叉/死叉</option>
+                <option value="ma_crossover">均线交叉 (MA5/MA20)</option>
+                <option value="rsi_crossover">RSI超买超卖</option>
+                <option value="bollinger_band">布林带突破</option>
+                <option value="kdj_crossover">KDJ超买超卖</option>
+                <option value="volume_breakout">放量突破</option>
+            </select>
+        </div>
+        <div class="config-group">
+            <label for="commission">佣金比率 (%):</label>
+            <input type="number" id="commission" value="0.023" step="0.001" min="0">
+        </div>
+        <div class="config-group">
+            <label for="slippage">滑点比率 (%):</label>
+            <input type="number" id="slippage" value="0.05" step="0.01" min="0">
+        </div>
+        <div class="config-group">
+            <label for="start-date">回测开始日期:</label>
+            <input type="text" id="start-date" placeholder="选择开始日期" class="flatpickr-input">
+        </div>
+        <div class="config-group">
+            <label for="end-date">回测结束日期:</label>
+            <input type="text" id="end-date" placeholder="选择结束日期" class="flatpickr-input">
+        </div>
+        <button id="run-backtest-btn">开始回测</button>
+    </div>
+
+    <div id="backtest-results" class="card">
+        <h2>回测结果</h2>
+        <div id="animated-summary">
+            <div>
+                回测日期<br/>
+                <span id="current-date">---</span>
+            </div>
+            <div>
+                最终净值<br/>
+                <span id="current-equity">---</span>
+            </div>
+            <div>
+                总收益率<br/>
+                <span id="current-return">---</span>
+            </div>
+        </div>
+        <div id="equity-chart"></div>
+        <pre id="result-text"></pre>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('csv-file-input');
+    const loadingDiv = document.getElementById('loading');
+    const backtestConfigDiv = document.getElementById('backtest-config');
+    const runBacktestBtn = document.getElementById('run-backtest-btn');
+    const backtestResultsDiv = document.getElementById('backtest-results');
+    const resultTextPre = document.getElementById('result-text');
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
+    const equityChartDiv = document.getElementById('equity-chart');
+    const strategySelect = document.getElementById('strategy-select');
+    const currentDateEl = document.getElementById('current-date');
+    const currentEquityEl = document.getElementById('current-equity');
+    const currentReturnEl = document.getElementById('current-return');
+
+    let originalDailyData = [];
+    let equityChart = null;
+    let startDatePicker = null;
+    let endDatePicker = null;
+    
+    // Helper functions for indicators
+    function calculateMACD(data) {
+        if (data.length < 26) return { macd: [], signal: [], histogram: [] };
+        const ema = (period, data) => {
+            let emaArr = [data[0]];
+            let multiplier = 2 / (period + 1);
+            for (let i = 1; i < data.length; i++) {
+                emaArr[i] = ((data[i] - emaArr[i - 1]) * multiplier) + emaArr[i - 1];
+            }
+            return emaArr;
+        };
+        const closes = data.map(d => d.close);
+        const ema12 = ema(12, closes);
+        const ema26 = ema(26, closes);
+        const macdLine = ema12.map((val, i) => val - ema26[i]);
+        const signalLine = ema(9, macdLine);
+        const histogram = macdLine.map((val, i) => val - signalLine[i]);
+        return { macd: macdLine, signal: signalLine, histogram: histogram };
+    }
+
+    function calculateMA(data, period) {
+        if (data.length < period) return [];
+        let maArr = [];
+        for (let i = period - 1; i < data.length; i++) {
+            const sum = data.slice(i - period + 1, i + 1).reduce((acc, d) => acc + d.close, 0);
+            maArr.push(sum / period);
+        }
+        return maArr;
+    }
+
+    function calculateRSI(data, period = 14) {
+        if (data.length < period) return [];
+        let rsiArr = [];
+        let closes = data.map(d => d.close);
+        let gains = [];
+        let losses = [];
+        for (let i = 1; i < closes.length; i++) {
+            let diff = closes[i] - closes[i - 1];
+            gains.push(Math.max(0, diff));
+            losses.push(Math.max(0, -diff));
+        }
+        let avgGain = gains.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        let avgLoss = losses.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        rsiArr.push(avgLoss === 0 ? 100 : 100 - (100 / (1 + avgGain / avgLoss)));
+        for (let i = period; i < gains.length; i++) {
+            avgGain = ((avgGain * (period - 1)) + gains[i]) / period;
+            avgLoss = ((avgLoss * (period - 1)) + losses[i]) / period;
+            rsiArr.push(avgLoss === 0 ? 100 : 100 - (100 / (1 + avgGain / avgLoss)));
+        }
+        return rsiArr;
+    }
+
+    function calculateBollingerBands(data, period = 20) {
+        if (data.length < period) return { upper: [], middle: [], lower: [] };
+        let middleBand = calculateMA(data, period);
+        let upperBand = [];
+        let lowerBand = [];
+        for (let i = period - 1; i < data.length; i++) {
+            let slice = data.slice(i - period + 1, i + 1).map(d => d.close);
+            let avg = middleBand[i - (period - 1)];
+            let sumOfSquares = slice.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0);
+            let stdDev = Math.sqrt(sumOfSquares / period);
+            upperBand.push(avg + (stdDev * 2));
+            lowerBand.push(avg - (stdDev * 2));
+        }
+        return { upper: upperBand, middle: middleBand, lower: lowerBand };
+    }
+
+    function calculateKDJ(data, period = 9, ma1 = 3, ma2 = 3) {
+        if (data.length < period) return { k: [], d: [], j: [] };
+        let rsv = [];
+        for (let i = period - 1; i < data.length; i++) {
+            let slice = data.slice(i - period + 1, i + 1);
+            let highest = Math.max(...slice.map(d => d.high));
+            let lowest = Math.min(...slice.map(d => d.low));
+            let close = slice[slice.length - 1].close;
+            rsv.push((close - lowest) / (highest - lowest) * 100);
+        }
+        const ema = (period, data) => {
+            let emaArr = [data[0]];
+            let multiplier = 1 / period;
+            for (let i = 1; i < data.length; i++) {
+                emaArr[i] = ((data[i] - emaArr[i - 1]) * multiplier) + emaArr[i - 1];
+            }
+            return emaArr;
+        };
+        let k = ema(ma1, rsv);
+        let d = ema(ma2, k);
+        let j = k.map((val, i) => (3 * val) - (2 * d[i]));
+        return { k: k, d: d, j: j };
+    }
+
+    function calculateAverageVolume(data, period) {
+        if (data.length < period) return [];
+        let avgVolumeArr = [];
+        for (let i = period - 1; i < data.length; i++) {
+            const sum = data.slice(i - period + 1, i + 1).reduce((acc, d) => acc + d.volume, 0);
+            avgVolumeArr.push(sum / period);
+        }
+        return avgVolumeArr;
+    }
+
+    function runBacktest() {
+        backtestResultsDiv.style.display = 'block';
+        resultTextPre.textContent = '正在进行回测...';
+        currentDateEl.innerText = '---';
+        currentEquityEl.innerText = '---';
+        currentReturnEl.innerText = '---';
+        currentEquityEl.className = '';
+        currentReturnEl.className = '';
+
+        const initialCash = parseFloat(document.getElementById('initial-cash').value);
+        const commissionRate = parseFloat(document.getElementById('commission').value) / 100;
+        const slippageRate = parseFloat(document.getElementById('slippage').value) / 100;
+        const strategy = strategySelect.value;
+        
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            resultTextPre.textContent = '错误：请选择有效的开始和结束日期。';
+            return;
+        }
+        
+        // 新增固定费率常量
+        const MIN_COMMISSION = 5; // 佣金最低5元
+        const STAMP_DUTY_RATE = 0.0005; // 印花税万分之五
+        const TRANSFER_FEE_RATE = 0.00001; // 过户费万分之0.1
+
+        const backtestData = originalDailyData.filter(d => {
+            const date = new Date(d.date);
+            return date >= startDate && date <= endDate;
+        });
+
+        if (backtestData.length < 50) {
+            resultTextPre.textContent = '错误：选择的回测时间范围数据不足，请选择更长的时间段。';
+            return;
+        }
+
+        let cash = initialCash;
+        let shares = 0;
+        let transactions = [];
+        let equityCurve = [];
+        let tradeOutcomes = [];
+        let currentTradeEntryPrice = 0;
+
+        let indicators = {};
+        let indicatorOffset = 0;
+        if (strategy === 'macd_crossover') {
+            indicators = calculateMACD(backtestData);
+            indicatorOffset = 26;
+        } else if (strategy === 'ma_crossover') {
+            indicators.ma5 = calculateMA(backtestData, 5);
+            indicators.ma20 = calculateMA(backtestData, 20);
+            indicatorOffset = 20;
+        } else if (strategy === 'rsi_crossover') {
+            indicators.rsi = calculateRSI(backtestData);
+            indicatorOffset = 14;
+        } else if (strategy === 'bollinger_band') {
+            indicators.bollinger = calculateBollingerBands(backtestData);
+            indicatorOffset = 20;
+        } else if (strategy === 'kdj_crossover') {
+            indicators.kdj = calculateKDJ(backtestData);
+            indicatorOffset = 9;
+        } else if (strategy === 'volume_breakout') {
+            indicators.avgVolume = calculateAverageVolume(backtestData, 30);
+            indicatorOffset = 30;
+        }
+
+        // Run backtest in a single loop
+        for (let i = indicatorOffset; i < backtestData.length; i++) {
+            const today = backtestData[i];
+            const dateStr = new Date(today.date).toISOString().slice(0, 10);
+            
+            let signal = 'hold';
+            // 策略逻辑
+            if (strategy === 'macd_crossover') {
+                const prevMacd = indicators.macd[i - 1];
+                const prevSignal = indicators.signal[i - 1];
+                const currentMacd = indicators.macd[i];
+                const currentSignal = indicators.signal[i];
+                if (prevMacd < prevSignal && currentMacd > currentSignal) {
+                    signal = 'buy';
+                } else if (prevMacd > prevSignal && currentMacd < currentSignal) {
+                    signal = 'sell';
+                }
+            } else if (strategy === 'ma_crossover') {
+                const prevMa5 = indicators.ma5[i - 1 - (5 - 1)];
+                const prevMa20 = indicators.ma20[i - 1 - (20 - 1)];
+                const currentMa5 = indicators.ma5[i - (5 - 1)];
+                const currentMa20 = indicators.ma20[i - (20 - 1)];
+                if (prevMa5 < prevMa20 && currentMa5 > currentMa20) {
+                    signal = 'buy';
+                } else if (prevMa5 > prevMa20 && currentMa5 < currentMa20) {
+                    signal = 'sell';
+                }
+            } else if (strategy === 'rsi_crossover') {
+                const rsi = indicators.rsi[i - (14 - 1)];
+                if (rsi < 30) {
+                    signal = 'buy';
+                } else if (rsi > 70) {
+                    signal = 'sell';
+                }
+            } else if (strategy === 'bollinger_band') {
+                const upper = indicators.bollinger.upper[i - (20 - 1)];
+                const lower = indicators.bollinger.lower[i - (20 - 1)];
+                const close = today.close;
+                if (close < lower) {
+                    signal = 'buy';
+                } else if (close > upper) {
+                    signal = 'sell';
+                }
+            } else if (strategy === 'kdj_crossover') {
+                const kdjIndexOffset = 9 - 1;
+                const prevK = indicators.kdj.k[i - 1 - kdjIndexOffset];
+                const prevD = indicators.kdj.d[i - 1 - kdjIndexOffset];
+                const currentK = indicators.kdj.k[i - kdjIndexOffset];
+                const currentD = indicators.kdj.d[i - kdjIndexOffset];
+                if (prevK < prevD && currentK > currentD && currentK < 20) {
+                    signal = 'buy';
+                } else if (prevK > prevD && currentK < currentD && currentK > 80) {
+                    signal = 'sell';
+                }
+            } else if (strategy === 'volume_breakout') {
+                const prev20High = Math.max(...backtestData.slice(i - 20, i).map(d => d.high));
+                const prev20Low = Math.min(...backtestData.slice(i - 20, i).map(d => d.low));
+                const avgVolume = indicators.avgVolume[i - (30 - 1)];
+                if (today.close > prev20High && today.volume > avgVolume * 2) {
+                    signal = 'buy';
+                } else if (today.close < prev20Low && today.volume > avgVolume * 2) {
+                    signal = 'sell';
+                }
+            }
+
+            if (signal === 'buy' && shares === 0) {
+                const buyPrice = today.close * (1 + slippageRate);
+                const buyableShares = Math.floor(cash / buyPrice);
+                if (buyableShares > 0) {
+                    const transactionAmount = buyableShares * buyPrice;
+                    const commissionCost = Math.max(transactionAmount * commissionRate, MIN_COMMISSION);
+                    const transferFeeCost = transactionAmount * TRANSFER_FEE_RATE;
+                    const totalCost = transactionAmount + commissionCost + transferFeeCost;
+                    
+                    shares = buyableShares;
+                    cash -= totalCost;
+                    transactions.push({ date: dateStr, type: '买入', price: buyPrice, shares: shares, commission: commissionCost, transferFee: transferFeeCost });
+                    currentTradeEntryPrice = buyPrice;
+                }
+            } else if (signal === 'sell' && shares > 0) {
+                const sellPrice = today.close * (1 - slippageRate);
+                const transactionAmount = shares * sellPrice;
+                const commissionCost = Math.max(transactionAmount * commissionRate, MIN_COMMISSION);
+                const transferFeeCost = transactionAmount * TRANSFER_FEE_RATE;
+                const stampDutyCost = transactionAmount * STAMP_DUTY_RATE;
+                
+                const totalCost = commissionCost + transferFeeCost + stampDutyCost;
+                const profit = transactionAmount - shares * currentTradeEntryPrice - totalCost;
+
+                tradeOutcomes.push(profit);
+                cash += (transactionAmount - totalCost);
+                transactions.push({ date: dateStr, type: '卖出', price: sellPrice, shares: shares, commission: commissionCost, transferFee: transferFeeCost, stampDuty: stampDutyCost });
+                shares = 0;
+                currentTradeEntryPrice = 0;
+            }
+
+            const currentEquity = cash + shares * today.close;
+            equityCurve.push({ date: dateStr, value: currentEquity });
+        }
+        
+        finalizeResults(initialCash, backtestData, equityCurve, transactions, tradeOutcomes);
+    }
+
+    function finalizeResults(initialCash, backtestData, equityCurve, transactions, tradeOutcomes) {
+        const finalEquity = equityCurve.length > 0 ? equityCurve[equityCurve.length - 1].value : initialCash;
+        const totalReturn = ((finalEquity - initialCash) / initialCash) * 100;
+
+        let maxDrawdown = 0;
+        let peakEquity = initialCash;
+        let dailyReturns = [];
+
+        equityCurve.forEach((day, index) => {
+            if (index > 0) {
+                dailyReturns.push((day.value - equityCurve[index - 1].value) / equityCurve[index - 1].value);
+            }
+            if (day.value > peakEquity) {
+                peakEquity = day.value;
+            }
+            const drawdown = (peakEquity - day.value) / peakEquity;
+            if (drawdown > maxDrawdown) {
+                maxDrawdown = drawdown;
+            }
+        });
+
+        let sharpeRatio = 0;
+        if (dailyReturns.length > 0) {
+            const avgDailyReturn = dailyReturns.reduce((sum, r) => sum + r, 0) / dailyReturns.length;
+            const stdDevDailyReturn = Math.sqrt(dailyReturns.map(r => Math.pow(r - avgDailyReturn, 2)).reduce((sum, sq) => sum + sq, 0) / dailyReturns.length);
+            if (stdDevDailyReturn > 0) {
+                const annualizedReturn = Math.pow(1 + avgDailyReturn, 252) - 1;
+                const annualizedStdDev = stdDevDailyReturn * Math.sqrt(252);
+                sharpeRatio = annualizedReturn / annualizedStdDev;
+            }
+        }
+        
+        let winningTrades = tradeOutcomes.filter(p => p > 0).length;
+        let losingTrades = tradeOutcomes.filter(p => p <= 0).length;
+        let totalTrades = winningTrades + losingTrades;
+        let winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+        
+        let totalProfit = tradeOutcomes.filter(p => p > 0).reduce((sum, p) => sum + p, 0);
+        let totalLoss = tradeOutcomes.filter(p => p <= 0).reduce((sum, l) => sum + l, 0);
+        let profitLossRatio = totalLoss < 0 ? totalProfit / Math.abs(totalLoss) : Infinity;
+
+        let strategyRuleText = '';
+        const strategy = strategySelect.value;
+        switch (strategy) {
+            case 'macd_crossover':
+                strategyRuleText = '策略规则: MACD金叉/死叉\n买入: MACD线上穿Signal线\n卖出: MACD线下穿Signal线';
+                break;
+            case 'ma_crossover':
+                strategyRuleText = '策略规则: 均线交叉 (MA5/MA20)\n买入: MA5上穿MA20\n卖出: MA5下穿MA20';
+                break;
+            case 'rsi_crossover':
+                strategyRuleText = '策略规则: RSI超买超卖\n买入: RSI低于30\n卖出: RSI高于70';
+                break;
+            case 'bollinger_band':
+                strategyRuleText = '策略规则: 布林带突破\n买入: 收盘价跌破布林带下轨\n卖出: 收盘价突破布林带上轨';
+                break;
+            case 'kdj_crossover':
+                strategyRuleText = '策略规则: KDJ超买超卖\n买入: K线上穿D线，且K/D值低于20\n卖出: K线下穿D线，且K/D值高于80';
+                break;
+            case 'volume_breakout':
+                strategyRuleText = '策略规则: 放量突破\n买入: 价格突破前20日高点且成交量大于30日均量2倍\n卖出: 价格跌破前20日低点且成交量大于30日均量2倍';
+                break;
+        }
+
+        let resultLog = `初始资金：${initialCash.toFixed(2)}元\n`;
+        resultLog += `最终资金：${finalEquity.toFixed(2)}元\n`;
+        resultLog += `总收益率：${totalReturn.toFixed(2)}%\n\n`;
+
+        resultLog += '--- 风险与收益指标 ---\n\n';
+        resultLog += `最大回撤：${(maxDrawdown * 100).toFixed(2)}%\n`;
+        resultLog += `夏普比率：${sharpeRatio.toFixed(2)}\n`;
+        resultLog += `总交易次数：${totalTrades}\n`;
+        resultLog += `胜率：${winRate.toFixed(2)}%\n`;
+        resultLog += `盈亏比：${profitLossRatio.toFixed(2)}\n\n`;
+
+        resultLog += `--- 策略规则 ---\n\n${strategyRuleText}\n\n`;
+
+        resultLog += '--- 详细交易记录 ---\n\n';
+        if (transactions.length > 0) {
+            transactions.forEach(t => {
+                let feeLog = `佣金: ${t.commission ? t.commission.toFixed(2) + '元' : '0.00元'}, 过户费: ${t.transferFee ? t.transferFee.toFixed(2) + '元' : '0.00元'}`;
+                if (t.stampDuty) {
+                    feeLog += `, 印花税: ${t.stampDuty.toFixed(2)}元`;
+                }
+                resultLog += `日期: ${t.date}, 动作: ${t.type}, 价格: ${t.price.toFixed(2)}, 数量: ${t.shares.toFixed(0)}, 费用: [${feeLog}]\n`;
+            });
+        } else {
+            resultLog += '无交易记录。\n';
+        }
+
+        resultTextPre.textContent = resultLog;
+        
+        // Update summary UI
+        currentDateEl.innerText = backtestData.length > 0 ? new Date(backtestData[backtestData.length - 1].date).toISOString().slice(0, 10) : '---';
+        currentEquityEl.innerText = finalEquity.toFixed(2);
+        currentEquityEl.className = finalEquity >= initialCash ? 'positive' : 'negative';
+        currentReturnEl.innerText = totalReturn.toFixed(2) + '%';
+        currentReturnEl.className = totalReturn >= 0 ? 'positive' : 'negative';
+
+        // Update chart
+        const rootStyles = getComputedStyle(document.documentElement);
+        const cssVars = {
+            textColor: rootStyles.getPropertyValue('--text-color').trim(),
+            borderColor: rootStyles.getPropertyValue('--border-color').trim(),
+            highlightColor: rootStyles.getPropertyValue('--highlight-color').trim(),
+        };
+
+        const chartDates = equityCurve.map(d => d.date);
+        const chartValues = equityCurve.map(d => d.value);
+
+        const option = {
+            title: { text: '回测资金曲线', textStyle: { color: cssVars.textColor }, left: 'center' },
+            tooltip: {
+                trigger: 'axis',
+                formatter: params => `日期: ${params[0].name}<br/>净值: ${params[0].value.toFixed(2)}`,
+                backgroundColor: 'rgba(50,50,50,0.7)',
+                textStyle: { color: '#fff' }
+            },
+            xAxis: {
+                type: 'category',
+                data: chartDates,
+                axisLine: { lineStyle: { color: cssVars.borderColor } },
+                axisLabel: { color: cssVars.textColor }
+            },
+            yAxis: {
+                type: 'value',
+                scale: true,
+                axisLine: { lineStyle: { color: cssVars.borderColor } },
+                axisLabel: { color: cssVars.textColor },
+                splitLine: { lineStyle: { color: '#3a3a52' } }
+            },
+            series: [{
+                name: '账户净值',
+                type: 'line',
+                data: chartValues,
+                smooth: true,
+                symbol: 'none',
+                lineStyle: { color: cssVars.highlightColor },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(99, 209, 244, 0.5)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(99, 209, 244, 0)'
+                    }])
+                }
+            }]
+        };
+
+        if (!equityChart) {
+            equityChart = echarts.init(equityChartDiv);
+        }
+        equityChart.setOption(option, true);
+    }
+    
+    // Process CSV data
+    function processCSVData(data) {
+        if (!data || data.length === 0) {
+            alert('CSV 文件内容为空或格式不正确。');
+            loadingDiv.style.display = 'none';
+            return;
+        }
+        const dailyData = data.map(row => {
+            const date = new Date(row['日期']);
+            return {
+                date: isNaN(date.getTime()) ? row['日期'] : date,
+                open: parseFloat(row['开盘价']) || 0,
+                close: parseFloat(row['收盘价']) || 0,
+                high: parseFloat(row['最高价']) || 0,
+                low: parseFloat(row['最低价']) || 0,
+                volume: parseFloat(row['成交量(股)']) || 0
+            };
+        }).filter(d => d.close > 0 && !isNaN(new Date(d.date).getTime()));
+        dailyData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        originalDailyData = dailyData;
+        if (originalDailyData.length < 50) {
+            alert(`数据不足，无法进行回测。请提供至少50天的有效数据。`);
+            loadingDiv.style.display = 'none';
+            return;
+        }
+        loadingDiv.style.display = 'none';
+        backtestConfigDiv.style.display = 'block';
+
+        const firstDate = originalDailyData[0].date;
+        const lastDate = originalDailyData[originalDailyData.length - 1].date;
+
+        if (!startDatePicker) {
+            startDatePicker = flatpickr("#start-date", {
+                dateFormat: "Y-m-d",
+                locale: "zh",
+                defaultDate: firstDate,
+                maxDate: endDateInput.value || lastDate
+            });
+        }
+        
+        if (!endDatePicker) {
+            endDatePicker = flatpickr("#end-date", {
+                dateFormat: "Y-m-d",
+                locale: "zh",
+                defaultDate: lastDate,
+                minDate: startDateInput.value || firstDate
+            });
+        }
+
+        startDatePicker.set('minDate', firstDate);
+        startDatePicker.set('maxDate', lastDate);
+        endDatePicker.set('minDate', firstDate);
+        endDatePicker.set('maxDate', lastDate);
+        
+        startDatePicker.setDate(firstDate);
+        endDatePicker.setDate(lastDate);
+    }
+
+    // Event listeners
+    runBacktestBtn.addEventListener('click', runBacktest);
+
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            loadingDiv.innerText = '正在处理数据，请稍候...';
+            loadingDiv.style.display = 'block';
+            backtestConfigDiv.style.display = 'none';
+            backtestResultsDiv.style.display = 'none';
+            Papa.parse(file, {
+                header: true,
+                dynamicTyping: false,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    processCSVData(results.data);
+                },
+                error: function(error) {
+                    loadingDiv.style.display = 'none';
+                    alert('文件解析失败，请检查文件格式是否正确。');
+                    console.error('PapaParse error:', error);
+                }
+            });
+        }
+    });
+    
+    window.onload = () => {
+        loadingDiv.innerText = '请点击上方“选择文件”按钮，上传您的股票历史日数据 CSV 文件。';
+        loadingDiv.style.display = 'block';
+    };
+</script>
+</body>
+</html>
