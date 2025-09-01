@@ -39,6 +39,19 @@
         }
         .select-section {
             margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .select-section label {
+            font-weight: bold;
+            color: #555;
+        }
+        .select-section input[type="date"] {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-size: 14px;
         }
         .chart-row {
             display: flex;
@@ -151,7 +164,6 @@
         .up-count { color: #e74c3c; font-weight: bold;} /* 涨-红色 */
         .down-count { color: #2ecc71; font-weight: bold;} /* 跌-绿色 */
         .no-data-text { font-size: 0.8em; color: #888; }
-
         @media (max-width: 900px) {
             .chart-container, .full-width-chart-container {
                 width: 95%;
@@ -171,18 +183,13 @@
     <div class="upload-section">
         <input type="file" id="csv-file-input" accept=".csv" />
         <div id="select-section" class="select-section" style="display: none;">
-            <label for="time-range-select">选择时间范围:</label>
-            <select id="time-range-select">
-                <option value="all">全部</option>
-                <option value="3m">近3个月</option>
-                <option value="6m">近半年</option>
-                <option value="this_year">今年</option>
-                <option value="3y">近3年</option>
-                <option value="5y">近5年</option>
-            </select>
+            <label for="start-date-input">起始日期:</label>
+            <input type="date" id="start-date-input" />
+            <label for="end-date-input">结束日期:</label>
+            <input type="date" id="end-date-input" />
         </div>
     </div>
-    
+
     <div id="loading" class="loading" style="display: none;">
         正在处理数据，请稍候...
     </div>
@@ -224,7 +231,8 @@
 <script>
     const input = document.getElementById('csv-file-input');
     const selectSection = document.getElementById('select-section');
-    const timeRangeSelect = document.getElementById('time-range-select');
+    const startDateInput = document.getElementById('start-date-input');
+    const endDateInput = document.getElementById('end-date-input');
     const loadingDiv = document.getElementById('loading');
     const dashboardDiv = document.getElementById('dashboard-content');
     const summaryText = document.getElementById('summary-text');
@@ -235,13 +243,11 @@
 
     let originalDailyData = [];
     let dailyDataMap = new Map();
-    let historicalDataByMonthDay = {}; // 更改数据结构，按 '月-日' 统计
+    let historicalDataByMonthDay = {};
     let currentDisplayDate = new Date();
 
     let chartWeekday, chartMonth, chartSeason, chartConsecutive, chartType, chartPreDay;
 
-    // 2025年法定节假日和调休工作日数据
-    // 节假日（非交易日）和调休工作日（交易日）
     const holidays2025 = {
         'holidays': [
             { date: '2025-01-01', name: '元旦' },
@@ -321,8 +327,8 @@
         }
 
         dailyDataMap = new Map();
-        historicalDataByMonthDay = {}; // 重新初始化数据结构
-        
+        historicalDataByMonthDay = {};
+
         for (let i = 1; i < originalDailyData.length; i++) {
             const day = originalDailyData[i];
             const prevDay = originalDailyData[i - 1];
@@ -334,7 +340,6 @@
             dailyDataMap.set(dateKey, day);
 
             if (!isNaN(day.change_percent) && isFinite(day.change_percent)) {
-                // 修改此处，按月-日统计
                 const monthDayKey = `${day.date.getMonth() + 1}-${day.date.getDate()}`;
                 if (!historicalDataByMonthDay[monthDayKey]) {
                     historicalDataByMonthDay[monthDayKey] = { up: 0, down: 0 };
@@ -347,7 +352,11 @@
             }
         }
         
-        selectSection.style.display = 'block';
+        selectSection.style.display = 'flex';
+        const earliestDate = originalDailyData[0].date.toISOString().split('T')[0];
+        const latestDate = originalDailyData[originalDailyData.length - 1].date.toISOString().split('T')[0];
+        startDateInput.value = earliestDate;
+        endDateInput.value = latestDate;
         currentDisplayDate = originalDailyData[originalDailyData.length - 1].date;
         filterAndProcessData();
     }
@@ -357,27 +366,16 @@
         loadingDiv.style.display = 'block';
         dashboardDiv.style.display = 'none';
 
-        const selectedRange = timeRangeSelect.value;
-        const latestDate = originalDailyData[originalDailyData.length - 1].date;
-        let cutoffDate;
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
         
-        if (selectedRange === 'all') {
-            filteredDailyData = originalDailyData;
-        } else {
-            if (selectedRange === 'this_year') {
-                cutoffDate = new Date(latestDate.getFullYear(), 0, 1);
-            } else if (selectedRange === '3m') {
-                cutoffDate = new Date(latestDate.getFullYear(), latestDate.getMonth(), latestDate.getDate());
-                cutoffDate.setMonth(cutoffDate.getMonth() - 3);
-            } else if (selectedRange === '6m') {
-                cutoffDate = new Date(latestDate.getFullYear(), latestDate.getMonth(), latestDate.getDate());
-                cutoffDate.setMonth(cutoffDate.getMonth() - 6);
-            } else {
-                const years = parseInt(selectedRange.replace('y', ''));
-                cutoffDate = new Date(latestDate.getFullYear() - years, latestDate.getMonth(), latestDate.getDate());
-            }
-            filteredDailyData = originalDailyData.filter(d => d.date >= cutoffDate);
+        if (startDate > endDate) {
+            alert('起始日期不能晚于结束日期。');
+            loadingDiv.style.display = 'none';
+            return;
         }
+
+        const filteredDailyData = originalDailyData.filter(d => d.date >= startDate && d.date <= endDate);
 
         if (filteredDailyData.length < 2) {
             alert('所选时间范围内数据不足，请选择其他范围。');
@@ -404,7 +402,7 @@
             const dayOfWeek = day.date.getDay();
             const month = day.date.getMonth();
             const season = getSeason(month);
-            
+
             if (!isNaN(change_percent) && isFinite(change_percent)) {
                 weekdayChange[dayOfWeek] += change_percent;
                 monthChange[month] += change_percent;
@@ -412,7 +410,7 @@
             }
 
             const isLimitUp = (change_percent >= 9.9);
-            
+
             if (isLimitUp) {
                 currentConsecutiveZT++;
                 if (Math.abs(day.open - day.close) < 0.001 &&
@@ -427,7 +425,7 @@
                     ztTypes['正常涨停']++;
                 }
 
-                if (i > 1) { // Check previous day's change
+                if (i > 1) {
                     const preDay = filteredDailyData[i - 2];
                     const preDayChange = ((prevDay.close - preDay.close) / preDay.close) * 100;
                     if (preDayChange >= -5 && preDayChange < 0) preDayChangeBins['-5%~0%']++;
@@ -469,7 +467,6 @@
     }
 
     function getSeason(month) {
-        // month is 0-indexed
         if (month >= 2 && month <= 4) return 'spring';
         if (month >= 5 && month <= 7) return 'summer';
         if (month >= 8 && month <= 10) return 'autumn';
@@ -487,7 +484,7 @@
         const weekdaySeries = weekdayLabels.map((_, i) => parseFloat(weekdayData[i] || 0).toFixed(2));
         const monthLabels = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         const monthSeries = monthData.map(val => parseFloat(val).toFixed(2));
-        
+
         const seasonLabels = ['春季', '夏季', '秋季', '冬季'];
         const seasonSeries = [
             parseFloat(seasonData['spring'] || 0).toFixed(2),
@@ -495,7 +492,7 @@
             parseFloat(seasonData['autumn'] || 0).toFixed(2),
             parseFloat(seasonData['winter'] || 0).toFixed(2)
         ];
-        
+
         const consecutiveLabels = Object.keys(consecutiveData).sort((a,b) => parseInt(a) - parseInt(b)).map(d => `${d}连板`);
         const consecutiveSeries = Object.values(consecutiveData);
         const typeSeries = Object.keys(typeData).map(key => ({ name: key, value: typeData[key] }));
@@ -509,7 +506,7 @@
             yAxis: { name: '涨跌总和 (%)', min: 'dataMin', axisLabel: { formatter: '{value}%' } },
             series: [{ name: '涨跌总和', type: 'bar', data: weekdaySeries, itemStyle: { color: params => parseFloat(params.value) >= 0 ? '#e74c3c' : '#2ecc71' }}]
         }, true);
-        
+
         chartMonth.setOption({
             title: { text: '月份涨跌总和', left: 'center' },
             tooltip: { trigger: 'axis', formatter: '{b}: {c}%', axisPointer: { type: 'shadow' } },
@@ -517,11 +514,11 @@
             yAxis: { name: '涨跌总和 (%)', min: 'dataMin', axisLabel: { formatter: '{value}%' } },
             series: [{ name: '涨跌总和', type: 'bar', data: monthSeries, itemStyle: { color: params => parseFloat(params.value) >= 0 ? '#e74c3c' : '#2ecc71' }}]
         }, true);
-        
+
         chartSeason.setOption({
             title: { text: '季节涨跌总和', left: 'center' },
-            tooltip: { 
-                trigger: 'axis', 
+            tooltip: {
+                trigger: 'axis',
                 formatter: function(params) {
                     const name = params[0].name;
                     const value = params[0].value;
@@ -532,13 +529,13 @@
                     if (name === '冬季') monthInfo = '(12月, 1月, 2月)';
                     return `${name} ${monthInfo}: ${value}%`;
                 },
-                axisPointer: { type: 'shadow' } 
-            },
+                axisPointer: { type: 'shadow' }
+             },
             xAxis: { data: seasonLabels },
             yAxis: { name: '涨跌总和 (%)', min: 'dataMin', axisLabel: { formatter: '{value}%' } },
             series: [{ name: '涨跌总和', type: 'bar', data: seasonSeries, itemStyle: { color: params => parseFloat(params.value) >= 0 ? '#e74c3c' : '#2ecc71' }}]
         }, true);
-        
+
         chartConsecutive.setOption({
             title: { text: '涨停连板次数分布', left: 'center' },
             tooltip: { axisPointer: { type: 'shadow' } },
@@ -546,17 +543,16 @@
             yAxis: { name: '股票数量', minInterval: 1 },
             series: [{ name: '股票数量', type: 'bar', data: consecutiveSeries, itemStyle: { color: '#e74c3c' }}]
         }, true);
-        
+
         chartType.setOption({
             title: { text: '涨停板类型分布', left: 'center' },
-            tooltip: { 
-                trigger: 'item', 
+            tooltip: {
+                trigger: 'item',
                 formatter: function(params) {
                     const name = params.name;
                     const value = params.value;
                     const percent = params.percent;
                     let description = '';
-
                     if (name === '一字板') {
                         description = '股价开盘即涨停，全天未打开，通常表示极强的买盘力量。';
                     } else if (name === '炸板回封') {
@@ -566,13 +562,12 @@
                     } else {
                         description = '无有效涨停数据';
                     }
-
                     return `${name}: ${value}次 (${percent}%)<br>${description}`;
                 }
             },
             series: [{ name: '类型占比', type: 'pie', radius: '50%', data: typeSeries }]
         }, true);
-        
+
         chartPreDay.setOption({
             title: { text: '涨停前一日涨跌幅分布', left: 'center' },
             tooltip: { axisPointer: { type: 'shadow' } },
@@ -588,43 +583,33 @@
     function updateCalendar(year, month) {
         calendarGrid.innerHTML = '';
         currentMonthYearHeader.innerText = `${year}年${month + 1}月`;
-
         const firstDayOfMonth = new Date(year, month, 1);
         const lastDayOfMonth = new Date(year, month + 1, 0);
         const numDays = lastDayOfMonth.getDate();
         const startDayOfWeek = firstDayOfMonth.getDay();
         const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-
         dayNames.forEach(day => {
             const header = document.createElement('div');
             header.className = 'day-header';
             header.innerText = day;
             calendarGrid.appendChild(header);
         });
-
         const firstDayIndex = startDayOfWeek;
         for (let i = 0; i < firstDayIndex; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'calendar-cell empty';
             calendarGrid.appendChild(emptyCell);
         }
-
         for (let day = 1; day <= numDays; day++) {
             const dateKey = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
             const dayOfWeek = new Date(year, month, day).getDay();
-            
             const holiday = holidays2025.holidays.find(h => h.date === dateKey);
             const workday = holidays2025.workdays.find(w => w.date === dateKey);
-            const monthDayKey = `${month + 1}-${day}`; // 新增的月-日键
-            
+            const monthDayKey = `${month + 1}-${day}`;
             const dayData = dailyDataMap.get(dateKey);
-            
             const cell = document.createElement('div');
             cell.className = 'calendar-cell';
-            
-            // 使用新的按月-日统计的数据
             const historicalCounts = historicalDataByMonthDay[monthDayKey] || { up: 0, down: 0 };
-            
             if (holiday) {
                 cell.classList.add('no-data-day');
                 cell.innerHTML = `
@@ -657,7 +642,6 @@
                     changeClass = 'down';
                     changeSign = '';
                 }
-
                 cell.classList.add(changeClass);
                 cell.innerHTML = `
                     <div class="calendar-day-label">${day}</div>
@@ -692,7 +676,6 @@
 
     function updateSummary(weekdayData, seasonData, consecutiveData, ztTypes, currentData) {
         const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        
         let bestWeekdayIndex = '0';
         let maxWeekdayChange = -Infinity;
         for (const day in weekdayData) {
@@ -702,7 +685,6 @@
             }
         }
         const bestWeekdayName = weekdays[parseInt(bestWeekdayIndex)];
-
         let bestSeason = 'spring';
         let maxSeasonChange = -Infinity;
         for (const s in seasonData) {
@@ -712,15 +694,12 @@
             }
         }
         const seasonNameMap = { 'spring': '春季', 'summer': '夏季', 'autumn': '秋季', 'winter': '冬季' };
-        
         const totalZt = ztTypes['一字板'] + ztTypes['炸板回封'] + ztTypes['正常涨停'] || 0;
         const totalConsecutive = Object.values(consecutiveData).reduce((sum, count) => sum + count, 0);
         const averageConsecutive = totalConsecutive > 0 ? Object.entries(consecutiveData).reduce((sum, [days, count]) => sum + (parseInt(days) * count), 0) / totalConsecutive : 0;
         const oneWordBoardPercent = totalZt > 0 ? ((ztTypes['一字板'] / totalZt) * 100).toFixed(1) : 0;
-
         const firstDate = currentData[0].date.toLocaleDateString('zh-CN');
         const lastDate = currentData[currentData.length - 1].date.toLocaleDateString('zh-CN');
-
         summaryText.innerHTML = `
             当前分析的数据区间为：**${firstDate}** 至 **${lastDate}**。<br><br>
             通过对历史股票数据的分析，我们发现了一些有趣的规律：<br>
@@ -753,13 +732,13 @@
         }
     });
 
-    timeRangeSelect.addEventListener('change', filterAndProcessData);
+    startDateInput.addEventListener('change', filterAndProcessData);
+    endDateInput.addEventListener('change', filterAndProcessData);
 
     window.onload = () => {
         loadingDiv.innerText = '请点击上方“选择文件”按钮，上传您的股票历史日数据 CSV 文件。';
         loadingDiv.style.display = 'block';
     };
-
 </script>
 
 </body>
