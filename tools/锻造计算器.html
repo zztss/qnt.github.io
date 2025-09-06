@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锻造材料计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        .input-group select, .input-group input, button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .input-group select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            min-height: 100px;
+            text-align: left;
+        }
+        #results p {
+            margin: 5px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .price-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .quantity-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .quantity-buttons .btn {
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .quantity-buttons .btn.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .result-section {
+            margin-bottom: 20px;
+        }
+        .result-section h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .material-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .material-display img {
+            height: 24px; /* Adjust size as needed */
+        }
+        .price-label-img {
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>锻造材料计算器</h1>
+
+    <div class="input-group">
+        <label for="currentLevel">当前等级:</label>
+        <select id="currentLevel">
+            <option value="0">0级</option>
+            <option value="5">5级</option>
+            <option value="10">10级</option>
+            <option value="15">15级</option>
+            <option value="20">20级</option>
+            <option value="25">25级</option>
+            <option value="30">30级</option>
+            <option value="35">35级</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="targetLevel">目标等级:</label>
+        <select id="targetLevel">
+            <option value="5">5级</option>
+            <option value="10">10级</option>
+            <option value="15">15级</option>
+            <option value="20">20级</option>
+            <option value="25">25级</option>
+            <option value="30">30级</option>
+            <option value="35">35级</option>
+            <option value="40">40级</option>
+        </select>
+    </div>
+    
+    <div class="input-group">
+        <label>锻造数量:</label>
+        <div class="quantity-buttons" id="quantityButtons">
+            <div class="btn active" data-quantity="1">1件</div>
+            <div class="btn" data-quantity="2">2件</div>
+            <div class="btn" data-quantity="3">3件</div>
+        </div>
+    </div>
+
+    <div class="price-inputs">
+        <div class="input-group">
+            <label for="essencePrice">精元价格 (银两):</label>
+            <input type="number" id="essencePrice" value="3000">
+        </div>
+        <div class="input-group">
+            <label for="inferiorStonePrice">
+                <img src="Images/RMB_184.webp" class="price-label-img">下品龙源石价格 (银两):
+            </label>
+            <input type="number" id="inferiorStonePrice" value="140000">
+        </div>
+        <div class="input-group">
+            <label for="superiorStonePrice">
+                <img src="Images/RMB_185.webp" class="price-label-img">上品龙源石价格 (银两):
+            </label>
+            <input type="number" id="superiorStonePrice" value="2200000">
+        </div>
+    </div>
+    
+    <button onclick="calculateMaterials()">开始计算</button>
+
+    <div id="results">
+        </div>
+</div>
+
+<script>
+    const forgeData = {
+        0: { essence: 298, stone: 0, stoneType: '' },
+        5: { essence: 556, stone: 40, stoneType: '下品' },
+        10: { essence: 984, stone: 120, stoneType: '下品' },
+        15: { essence: 2077, stone: 240, stoneType: '下品' },
+        20: { essence: 4367, stone: 30, stoneType: '上品' },
+        25: { essence: 9294, stone: 70, stoneType: '上品' },
+        30: { essence: 19845, stone: 140, stoneType: '上品' },
+        35: { essence: 86373, stone: 420, stoneType: '上品' }
+    };
+
+    let selectedQuantity = 1;
+
+    // 添加事件监听器来处理锻造数量按钮的点击
+    document.getElementById('quantityButtons').addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn')) {
+            // 移除所有按钮的 active 状态
+            document.querySelectorAll('.quantity-buttons .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // 为被点击的按钮添加 active 状态
+            e.target.classList.add('active');
+            selectedQuantity = parseInt(e.target.dataset.quantity);
+        }
+    });
+
+    function calculateMaterials() {
+        const currentLevel = parseInt(document.getElementById('currentLevel').value);
+        const targetLevel = parseInt(document.getElementById('targetLevel').value);
+        const essencePrice = parseInt(document.getElementById('essencePrice').value);
+        const inferiorStonePrice = parseInt(document.getElementById('inferiorStonePrice').value);
+        const superiorStonePrice = parseInt(document.getElementById('superiorStonePrice').value);
+        const resultsDiv = document.getElementById('results');
+
+        if (currentLevel >= targetLevel) {
+            resultsDiv.innerHTML = '<p class="error">目标等级必须高于当前等级！</p>';
+            return;
+        }
+
+        let singleTotalEssence = 0;
+        let singleTotalInferiorStone = 0;
+        let singleTotalSuperiorStone = 0;
+
+        const levels = [0, 5, 10, 15, 20, 25, 30, 35];
+
+        for (let i = 0; i < levels.length; i++) {
+            const level = levels[i];
+            
+            if (level >= currentLevel && level < targetLevel) {
+                const materials = forgeData[level];
+                if (materials) {
+                    singleTotalEssence += materials.essence;
+                    if (materials.stoneType === '下品') {
+                        singleTotalInferiorStone += materials.stone;
+                    } else if (materials.stoneType === '上品') {
+                        singleTotalSuperiorStone += materials.stone;
+                    }
+                }
+            }
+        }
+
+        // 计算单件的银两开销
+        const singleTotalSilver = (singleTotalEssence * 1000) + 
+                                  (singleTotalEssence * essencePrice) +
+                                  (singleTotalInferiorStone * inferiorStonePrice) +
+                                  (singleTotalSuperiorStone * superiorStonePrice);
+
+        // 计算总消耗
+        const totalEssence = singleTotalEssence * selectedQuantity;
+        const totalInferiorStone = singleTotalInferiorStone * selectedQuantity;
+        const totalSuperiorStone = singleTotalSuperiorStone * selectedQuantity;
+        const totalSilver = singleTotalSilver * selectedQuantity;
+
+        function getStoneDisplay(inferiorStone, superiorStone) {
+            let stoneResult = '';
+            if (inferiorStone > 0 && superiorStone > 0) {
+                stoneResult = `<p>所需龙渊石：${inferiorStone} 下品，${superiorStone} 上品</p>`;
+            } else if (inferiorStone > 0) {
+                stoneResult = `<p>所需龙渊石：${inferiorStone} 下品</p>`;
+            } else if (superiorStone > 0) {
+                stoneResult = `<p>所需龙渊石：${superiorStone} 上品</p>`;
+            } else {
+                stoneResult = `<p>所需龙渊石：0</p>`;
+            }
+            return stoneResult;
+        }
+
+        resultsDiv.innerHTML = `
+            <div class="result-section">
+                <h3>单件消耗</h3>
+                ${getStoneDisplay(singleTotalInferiorStone, singleTotalSuperiorStone)}
+                <p>所需锻造精元：${singleTotalEssence}</p>
+                <p>总银两开销：${singleTotalSilver.toLocaleString('zh-CN')} 银两</p>
+            </div>
+            <hr>
+            <div class="result-section">
+                <h3>${selectedQuantity}件套总消耗</h3>
+                ${getStoneDisplay(totalInferiorStone, totalSuperiorStone)}
+                <p>所需锻造精元：${totalEssence}</p>
+                <p>总银两开销：${totalSilver.toLocaleString('zh-CN')} 银两</p>
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
