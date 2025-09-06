@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>倩女幽魂手游宝石升级模拟器</title>
+    <title>倩女幽魂手游宝石升级增量成本模拟器</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -243,7 +243,7 @@
 </head>
 <body>
     <div class="container">
-        <p class="intro">拖拽宝石到下方区域，设置等级，即可计算消耗。</p>
+        <p class="intro">拖拽宝石到下方区域，设置当前等级和目标等级，即可计算升级所需额外成本。</p>
 
         <div class="controls">
             <label for="key-price">宝匣钥匙价格 (灵玉):</label>
@@ -261,7 +261,7 @@
         </div>
 
         <div class="summary">
-            <h3>总计消耗</h3>
+            <h3>总计增量消耗</h3>
             <div class="total-cost">
                 <span class="cost-label">总消耗灵玉:</span>
                 <span id="total-price" class="cost-value">0</span>
@@ -334,13 +334,13 @@
             gallery.appendChild(gemItem);
         });
         
-        // 计算总共所需的1级宝石数量
-        function calculateTotalBaseGems(gemName, currentLevel) {
-            let total = 0; // 初始总数设为0，因为我们将累加所有阶段的消耗
-            if (currentLevel > 0) { // 检查等级是否有效
+        // 计算从1级到指定等级所需的总宝石数量
+        function calculateTotalGemsForLevel(gemName, level) {
+            let total = 0;
+            if (level > 0) { // 检查等级是否有效
                 const upgradeCosts = GEM_UPGRADE_COSTS[gemName];
-                // 累加从1级升到当前等级的所有消耗
-                for (let i = 0; i < currentLevel; i++) {
+                // 累加从1级到当前等级的所有消耗
+                for (let i = 0; i < level; i++) {
                     total += upgradeCosts[i];
                 }
             }
@@ -402,12 +402,16 @@
                 <div class="gem-img" style="background-image: url(${gemImagePath});"></div>
                 <h4>${gemName}</h4>
                 <div class="level-control">
-                    <label for="level-slider-${gemName}">当前等级: <span class="level-value">1</span></label>
-                    <input type="range" id="level-slider-${gemName}" class="level-slider" value="1" min="1" max="10">
+                    <label>当前等级: <span class="current-level-value level-value">0</span></label>
+                    <input type="range" class="current-level-slider level-slider" value="0" min="0" max="10">
+                </div>
+                <div class="level-control">
+                    <label>目标等级: <span class="target-level-value level-value">1</span></label>
+                    <input type="range" class="target-level-slider level-slider" value="1" min="1" max="10">
                 </div>
                 <div class="cost-details">
-                    <span class="total-gems" data-value="1">总计1级宝石: 1</span><br>
-                    <span class="total-price">总消耗灵玉: ${Math.round((1 / AVG_GEMS_PER_BOX) * (gemPrice + (parseInt(keyPriceInput.value) || 0)))}</span>
+                    <span class="total-gems" data-value="0">所需额外1级宝石: 0</span><br>
+                    <span class="total-price">预计额外消耗灵玉: 0</span>
                 </div>
                 <button class="remove-btn">&times;</button>
             `;
@@ -421,30 +425,46 @@
                 galleryGemItem.draggable = false;
             }
 
-            const slider = gemCard.querySelector('.level-slider');
-            const levelValueSpan = gemCard.querySelector('.level-value');
+            const currentSlider = gemCard.querySelector('.current-level-slider');
+            const targetSlider = gemCard.querySelector('.target-level-slider');
+            const currentLevelValueSpan = gemCard.querySelector('.current-level-value');
+            const targetLevelValueSpan = gemCard.querySelector('.target-level-value');
             const totalGemsSpan = gemCard.querySelector('.total-gems');
             const totalPriceSpan = gemCard.querySelector('.total-price');
 
             const updateCard = () => {
-                const level = parseInt(slider.value);
-                levelValueSpan.textContent = level;
-                
-                const totalGems = calculateTotalBaseGems(gemName, level);
-                
-                totalGemsSpan.textContent = `总计1级宝石: ${totalGems}`;
-                totalGemsSpan.dataset.value = totalGems;
-                
-                const boxPrice = parseInt(gemCard.dataset.price);
-                const keyPrice = parseInt(keyPriceInput.value) || 0;
-                const totalCost = (totalGems / AVG_GEMS_PER_BOX) * (boxPrice + keyPrice);
-                totalPriceSpan.textContent = `总消耗灵玉: ${Math.round(totalCost)}`;
-                
+                const currentLevel = parseInt(currentSlider.value);
+                const targetLevel = parseInt(targetSlider.value);
+
+                currentLevelValueSpan.textContent = currentLevel;
+                targetLevelValueSpan.textContent = targetLevel;
+
+                let additionalGems = 0;
+                let totalCost = 0;
+
+                if (targetLevel > currentLevel) {
+                    const totalGemsForTarget = calculateTotalGemsForLevel(gemName, targetLevel);
+                    const totalGemsForCurrent = calculateTotalGemsForLevel(gemName, currentLevel);
+                    additionalGems = totalGemsForTarget - totalGemsForCurrent;
+
+                    const boxPrice = parseInt(gemCard.dataset.price);
+                    const keyPrice = parseInt(keyPriceInput.value) || 0;
+                    totalCost = (additionalGems / AVG_GEMS_PER_BOX) * (boxPrice + keyPrice);
+
+                    totalGemsSpan.textContent = `所需额外1级宝石: ${additionalGems}`;
+                    totalPriceSpan.textContent = `预计额外消耗灵玉: ${Math.round(totalCost).toLocaleString()}`;
+                } else {
+                    totalGemsSpan.textContent = `所需额外1级宝石: 0`;
+                    totalPriceSpan.textContent = `预计额外消耗灵玉: 0`;
+                }
+
+                totalGemsSpan.dataset.value = additionalGems;
                 updateSummary();
             };
             
-            slider.addEventListener('input', updateCard);
-            
+            currentSlider.addEventListener('input', updateCard);
+            targetSlider.addEventListener('input', updateCard);
+
             const removeBtn = gemCard.querySelector('.remove-btn');
             removeBtn.addEventListener('click', () => {
                 dropZone.removeChild(gemCard);
