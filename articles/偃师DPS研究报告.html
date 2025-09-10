@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>偃师DPS研究报告</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 MathJax 用于渲染 LaTeX 公式 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['noerrors', 'noundefined']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore|d-ignore',
+                processHtmlClass: 'tex2jax_process|math-mode'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* 自定义样式 */
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-8">
+
+    <!-- 报告容器 -->
+    <div class="container mx-auto bg-white rounded-xl shadow-lg p-8 md:p-12 mt-8 mb-12">
+
+        <!-- 标题和作者信息 -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">偃师DPS研究报告</h1>
+            <p class="text-lg text-gray-600">作者：德库拉</p>
+        </header>
+
+        <!-- 报告内容 -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">引言</h2>
+            <p class="text-gray-700">在这份报告中，我将对《倩女幽魂手游》中偃师的输出技能伤害进行数学分析。我的目标是确定提升不同属性（穿云手技能加成 S、双龙臂技能加成 B、平均攻击 A、苍龙破封加成 P 以及流血加成 U）对最终伤害输出（DPS）的相对收益。我将运用偏导数方法，结合游戏中的连击机制、流血效果、施法前摇以及暴击期望，建立一个全面的数学模型。</p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">伤害公式与属性定义</h2>
+            <p class="text-gray-700">我的模型中定义了以下属性：</p>
+            <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                <li><b>S</b>：穿云手技能加成（直接伤害）</li>
+                <li><b>U</b>：穿云手流血加成</li>
+                <li><b>A</b>：平均攻击</li>
+                <li><b>F</b>：物理防御</li>
+                <li><b>P</b>：苍龙破封加成</li>
+                <li><b>C</b>：暴击期望倍率（$0.5 \times 2.25 + 0.5 \times 1 = 1.625$）</li>
+                <li><b>B</b>：双龙臂技能加成</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">双龙臂 Y 伤害</h3>
+            <p class="text-gray-700">双龙臂 Y 的伤害受平均攻击 A、物理防御 F、技能加成 B 和暴击期望倍率 C 影响：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_Y = (A + B - F) \times C$$
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">穿云手（S）技能伤害</h3>
+            <p class="text-gray-700">穿云手技能包含直接伤害和流血伤害两部分。</p>
+            <h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">穿云手直接伤害</h4>
+            <p class="text-gray-700">将 P 和 C 引入公式：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_{S_{\text{直接}}} = \left( (S + A \times P) \times 2.72 + A - F \right) \times C$$
+            </div>
+            <p class="text-gray-700 mt-4">展开并合并 A 的系数：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_{S_{\text{直接}}} = (2.72S + (2.72P + 1)A - F) \times C$$
+            </div>
+            
+            <h4 class="text-lg font-bold text-gray-900 mt-4 mb-2">穿云手流血伤害（每秒）</h4>
+            <p class="text-gray-700">我将使用你定义的流血加成 U。将 P 和 C 引入公式：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_{S_{\text{流血}}} = \left( (U + A \times P) \times 2.72 \times 0.9 + A \times 0.8 - F \right) \times C$$
+            </div>
+            <p class="text-gray-700 mt-4">展开并合并 A 的系数：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_{S_{\text{流血}}} = (2.448U + (2.448P + 0.8)A - F) \times C$$
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">施法时间与技能循环</h2>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">技能施法时间</h3>
+            <p class="text-gray-700">考虑 10% 的施法前摇，实际施法时间 $t_Y = t_S = 0.7 \times 1.1 = 0.77 \text{ 秒}$。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">连击机制与平均循环</h3>
+            <p class="text-gray-700">施放一次穿云手所需的平均 Y 施放次数为：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\text{平均 } Y \text{ 次数} = (1 \times 0.3) + (2 \times 0.7) = 1.7$$
+            </div>
+            <p class="text-gray-700 mt-4">一个平均循环的总耗时为：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$T_{\text{循环}} = (1.7 \times t_Y) + (1 \times t_S) = (1.7 \times 0.77) + (1 \times 0.77) = 2.079 \text{ 秒}$$
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">总伤害输出 (DPS) 模型构建</h2>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">一个循环内的总伤害</h3>
+            <p class="text-gray-700">在一个平均循环 ($T_{\text{循环}} = 2.079 \text{ 秒}$) 内，总伤害 $D_{\text{总循环}}$ 包括：</p>
+            <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                <li><b>平均 Y 技能伤害</b>：
+                    $$D_{Y_{\text{总}}} = 1.7 \times D_Y = 1.7 \times (A + B - F) \times C$$
+                </li>
+                <li><b>一次穿云手直接伤害</b>：
+                    $$D_{S_{\text{直接}}} = (2.72S + (2.72P + 1)A - F) \times C$$
+                </li>
+                <li><b>流血伤害</b>：
+                    $$D_{S_{\text{流血总}}} = D_{S_{\text{流血}}} \times T_{\text{循环}} = \left( (2.448U + (2.448P + 0.8)A - F) \times C \right) \times 2.079$$
+                </li>
+            </ul>
+            <p class="text-gray-700 mt-4">因为暴击倍率 $C$ 是一个常数，我可以将它从括号中提取出来。经过合并同类项，得到修正后的精确公式：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$D_{\text{总循环}} = \left[ 1.7(A + B - F) + (2.72S + (2.72P + 1)A - F) + (2.448U + (2.448P + 0.8)A - F) \times 2.079 \right] \times C$$
+                $$D_{\text{总循环}} = \left[ 2.72S + 5.0895U + (7.8095P + 4.3632)A + 1.7B - 4.779F \right] \times C$$
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">最终 DPS 公式</h3>
+            <p class="text-gray-700">最终的平均 DPS 为循环总伤害除以循环总时间 ($T_{\text{循环}}=2.079$)：</p>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$DPS_{\text{最终}} = \frac{D_{\text{总循环}}}{T_{\text{循环}}} = \frac{\left[ 2.72S + 5.0895U + (7.8095P + 4.3632)A + 1.7B - 4.779F \right] \times C}{2.079}$$
+                $$DPS_{\text{最终}} \approx \left[ 1.31S + 2.45U + (3.757P + 2.10)A + 0.82B - 2.30F \right] \times 1.625$$
+                $$DPS_{\text{最终}} \approx 2.13S + 3.98U + (6.10P + 3.41)A + 1.33B - 3.74F$$
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">属性收益分析</h2>
+            <p class="text-gray-700">为了确定每提升 1 点 S, A, P, U, B 以及 F 对 DPS 的影响，我对 $DPS_{\text{最终}}$ 分别求了偏导数。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">S 的收益</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial S} = 1.31 \times C \approx 1.31 \times 1.625 \approx \mathbf{2.13}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点穿云手技能加成 S，平均 DPS 将增加约 2.13 点。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">U 的收益</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial U} = 2.45 \times C \approx 2.45 \times 1.625 \approx \mathbf{3.98}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点穿云手流血加成 U，平均 DPS 将增加约 3.98 点。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">A 的收益</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial A} = (3.757P + 2.10) \times C \approx (3.757 \times 1.625)P + (2.10 \times 1.625) \approx \mathbf{6.10P + 3.41}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点平均攻击 A，平均 DPS 将增加约 $(6.10P + 3.41)$ 点。此收益值取决于当前苍龙破封加成 P 的大小。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">P 的收益</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial P} = 3.757A \times C \approx 3.757A \times 1.625 \approx \mathbf{6.10A}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点苍龙破封加成 P，平均 DPS 将增加约 $6.10A$ 点。此收益值取决于当前平均攻击 A 的大小。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">B 的收益</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial B} = 0.82 \times C \approx 0.82 \times 1.625 \approx \mathbf{1.33}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点双龙臂技能加成 B，平均 DPS 将增加约 1.33 点。</p>
+
+            <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">F 的影响</h3>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial F} = -2.30 \times C \approx -2.30 \times 1.625 \approx \mathbf{-3.74}$$
+            </div>
+            <p class="text-gray-700 mt-4">这意味着，每提升 1 点怪物物理防御 F，我的平均 DPS 将减少约 3.74 点。</p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2 mb-4">结论</h2>
+            <div class="mt-4 overflow-x-auto text-center p-4 bg-gray-50 rounded-lg">
+                $$\frac{\partial DPS_{\text{最终}}}{\partial S} \approx 2.13 \qquad \frac{\partial DPS_{\text{最终}}}{\partial U} \approx 3.98$$
+                $$\frac{\partial DPS_{\text{最终}}}{\partial A} \approx 6.10P + 3.41 \qquad \frac{\partial DPS_{\text{最终}}}{\partial P} \approx 6.10A$$
+                $$\frac{\partial DPS_{\text{最终}}}{\partial B} \approx 1.33 \qquad \frac{\partial DPS_{\text{最终}}}{\partial F} \approx -3.74$$
+            </div>
+            <p class="text-gray-700 mt-4">通过以上分析，我得出了以下结论：</p>
+            <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                <li><b>U</b>（流血加成）的单位收益（约 3.98）高于所有其他技能加成，包括 <b>S</b>（直接伤害加成）（约 2.13）和 <b>B</b>（双龙臂技能加成）（约 1.33）。</li>
+                <li><b>A</b>（平均攻击）和 <b>P</b>（苍龙破封加成）依然存在强大的协同效应。</li>
+                <li><b>F</b>（物理防御）的单位影响是一个固定的负值，但它的影响比我最初想象的要大得多。</li>
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>
