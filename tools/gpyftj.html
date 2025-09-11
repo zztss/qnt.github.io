@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票月度价格走势看板</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .file-input-section {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .controls label {
+            font-weight: bold;
+            color: #555;
+        }
+        .controls select {
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            padding: 50px;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .chart-container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            height: 300px; /* 固定高度以保持一致性 */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>股票月度价格走势看板</h1>
+    
+    <div class="file-input-section">
+        <input type="file" id="csv-file-input" accept=".csv" />
+    </div>
+
+    <div id="loading" class="loading">
+        请点击上方“选择文件”按钮，上传您的股票历史日数据 CSV 文件。
+    </div>
+
+    <div id="dashboard-content" style="display: none;">
+        <div class="controls">
+            <label for="year-select">选择年份:</label>
+            <select id="year-select"></select>
+        </div>
+        <div id="chart-grid" class="chart-grid"></div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('csv-file-input');
+    const loadingDiv = document.getElementById('loading');
+    const dashboardDiv = document.getElementById('dashboard-content');
+    const yearSelect = document.getElementById('year-select');
+    const chartGrid = document.getElementById('chart-grid');
+    let monthlyDataByYear = new Map();
+    let chartInstances = [];
+
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            loadingDiv.innerText = '正在处理数据，请稍候...';
+            loadingDiv.style.display = 'block';
+            dashboardDiv.style.display = 'none';
+            Papa.parse(file, {
+                header: true,
+                dynamicTyping: false,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    processCSVData(results.data);
+                },
+                error: function(error) {
+                    loadingDiv.style.display = 'none';
+                    alert('文件解析失败，请检查文件格式是否正确。');
+                    console.error('PapaParse error:', error);
+                }
+            });
+        }
+    });
+
+    function processCSVData(data) {
+        if (!data || data.length === 0) {
+            alert('CSV 文件内容为空或格式不正确。');
+            loadingDiv.style.display = 'none';
+            return;
+        }
+
+        monthlyDataByYear.clear();
+        
+        const dailyData = data.map(row => ({
+            date: new Date(row['日期']),
+            close: parseFloat(row['收盘价']) || 0
+        })).filter(d => !isNaN(d.date.getTime()) && d.close > 0);
+        
+        dailyData.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+        let years = new Set();
+        dailyData.forEach(item => {
+            const year = item.date.getFullYear();
+            const month = item.date.getMonth();
+            years.add(year);
+            if (!monthlyDataByYear.has(year)) {
+                monthlyDataByYear.set(year, new Map());
+            }
+            if (!monthlyDataByYear.get(year).has(month)) {
+                monthlyDataByYear.get(year).set(month, []);
+            }
+            monthlyDataByYear.get(year).get(month).push(item);
+        });
+
+        yearSelect.innerHTML = '';
+        const sortedYears = [...years].sort((a, b) => b - a);
+        sortedYears.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.text = year;
+            yearSelect.appendChild(option);
+        });
+
+        if (sortedYears.length > 0) {
+            dashboardDiv.style.display = 'block';
+            yearSelect.value = sortedYears[0];
+            renderMonthlyCharts();
+        } else {
+            loadingDiv.innerText = '未找到有效数据。请检查 CSV 文件内容。';
+        }
+        
+        loadingDiv.style.display = 'none';
+    }
+
+    yearSelect.addEventListener('change', renderMonthlyCharts);
+
+    function renderMonthlyCharts() {
+        chartInstances.forEach(chart => chart.dispose());
+        chartInstances = [];
+        chartGrid.innerHTML = '';
+
+        const selectedYear = parseInt(yearSelect.value);
+        const yearData = monthlyDataByYear.get(selectedYear);
+        const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+
+        for (let i = 0; i < 12; i++) {
+            const chartContainer = document.createElement('div');
+            chartContainer.className = 'chart-container';
+            chartContainer.id = `chart-month-${i}`;
+            chartGrid.appendChild(chartContainer);
+
+            const monthData = yearData && yearData.get(i);
+            const chart = echarts.init(chartContainer);
+            chartInstances.push(chart);
+
+            if (monthData && monthData.length > 0) {
+                const dates = monthData.map(d => d.date.getDate());
+                const prices = monthData.map(d => d.close);
+                
+                const option = {
+                    title: {
+                        text: `${monthNames[i]}价格走势`,
+                        left: 'center',
+                        textStyle: { fontSize: 14 }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            const data = params[0];
+                            return `${monthNames[i]}${data.name}日<br>价格: ${data.value.toFixed(2)}`;
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: dates
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '价格',
+                        scale: true,
+                        nameTextStyle: { fontSize: 12 }
+                    },
+                    series: [{
+                        name: '价格',
+                        type: 'line',
+                        data: prices,
+                        smooth: true,
+                        lineStyle: { color: '#3498db' },
+                        itemStyle: { color: '#2980b9' }
+                    }]
+                };
+                chart.setOption(option, true);
+            } else {
+                const option = {
+                    title: {
+                        text: `${monthNames[i]}价格走势`,
+                        left: 'center',
+                        textStyle: { fontSize: 14 }
+                    },
+                    graphic: [{
+                        type: 'text',
+                        left: 'center',
+                        top: 'middle',
+                        style: {
+                            text: '无数据',
+                            fill: '#ccc',
+                            fontSize: 20,
+                            fontWeight: 'bold'
+                        }
+                    }]
+                };
+                chart.setOption(option, true);
+            }
+        }
+    }
+    
+    window.addEventListener('resize', () => {
+        chartInstances.forEach(chart => chart.resize());
+    });
+</script>
+
+</body>
+</html>
