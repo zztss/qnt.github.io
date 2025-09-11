@@ -216,6 +216,10 @@
         </div>
         
         <div class="chart-row">
+            <div id="chart-zt-after" class="chart-container"></div>
+        </div>
+
+        <div class="chart-row">
             <div id="calendar-container" class="full-width-chart-container">
                 <div class="calendar-nav">
                     <button id="prevMonthBtn">&lt;</button>
@@ -246,7 +250,7 @@
     let historicalDataByMonthDay = {};
     let currentDisplayDate = new Date();
 
-    let chartWeekday, chartMonth, chartSeason, chartConsecutive, chartType, chartPreDay;
+    let chartWeekday, chartMonth, chartSeason, chartConsecutive, chartType, chartPreDay, chartZtAfter;
 
     const holidays2025 = {
         'holidays': [
@@ -294,6 +298,7 @@
         chartConsecutive = echarts.init(document.getElementById('chart-consecutive'));
         chartType = echarts.init(document.getElementById('chart-type'));
         chartPreDay = echarts.init(document.getElementById('chart-pre-day'));
+        chartZtAfter = echarts.init(document.getElementById('chart-zt-after'));
     }
 
     function processCSVData(data) {
@@ -383,12 +388,16 @@
             return;
         }
 
-        const weekdayChange = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-        const monthChange = new Array(12).fill(0);
-        const seasonChange = { 'spring': 0, 'summer': 0, 'autumn': 0, 'winter': 0 };
+        // 涨跌幅计算修改：将初始化值从0改为1，表示100%
+        const weekdayChange = { 0: 1, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1 };
+        const monthChange = new Array(12).fill(1);
+        const seasonChange = { 'spring': 1, 'summer': 1, 'autumn': 1, 'winter': 1 };
         const consecutiveCounts = {};
         const ztTypes = { '一字板': 0, '炸板回封': 0, '正常涨停': 0 };
         const preDayChangeBins = { '-5%~0%': 0, '0%~1%': 0, '1%~3%': 0, '3%~5%': 0, '5%+': 0 };
+        // 新增的涨停后第二天涨幅分布数据
+        const ztAfterChangeBins = { '-5%~0%': 0, '0%~5%': 0, '5%~10%': 0, '10%+': 0 };
+
 
         let currentConsecutiveZT = 0;
 
@@ -404,9 +413,10 @@
             const season = getSeason(month);
 
             if (!isNaN(change_percent) && isFinite(change_percent)) {
-                weekdayChange[dayOfWeek] += change_percent;
-                monthChange[month] += change_percent;
-                seasonChange[season] += change_percent;
+                // 使用乘法来计算复利
+                weekdayChange[dayOfWeek] *= (1 + change_percent / 100);
+                monthChange[month] *= (1 + change_percent / 100);
+                seasonChange[season] *= (1 + change_percent / 100);
             }
 
             const isLimitUp = (change_percent >= 9.9);
@@ -434,6 +444,16 @@
                     else if (preDayChange >= 3 && preDayChange < 5) preDayChangeBins['3%~5%']++;
                     else if (preDayChange >= 5) preDayChangeBins['5%+']++;
                 }
+
+                // 新增的涨停后第二天分析逻辑
+                if (i < filteredDailyData.length - 1) {
+                    const nextDay = filteredDailyData[i + 1];
+                    const nextDayChange = ((nextDay.close - day.close) / day.close) * 100;
+                    if (nextDayChange >= -5 && nextDayChange < 0) ztAfterChangeBins['-5%~0%']++;
+                    else if (nextDayChange >= 0 && nextDayChange < 5) ztAfterChangeBins['0%~5%']++;
+                    else if (nextDayChange >= 5 && nextDayChange < 10) ztAfterChangeBins['5%~10%']++;
+                    else if (nextDayChange >= 10) ztAfterChangeBins['10%+']++;
+                }
             } else {
                 if (currentConsecutiveZT > 0) {
                     consecutiveCounts[currentConsecutiveZT] = (consecutiveCounts[currentConsecutiveZT] || 0) + 1;
@@ -446,12 +466,13 @@
             consecutiveCounts[currentConsecutiveZT] = (consecutiveCounts[currentConsecutiveZT] || 0) + 1;
         }
 
-        const totalZt = ztTypes['一字板'] + ztTypes['炸板回封'] + ztTypes['正常涨停'];
+        const totalZt = ztTypes['一字板'] + ztTypes['炸板回封'] + ztTypes['正常涨停'] || 0;
         if (totalZt === 0) {
              Object.keys(ztTypes).forEach(key => delete ztTypes[key]);
              ztTypes['无有效涨停数据'] = 1;
              Object.keys(consecutiveCounts).forEach(key => delete consecutiveCounts[key]);
              Object.keys(preDayChangeBins).forEach(key => preDayChangeBins[key] = 0);
+             Object.keys(ztAfterChangeBins).forEach(key => ztAfterChangeBins[key] = 0);
         }
 
         updateCharts(
@@ -460,7 +481,8 @@
             seasonChange,
             consecutiveCounts,
             ztTypes,
-            preDayChangeBins
+            preDayChangeBins,
+            ztAfterChangeBins
         );
         updateCalendar(currentDisplayDate.getFullYear(), currentDisplayDate.getMonth());
         updateSummary(weekdayChange, seasonChange, consecutiveCounts, ztTypes, filteredDailyData);
@@ -473,7 +495,8 @@
         return 'winter';
     }
 
-    function updateCharts(weekdayData, monthData, seasonData, consecutiveData, typeData, preDayData) {
+    // 新增一个参数ztAfterData
+    function updateCharts(weekdayData, monthData, seasonData, consecutiveData, typeData, preDayData, ztAfterData) {
         dashboardDiv.style.display = 'block';
 
         if (!chartWeekday) {
@@ -481,23 +504,27 @@
         }
 
         const weekdayLabels = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        const weekdaySeries = weekdayLabels.map((_, i) => parseFloat(weekdayData[i] || 0).toFixed(2));
+        const weekdaySeries = weekdayLabels.map((_, i) => ((weekdayData[i] - 1) * 100).toFixed(2));
         const monthLabels = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-        const monthSeries = monthData.map(val => parseFloat(val).toFixed(2));
+        const monthSeries = monthData.map(val => ((val - 1) * 100).toFixed(2));
 
         const seasonLabels = ['春季', '夏季', '秋季', '冬季'];
         const seasonSeries = [
-            parseFloat(seasonData['spring'] || 0).toFixed(2),
-            parseFloat(seasonData['summer'] || 0).toFixed(2),
-            parseFloat(seasonData['autumn'] || 0).toFixed(2),
-            parseFloat(seasonData['winter'] || 0).toFixed(2)
-        ];
+            ((seasonData['spring'] || 1) - 1) * 100,
+            ((seasonData['summer'] || 1) - 1) * 100,
+            ((seasonData['autumn'] || 1) - 1) * 100,
+            ((seasonData['winter'] || 1) - 1) * 100
+        ].map(val => val.toFixed(2));
 
         const consecutiveLabels = Object.keys(consecutiveData).sort((a,b) => parseInt(a) - parseInt(b)).map(d => `${d}连板`);
         const consecutiveSeries = Object.values(consecutiveData);
         const typeSeries = Object.keys(typeData).map(key => ({ name: key, value: typeData[key] }));
         const preDayLabels = Object.keys(preDayData);
         const preDaySeries = Object.values(preDayData);
+        
+        // 新增的图表数据
+        const ztAfterLabels = Object.keys(ztAfterData);
+        const ztAfterSeries = Object.values(ztAfterData);
 
         chartWeekday.setOption({
             title: { text: '星期涨跌总和', left: 'center' },
@@ -575,6 +602,24 @@
             yAxis: { name: '涨停次数', minInterval: 1 },
             series: [{ name: '涨停次数', type: 'bar', data: preDaySeries, itemStyle: { color: '#e74c3c' }}]
         }, true);
+        
+        // 新增的图表绘制
+        chartZtAfter.setOption({
+            title: { text: '涨停后第二天涨幅分布', left: 'center' },
+            tooltip: { axisPointer: { type: 'shadow' } },
+            xAxis: { data: ztAfterLabels },
+            yAxis: { name: '次数', minInterval: 1 },
+            series: [{ 
+                name: '涨停次数', 
+                type: 'bar', 
+                data: ztAfterSeries,
+                itemStyle: { color: params => {
+                    const value = params.name.includes('+') ? 1 : 0;
+                    return value >= 0 ? '#e74c3c' : '#2ecc71';
+                }} 
+            }]
+        }, true);
+
 
         window.dispatchEvent(new Event('resize'));
         loadingDiv.style.display = 'none';
@@ -679,8 +724,8 @@
         let bestWeekdayIndex = '0';
         let maxWeekdayChange = -Infinity;
         for (const day in weekdayData) {
-            if (weekdayData[day] > maxWeekdayChange) {
-                maxWeekdayChange = weekdayData[day];
+            if ((weekdayData[day] - 1) * 100 > maxWeekdayChange) {
+                maxWeekdayChange = (weekdayData[day] - 1) * 100;
                 bestWeekdayIndex = day;
             }
         }
@@ -688,8 +733,8 @@
         let bestSeason = 'spring';
         let maxSeasonChange = -Infinity;
         for (const s in seasonData) {
-            if (seasonData[s] > maxSeasonChange) {
-                maxSeasonChange = seasonData[s];
+            if ((seasonData[s] - 1) * 100 > maxSeasonChange) {
+                maxSeasonChange = (seasonData[s] - 1) * 100;
                 bestSeason = s;
             }
         }
