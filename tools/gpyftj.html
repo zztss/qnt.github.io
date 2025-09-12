@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>股票月度价格走势看板</title>
+    <title>股票月度/季度价格走势看板</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -37,17 +37,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 25px;
             margin-bottom: 20px;
         }
         .controls label {
             font-weight: bold;
             color: #555;
+            cursor: pointer;
         }
         .controls select {
             padding: 8px 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+        .controls input[type="radio"] {
+            margin-right: 5px;
         }
         .loading {
             text-align: center;
@@ -65,7 +69,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-            height: 300px; /* 固定高度以保持一致性 */
+            height: 300px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
@@ -74,7 +78,7 @@
 <body>
 
 <div class="container">
-    <h1>股票月度价格走势看板</h1>
+    <h1>股票月度/季度价格走势看板</h1>
     
     <div class="file-input-section">
         <input type="file" id="csv-file-input" accept=".csv" />
@@ -86,8 +90,16 @@
 
     <div id="dashboard-content" style="display: none;">
         <div class="controls">
-            <label for="year-select">选择年份:</label>
-            <select id="year-select"></select>
+            <div>
+                <label for="year-select">选择年份:</label>
+                <select id="year-select"></select>
+            </div>
+            <div>
+                <input type="radio" id="view-monthly" name="view-mode" value="monthly" checked>
+                <label for="view-monthly">月度视图</label>
+                <input type="radio" id="view-seasonal" name="view-mode" value="seasonal">
+                <label for="view-seasonal">季度视图</label>
+            </div>
         </div>
         <div id="chart-grid" class="chart-grid"></div>
     </div>
@@ -98,8 +110,10 @@
     const loadingDiv = document.getElementById('loading');
     const dashboardDiv = document.getElementById('dashboard-content');
     const yearSelect = document.getElementById('year-select');
+    const viewMonthlyRadio = document.getElementById('view-monthly');
+    const viewSeasonalRadio = document.getElementById('view-seasonal');
     const chartGrid = document.getElementById('chart-grid');
-    let monthlyDataByYear = new Map();
+    let dailyDataByYear = new Map();
     let chartInstances = [];
 
     input.addEventListener('change', (event) => {
@@ -131,7 +145,7 @@
             return;
         }
 
-        monthlyDataByYear.clear();
+        dailyDataByYear.clear();
         
         const dailyData = data.map(row => ({
             date: new Date(row['日期']),
@@ -143,15 +157,11 @@
         let years = new Set();
         dailyData.forEach(item => {
             const year = item.date.getFullYear();
-            const month = item.date.getMonth();
             years.add(year);
-            if (!monthlyDataByYear.has(year)) {
-                monthlyDataByYear.set(year, new Map());
+            if (!dailyDataByYear.has(year)) {
+                dailyDataByYear.set(year, []);
             }
-            if (!monthlyDataByYear.get(year).has(month)) {
-                monthlyDataByYear.get(year).set(month, []);
-            }
-            monthlyDataByYear.get(year).get(month).push(item);
+            dailyDataByYear.get(year).push(item);
         });
 
         yearSelect.innerHTML = '';
@@ -166,7 +176,7 @@
         if (sortedYears.length > 0) {
             dashboardDiv.style.display = 'block';
             yearSelect.value = sortedYears[0];
-            renderMonthlyCharts();
+            renderCharts();
         } else {
             loadingDiv.innerText = '未找到有效数据。请检查 CSV 文件内容。';
         }
@@ -174,88 +184,127 @@
         loadingDiv.style.display = 'none';
     }
 
-    yearSelect.addEventListener('change', renderMonthlyCharts);
+    yearSelect.addEventListener('change', renderCharts);
+    viewMonthlyRadio.addEventListener('change', renderCharts);
+    viewSeasonalRadio.addEventListener('change', renderCharts);
 
-    function renderMonthlyCharts() {
+    function getSeason(month) {
+        if (month >= 2 && month <= 4) return '春季';
+        if (month >= 5 && month <= 7) return '夏季';
+        if (month >= 8 && month <= 10) return '秋季';
+        return '冬季';
+    }
+    
+    function getSeasonMonths(season) {
+        if (season === '春季') return '(3月-5月)';
+        if (season === '夏季') return '(6月-8月)';
+        if (season === '秋季') return '(9月-11月)';
+        if (season === '冬季') return '(12月-2月)';
+        return '';
+    }
+
+    function renderCharts() {
         chartInstances.forEach(chart => chart.dispose());
         chartInstances = [];
         chartGrid.innerHTML = '';
 
         const selectedYear = parseInt(yearSelect.value);
-        const yearData = monthlyDataByYear.get(selectedYear);
+        const viewMode = document.querySelector('input[name="view-mode"]:checked').value;
+        const yearData = dailyDataByYear.get(selectedYear);
+        
+        if (!yearData) {
+            return;
+        }
+
+        if (viewMode === 'monthly') {
+            renderMonthlyCharts(yearData);
+        } else if (viewMode === 'seasonal') {
+            renderSeasonalCharts(yearData);
+        }
+    }
+
+    function renderMonthlyCharts(yearData) {
+        const monthlyData = new Map();
+        yearData.forEach(item => {
+            const month = item.date.getMonth();
+            if (!monthlyData.has(month)) {
+                monthlyData.set(month, []);
+            }
+            monthlyData.get(month).push(item);
+        });
+
         const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
         for (let i = 0; i < 12; i++) {
             const chartContainer = document.createElement('div');
             chartContainer.className = 'chart-container';
-            chartContainer.id = `chart-month-${i}`;
             chartGrid.appendChild(chartContainer);
 
-            const monthData = yearData && yearData.get(i);
+            const monthData = monthlyData.get(i);
             const chart = echarts.init(chartContainer);
             chartInstances.push(chart);
 
             if (monthData && monthData.length > 0) {
-                const dates = monthData.map(d => d.date.getDate());
+                // 修改这里：只保留日期数字，不加月份
+                const dates = monthData.map(d => `${d.date.getDate()}`);
                 const prices = monthData.map(d => d.close);
                 
                 const option = {
-                    title: {
-                        text: `${monthNames[i]}价格走势`,
-                        left: 'center',
-                        textStyle: { fontSize: 14 }
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        formatter: function(params) {
-                            const data = params[0];
-                            return `${monthNames[i]}${data.name}日<br>价格: ${data.value.toFixed(2)}`;
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: dates
-                    },
-                    yAxis: {
-                        type: 'value',
-                        name: '价格',
-                        scale: true,
-                        nameTextStyle: { fontSize: 12 }
-                    },
-                    series: [{
-                        name: '价格',
-                        type: 'line',
-                        data: prices,
-                        smooth: true,
-                        lineStyle: { color: '#3498db' },
-                        itemStyle: { color: '#2980b9' }
-                    }]
+                    title: { text: `${monthNames[i]}价格走势`, left: 'center', textStyle: { fontSize: 14 } },
+                    tooltip: { trigger: 'axis', formatter: params => `${monthNames[i]}${params[0].name}日<br>价格: ${params[0].value.toFixed(2)}` },
+                    xAxis: { type: 'category', data: dates }, // 让ECharts自动优化标签显示
+                    yAxis: { type: 'value', name: '价格', scale: true, nameTextStyle: { fontSize: 12 } },
+                    series: [{ name: '价格', type: 'line', data: prices, smooth: true, lineStyle: { color: '#3498db' }, itemStyle: { color: '#2980b9' } }]
                 };
                 chart.setOption(option, true);
             } else {
-                const option = {
-                    title: {
-                        text: `${monthNames[i]}价格走势`,
-                        left: 'center',
-                        textStyle: { fontSize: 14 }
-                    },
-                    graphic: [{
-                        type: 'text',
-                        left: 'center',
-                        top: 'middle',
-                        style: {
-                            text: '无数据',
-                            fill: '#ccc',
-                            fontSize: 20,
-                            fontWeight: 'bold'
-                        }
-                    }]
-                };
-                chart.setOption(option, true);
+                chart.setOption({ title: { text: `${monthNames[i]}价格走势`, left: 'center', textStyle: { fontSize: 14 } }, graphic: [{ type: 'text', left: 'center', top: 'middle', style: { text: '无数据', fill: '#ccc', fontSize: 20, fontWeight: 'bold' } }] }, true);
             }
         }
     }
-    
+
+    function renderSeasonalCharts(yearData) {
+        const seasonalData = new Map();
+        yearData.forEach(item => {
+            const month = item.date.getMonth();
+            const season = getSeason(month);
+            if (!seasonalData.has(season)) {
+                seasonalData.set(season, []);
+            }
+            seasonalData.get(season).push(item);
+        });
+
+        const seasonNames = ['春季', '夏季', '秋季', '冬季'];
+        
+        for (const seasonName of seasonNames) {
+            const chartContainer = document.createElement('div');
+            chartContainer.className = 'chart-container';
+            chartGrid.appendChild(chartContainer);
+            
+            const seasonItems = seasonalData.get(seasonName);
+            const chart = echarts.init(chartContainer);
+            chartInstances.push(chart);
+
+            const seasonTitle = `${seasonName}价格走势 ${getSeasonMonths(seasonName)}`;
+
+            if (seasonItems && seasonItems.length > 0) {
+                const dates = seasonItems.map(d => `${d.date.getMonth()+1}/${d.date.getDate()}`);
+                const prices = seasonItems.map(d => d.close);
+                
+                const option = {
+                    title: { text: seasonTitle, left: 'center', textStyle: { fontSize: 14 } },
+                    tooltip: { trigger: 'axis', formatter: params => `${params[0].name}<br>价格: ${params[0].value.toFixed(2)}` },
+                    xAxis: { type: 'category', data: dates },
+                    yAxis: { type: 'value', name: '价格', scale: true, nameTextStyle: { fontSize: 12 } },
+                    series: [{ name: '价格', type: 'line', data: prices, smooth: true, lineStyle: { color: '#3498db' }, itemStyle: { color: '#2980b9' } }]
+                };
+                chart.setOption(option, true);
+            } else {
+                 chart.setOption({ title: { text: seasonTitle, left: 'center', textStyle: { fontSize: 14 } }, graphic: [{ type: 'text', left: 'center', top: 'middle', style: { text: '无数据', fill: '#ccc', fontSize: 20, fontWeight: 'bold' } }] }, true);
+            }
+        }
+    }
+
     window.addEventListener('resize', () => {
         chartInstances.forEach(chart => chart.resize());
     });
