@@ -35,7 +35,7 @@
     <div class="config-grid">
         <div class="field">
             <label>人物攻速 (Speed)</label>
-            <input type="number" id="cfg_speed" value="2.04" step="0.01" oninput="autoCalc()">
+            <input type="number" id="cfg_speed" value="2.04" step="0.01">
         </div>
         <div class="field">
             <label>前摇补正 (ms)</label>
@@ -65,18 +65,6 @@
 </div>
 
 <script>
-// 以你的 1.77 攻速作为基准常数
-const BASE_SPEED = 1.77;
-const BASE_PRE = 345;
-const BASE_T1 = 870;
-
-function autoCalc() {
-    const speed = parseFloat(document.getElementById('cfg_speed').value) || 1.0;
-    // 攻速越高，时间越短。公式：基准时间 * (基准攻速 / 当前攻速)
-    const ratio = BASE_SPEED / speed;
-    document.getElementById('cfg_pre_ms').value = Math.round(BASE_PRE * ratio);
-    document.getElementById('cfg_t1_ms').value = Math.round(BASE_T1 * ratio);
-}
 
 function runSimulation() {
     const speed = parseFloat(document.getElementById('cfg_speed').value);
